@@ -3,10 +3,8 @@
 	$hostname='localhost';
 	$username='root';
 	$password='';
-	$dbname='finalproject';
-	$port=3307;
-
-	$base_url='http://www.youwebsite.com/email_activation/';
+	$dbname='final_project';
+	$port=3306;
 
 	function query($sql)
 	{

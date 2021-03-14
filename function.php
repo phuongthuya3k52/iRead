@@ -1,10 +1,30 @@
 <?php
 //Hàm login sau khi mạng xã hội trả dữ liệu về
 function loginFromSocialCallBack($socialUser) {
-    include './db.php';
+    require_once("./db.php");
+
+    $sql1= "SELECT email FROM member WHERE memberID = 1 ";
+    
+    echo($sql1);
+
+    $result=query($sql1);
+
+    echo(count($result));
+
+    $sql1 = "select * from admin";
+$pros = query($sql1);
+echo $pros[0][2];
 
     $sql= "SELECT email FROM member WHERE email='".$socialUser['email'] ."'";
-    $result=query($sql);
+    echo($sql);
+
+    
+
+    
+
+    $result=query($sql1);
+
+    echo(count($sql1));
 
     if(count($result) == 0){
         $sql1 = "Insert into member values ('" ."','" ."','" ."','" .$socialUser['email'] ."','" ."',1)";
@@ -19,9 +39,10 @@ function loginFromSocialCallBack($socialUser) {
             session_start();
         }
         $_SESSION['current_user'] = $user;
-        header('Location: ./login.php');
+        header('Location: ./logintest.php');
         die();
     }
+}
 
 /*    $result = mysqli_query($con, "Select `id`,`username`,`email`,`fullname` from `user` WHERE `email` ='" . $socialUser['email'] . "'");
     if ($result->num_rows == 0) {

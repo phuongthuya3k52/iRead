@@ -23,50 +23,79 @@
 	body{
 		padding-top:60px;padding-bottom:40px;height:auto;
 	}
-
-
-	.box-content{
-                margin: 0 auto;
-                width: 800px;
-                border: 1px solid #ccc;
-                text-align: center;
-                padding: 20px;
-            }
-    #user_login form{
-                width: 300px;
-                margin: 40px auto;
-            }
-    #user_login form input{
-                margin: 5px 0;
-            }
-
 </style>
-
-<?php 
-	include './fb_source.php';
-?>
-
 </head>
 
+<script>
+	$(document).ready(function(){
+		$('input.form-control').keyup(function() {
+			var e = $(this);
+			var label = e.closest('.form-group').find('label');
+			label.removeClass('animated fadeInLeft fadeOutLeft');
+			if (e.val()) {
+				label.css('visibility', 'visible').addClass('animated fadeInLeft');
+			} else{
+				label.addClass('animated fadeOutLeft');
+				setTimeout(function(){
+					label.css('visibility', 'hidden');
+				}, 500);
+			}
+		}); 
+
+		// Clear text box
+		$('button[type=reset]').click(function(){
+			var label = $('label');
+			label.removeClass('animated fadeInLeft fadeOutLeft').addClass('animated fadeOutLeft');
+		});
+
+	/*	$('button[type=submit]').button('reset').removeAttr('disabled');
+
+		$('form').submit(function(){
+			var form = $(this);
+			form.find('button[type=reset]').attr('disabled', 'disabled');
+		});   */
+	});
+</script>
+
+<?php
+	require_once("./db.php");
+    session_start();
+
+           
+	if (isset($_POST['username'])&& isset($_POST['password'])){
+		$us=$_POST['username'];
+		$pw=md5($_POST['password']);
+		$sql= "select * from account where Username='" .$us ."'and Password='".$pw ."'";
+		$row=query($sql);
+
+		if ($us != "" && $pw !=""){
+			if (count($row)>0){	
+				$_SESSION['username'] = $us;
+
+				if ($row[0][2] == 'member'){
+
+					header("Location: ./home.php");
+    				die();
+				}
+				else{
+					header("Location: ./admin.php");
+					die();
+				}
+    										
+			}			
+			else{
+?>				<script >
+					alert ("Username or Password is not correct");
+					window.location.replace("./login.php");
+				</script>
+			<?php 
+			/*	echo('<span style="color:red;">Username or Password is not correct</span>');*/
+			}
+		}
+	}
+?>
 
 <body>
-<?php
-        session_start();
-        if (!empty($_SESSION['current_user'])) {
-            $currentUser = $_SESSION['current_user'];
-            ?>
-            <div id="login-notify" class="box-content">
-                Xin chào <?= $currentUser['fullname'] ?><br/>
-                <!--<a href="./edit.php">Đổi mật khẩu</a><br/>
-                <a href="./logout.php">Đăng xuất</a>  -->
-            </div>
-            <?php
-        } else {
-            //include './facebook_source.php';
-            include './google_source.php';
-            ?>
-
-
 <div class="yamm navbar navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container">
@@ -77,97 +106,65 @@
 
 <div class="container">
 	<div class="row">
-		<div class="span12">
+	<!--	<div class="span12">
 			<div class="container">
-				<div class="row">
+				<div class="row">   -->
 					<div class="span12 auth">   
-						<h1 class="page-header">LOGIN</h1>
+						<h1 class="page-header" style="text-align: center;">LOGIN</h1>
 
-						<div class="row">
-							<div class="span9">
+						<div class="row"  >
+							<table width="30%" align="center" cellspacing="40px">
 								<form action="login.php" method="post" role="form">
-								<!--	<div style='display:none;'>
-										<input type='hidden' name='csrfmiddlewaretoken' value='GBFs8dpdU4oMnI92HERYMd33OUWHunmM'/>
-									</div>    -->
+								<tr>
+									<td>
+										<label for="id_username" class="control-label requiredField">Username<span class="asteriskField">*:</span></label>
+									</td>
 
-									<div id="div_id_username" class="control-group">
-										<label for="id_username" class="control-label requiredField">Username<span class="asteriskField">*</span></label>
+									<td>
 										<div class="controls">
 											<input name="username" maxlength="254" type="text" autofocus="autofocus" required="required" placeholder="Username" class="textinput textInput" id="id_username"/>
 										</div>
-									</div>
-
-									<div id="div_id_password" class="control-group">
-										<label for="id_password" class="control-label requiredField">Password<span class="asteriskField">*</span></label>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<label for="id_password" class="control-label requiredField">Password<span class="asteriskField">*:</span></label>
+									</td>
+									<td>
 										<div class="controls">
 											<input name="password" placeholder="Password" required="required" type="password" class="textinput textInput" id="id_password"/>
 										</div>
-									</div>
+									</td>
+								</tr>
+					 			<tr>
+					 				<td></td>
+									<td >
+										<button type="submit" class="btn btn-primary btn-lg" data-loading-text="Login">
+										 Login</button> 
 
-									<button type="submit" class="btn btn-primary btn-lg" data-loading-text="Login">
-										<i class="icon-arrow-right"></i> Login
-									</button>
+										<button type="reset" class="btn btn-default">Clear</button>
+									</td>
 
-									<button type="reset" class="btn btn-default">Clear</button>
-									<input name="next" type="hidden" value=""/>
-								</form>
-
-								<ul style="margin: 0">
-									 <li class="nav"><i class="icon-arrow-right"></i> <a href="register.html">Register new account</a></li>
-								</ul>
-
-								<div>
-									<a href =""> Login with Facebook </a>
-									<?php if(isset($authUrl)){ ?>
-                    <a href="<?= $authUrl ?>"><img src="./img/google.png" alt='google login' title="Google Login" height="50" width="280" /></a>
-                    <?php } ?>
-								</div>
-
-
-							</div>
+								<tr>
+									
+									<td colspan="2" style="font-size: 17px; text-align: center">
+										<br>
+										<i class="icon-arrow-right"></i> <a href="registration.php">Register new account</a>
+										
+								</tr>
+							</table>
+						
 						</div>
 
 					</div>  
-				</div>
+			<!--	</div>
 			</div>
-
-
-	<!--		<script>
-				$(document).ready(function(){
-					$('input.form-control').keyup(function() {
-						var e = $(this);
-						var label = e.closest('.form-group').find('label');
-						label.removeClass('animated fadeInLeft fadeOutLeft');
-						if (e.val()) {
-							label.css('visibility', 'visible').addClass('animated fadeInLeft');
-						} else{
-							label.addClass('animated fadeOutLeft');
-							setTimeout(function(){
-								label.css('visibility', 'hidden');
-							}, 500);
-						}
-					});
-
-					$('button[type=reset]').click(function(){
-						var label = $('label');
-						label.removeClass('animated fadeInLeft fadeOutLeft').addClass('animated fadeOutLeft');
-						setTimeout(function(){
-							label.css('visibility', 'hidden');
-						}, 500);
-					});
-
-					$('button[type=submit]').button('reset').removeAttr('disabled');
-
-					$('form').submit(function(){
-						var form = $(this);
-						form.find('button[type=reset]').attr('disabled', 'disabled');
-						form.find('button[type=submit]').button('loading');
-					});
-				});
-			</script>    -->
-			
+			-->
 	</div>
 </div>
+
+</body>
+		    
 
 <!--
 <script>
@@ -188,7 +185,4 @@
 	})(document);/* ]]> */
 </script>
 -->
-
-<?php } ?>
-</body>
 </html>

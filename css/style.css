@@ -391,5 +391,9 @@ hr.end-chap{background:url("../img/end-chap.png") 0 0 no-repeat;width:52px;heigh
         float: left;
         text-align: left;
     }
+
 }
 
+.pageheader{
+    text-align: center;
+}

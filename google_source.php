@@ -5,9 +5,9 @@ require_once ('./google/libraries/Google/autoload.php');
 
 //Insert your cient ID and secret 
 //You can get it from : https://console.developers.google.com/
-$client_id = '595616215334-b9s0s5j3j4bj5v4beme6i199neusok7l.apps.googleusercontent.com';
-$client_secret = 'ip6PkgZCrbzUH0I_hj4oQlzO';
-$redirect_uri = 'https://training.com/lesson-5/login.php';
+$client_id = '567482881545-8u67q80a32m3h4vcorfdfspn0l8e8vdn.apps.googleusercontent.com';
+$client_secret = 'axbfpgGdxqacyTJmVy12r4g1';
+$redirect_uri = 'https://iread.net/logintest.php';
 
 //incase of logout request, just unset the session var
 //if (isset($_GET['logout'])) {
@@ -44,8 +44,10 @@ $service = new Google_Service_Oauth2($client);
  */
 
 if (isset($_GET['code'])) {
+    // var_dump($_GET['code']); exit;
     $client->authenticate($_GET['code']);
     $_SESSION['access_token'] = $client->getAccessToken();
+    var_dump($_SESSION['access_token']); exit;
     header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
     exit;
 }
@@ -63,8 +65,10 @@ if ($client->isAccessTokenExpired()) {
 //            header('Location: ' . filter_var($authUrl, FILTER_SANITIZE_URL));
 }
 
+//var_dump($authUrl); exit;
 if (!isset($authUrl)) {
     $googleUser = $service->userinfo->get(); //get user info 
+    //var_dump($authUrl); exit;
     if(!empty($googleUser)){
         include './function.php';
         loginFromSocialCallBack($googleUser);
