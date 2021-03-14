@@ -8,11 +8,11 @@
 <meta name="keywords" content="Doc truyen online, truyen kiem hiep, truyen tien hiep, truyen sac hiep, truyen ngon tinh, truyen trinh tham, vong du, truyen convert full text">
 <meta name="robots" content="noindex">
 <title>Sign Up</title>
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link href="css/bootstrap-responsive.css" rel="stylesheet">
-<link href="css/yamm.css" rel="stylesheet">
-<link href="css/style.css" rel="stylesheet">
-<link href="css/chosen.css" rel="stylesheet">
+<link href="./css/bootstrap.min.css" rel="stylesheet">
+<link href="./css/bootstrap-responsive.css" rel="stylesheet">
+<link href="./css/yamm.css" rel="stylesheet">
+<link href="./css/style.css" rel="stylesheet">
+<link href="./css/chosen.css" rel="stylesheet">
 <link rel="icon" type="image/png" href="img/favicon.png"/>
 <link href="https://plus.google.com/103281900225927837176/" rel="author">
 <script src="js/jquery-1.12.4.js"></script>
@@ -42,20 +42,42 @@
 						}
 					});
 
-					$('button[type=reset]').click(function(){
-						var label = $('label');
-						label.removeClass('animated fadeInLeft fadeOutLeft').addClass('animated fadeOutLeft');
-						return true;
-					});
+		$('button[type=reset]').click(function(){
+			var label = $('label');
+			label.removeClass('animated fadeInLeft fadeOutLeft').addClass('animated fadeOutLeft');
+			return true;
+		});
 
-					$('button[type=submit]').button('reset').removeAttr('disabled');
-					$('form').submit(function(){
-						var form = $(this);
-						form.find('button[type=reset]').attr('disabled', 'disabled');
-						form.find('button[type=submit]').button('loading');
-					});
-				});
-			</script>
+		$('button[type=submit]').button('reset').removeAttr('disabled');
+		$('form').submit(function(){
+			var form = $(this);
+			form.find('button[type=reset]').attr('disabled', 'disabled');
+			form.find('button[type=submit]').button('loading');
+		});
+	});
+</script>
+
+<?php
+	require_once("./db.php");
+
+	if (isset($_POST['fullname']) && isset($_POST['email']) && isset($_POST['username']) && isset($_POST['password']))
+	{
+		$fullname=$_POST['fullname'];
+		$dob=$_POST['dob'];
+		$phone=$_POST['phonenumber'];
+		$email=$_POST['email'];
+		$uname=$_POST['username'];
+		$pass=md5($_POST['password']);
+		$errormsg= False;
+
+		$sql= "SELECT username FROM account WHERE username='".$uname ."'";
+		$row= query($sql);
+
+		$sql1= "SELECT email FROM account WHERE email='".$email ."'";
+		$row1= query($sql1); 
+	}
+?>
+
 <body>
 
 <div class="yamm navbar navbar-fixed-top">
@@ -91,8 +113,15 @@
 
 									<td>
 										<div class="controls">
+											<?php
+												if(isset($_POST['username']) && count($row) > 0){ 
+
+													echo("<label class='error' id = 'erEmail' style='display: block;'> Username already exists. Please choose another username </label>");
+													$errormsg = True;
+												}
+											?>
 											<input name="username" maxlength="254" type="text"  required="required" placeholder="Username" class="textinput textInput" id="id_username"/>
-										</div>
+											
 									</td>
 								</tr>
 								<tr>
@@ -108,7 +137,8 @@
 									</td>
 									<td>
 										<div class="controls">
-											<input name="username" maxlength="30" type="text" required="required" placeholder="Username" class="textinput textInput" id="id_username"/>
+											<input name="password" placeholder="Password" required="required" type="password" class="textinput textInput" id="id_password"/>
+										<!--	<label class='error' id = 'erPassword' style="display: none;"> This username already exists. Please choose another username </label>  -->
 									</td>
 								</tr>
 								<tr>
@@ -125,7 +155,25 @@
 
 									<td>
 										<div class="controls">
+											<?php
+												if(isset($_POST['email'])){
+													if(!preg_match("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$^", $email))
+													{ 
+														$emailErr = "Email is invalid. Please try again";	
+													}else if(count($row1) > 0){
+
+														$emailErr = "Email is already exit. Please choose another one";
+													}
+													if(isset($emailErr)){
+														echo("<label class='error' id = 'erEmail' style='display: block;'>".$emailErr ."</label>");
+											
+														$errormsg = True;
+													}
+												}
+												
+											?>
 											<input name="email" type="text" maxlength="100" required="required" placeholder="Email address" class="textinput textInput" id="id_email"/>
+											
 										</div>
 									</td>
 								</tr>
@@ -174,3 +222,31 @@
 	</div>
 </div>
 </html>
+<?php 
+	if (isset($_POST['fullname']) && isset($_POST['email']) && isset($_POST['username']) && isset($_POST['password']))
+	{
+		if($errormsg == False){
+			$sql = "Insert into member values (" .",'" .$fullname ."','" .$dob ."','" .$phone ."','" .$uname ."',0)";
+
+			
+
+			$sql1= "Insert into account values ('" .$uname ."','" .$pass."','member','".$email ."')";
+
+			echo($sql);
+			echo($sql1);
+
+			$result = execsql($sql);
+		/*	$result1 = execsql($sql1);  */
+						
+			if ($result != null && $result1 != null){
+				echo ('<span style="color:red; font-size: 20px">Sign up successfully</span>');
+				header("Location: ./login.php");
+    				die();
+			}else{
+				echo ('<span style="color:red; font-size: 20px">Try again</span>');
+			}
+		}
+	}
+
+	
+?>

@@ -394,6 +394,7 @@ hr.end-chap{background:url("../img/end-chap.png") 0 0 no-repeat;width:52px;heigh
 
 }
 
-.pageheader{
-    text-align: center;
-}
+.error {
+            color: red;
+            width: 500px; 
+        }
