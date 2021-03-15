@@ -89,7 +89,6 @@
 					window.location.replace("./login.php");
 				</script>
 			<?php 
-			/*	echo('<span style="color:red;">Username or Password is not correct</span>');*/
 			}
 		}
 	}
@@ -99,7 +98,7 @@
 <div class="yamm navbar navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container">
-			<a class="brand truyenyy-logo" href="index.html">iRead</a>
+			<a class="brand iread-logo" href="./login.php">iRead</a>
 		</div>
 	</div>
 </div>
@@ -122,7 +121,7 @@
 
 									<td>
 										<div class="controls">
-											<input name="username" maxlength="254" type="text" autofocus="autofocus" required="required" placeholder="Username" class="textinput textInput" id="id_username"/>
+											<input name="username" require ="require"maxlength="254" type="text" autofocus="autofocus" required="required" placeholder="Username" class="textinput textInput" id="id_username"/>
 										</div>
 									</td>
 								</tr>
@@ -132,7 +131,7 @@
 									</td>
 									<td>
 										<div class="controls">
-											<input name="password" placeholder="Password" required="required" type="password" class="textinput textInput" id="id_password"/>
+											<input name="password" require ="require"placeholder="Password" required="required" type="password" class="textinput textInput" id="id_password"/>
 										</div>
 									</td>
 								</tr>
