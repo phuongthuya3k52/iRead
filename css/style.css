@@ -437,3 +437,14 @@ hr.end-chap{background:url("../img/end-chap.png") 0 0 no-repeat;width:52px;heigh
   left: -35px;
   content: "✖";
 }
+
+
+.bootstrap-select .selectpicker{
+    width: 1000px;
+}
+.btn.dropdown-toggle:focus {
+    outline: none !important;
+    background-color: white;
+    padding: 4px 5px;
+}
+.input-group-btn){width:500px}

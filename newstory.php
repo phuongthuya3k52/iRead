@@ -18,11 +18,17 @@
 <link href="css/yamm.css" rel="stylesheet">
 <link href="css/style.css" rel="stylesheet">
 <link href="css/chosen.css" rel="stylesheet">
+
+<link href="css/font-awesome.css" rel="stylesheet">
+<link href="css/bootstrap-select.min.css" rel="stylesheet">
+
 <link rel="icon" type="image/png" href="img/favicon.png"/>
 <link href="https://plus.google.com/103281900225927837176/" rel="author">
 <script src="js/jquery-1.12.4.js"></script>
 <script src="js/chosen.jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
+
+
 <script type="text/javascript" src="js/csrf.js"></script>
 <style>
 	body{padding-top:60px;padding-bottom:40px;height:auto;background-image:none;}
@@ -47,7 +53,61 @@
 	require_once("./db.php");
     session_start();
 
+   	if(isset($_SESSION['username'])){
+   		$sql= "SELECT memberID FROM member WHERE username='".$_SESSION['username'] ."'";
+		$row= query($sql);
+		$memberID = $row[0][0];
+   }
+
+ if (isset($_POST['title']))
+	{
+		$title=$_POST['title'];
+		$descriptions=$_POST['descriptions'];
+		$image=$_POST['inpImage'];
+		$chkbox = $_POST['checkbox'];
+
+		$sql1 = "Insert into story values ('','" .$title ."','" .$memberID ."','" .$descriptions ."','" .$image ."','0','0','On going')"; 
+		$result1 = execsql($sql1);  
+
+		if($result1 != null){
+			$sql2 = "select * from story where storyName='" .$title ."'and memberID='".$memberID ."' ORDER BY storyID DESC;";   
+		
+			$row2= query($sql2);
+
+			// Save story-category in db
+			
+ 			$i = 0;
+
+ 			While($i < sizeof($chkbox))
+ 			{
+ 
+ 				$sql3= "Insert into story_category values (''," .$row2[0][0] ."," .$chkbox[$i] .")";
+				$result3 = execsql($sql3);  
+ 				$i++;
+ 			} 
+		  
+	 		if ($result3 != null){
+?>				
+				<script >
+					window.location.replace("./newchapter.php");
+				</script>
+<?php 		
+			}else{
+?>				
+				<script >
+					alert ("New story is not create. Try again");
+					window.location.replace("./newstory.php");
+				</script>
+<?php
+			}   
+		} 
+	 
+	
+
+}
 ?>
+				
+
 
 <body>
 <?php 
@@ -57,7 +117,7 @@
 
 <div class="container">
 	<div class="row">
-		<div class="span12">
+		<div class="span12" >
 			<ul class="breadcrumb">
 				<li>
 					<div itemscope>
@@ -72,43 +132,97 @@
 				</li>
 			</ul>
 			
-			<div class="thumbnails" style="background-color: #f1f1f1">			
-				<table width="80%" align="center" border-spacing= "10px"  padding= "5px" border= "1px solid black">
-					<form action="registration.php" method="post" role="form">
+	<!--		<div class="thumbnails" >			-->
+			<div class="clearfix" style="background-color: #f2f2f2" >
+				<div></div>
+				<table width="90%" style=" margin-top: 20px; margin-bottom: 20px " align="center" border-spacing= "10px"  padding= "5px">
+					<form action="newstory.php" method="post" role="form">
 					<tr>
-						<td>
-							<img id="img" height="150" width="200">
+						<td rowspan="3">
+							<img style="background-color: white;" id="image" height="465px" width="320px"/>
+							<input id="inpImage" type='file' name="inpImage">
+							<script type="text/javascript">
+								// Change URL of image to base64
+								function readFile() {
+
+            						if (this.files && this.files[0]) {
+
+                						var fileReader = new FileReader();
+
+                						fileReader.addEventListener("load", function (e) {
+                    						document.getElementById("image").src = e.target.result;
+                						});
+
+                						fileReader.readAsDataURL(this.files[0]);
+            						}
+        						}
+
+        						// Show imgae to review
+								window.onload = function () {
+            						document.getElementById("inpImage").addEventListener("change", readFile);
+        						};
+							</script>
 						</td>
 						<td>
 							<label for="id_title" class="control-label requiredField">Title<span class="asteriskField">*</span></label>
 						</td>
-						<td>
-							<input name="title" maxlength="200" type="text" required="required" placeholder="Story Title" class="textinput textInput" id="id_fullname" title="Title has maximum of 200 characters"/>
+						<td colspan="2">
+							<input style= "width: 500px;" name="title" maxlength="200" type="text" required="required" placeholder="Story Title" class="textinput textInput" id="id_title" title="Title has maximum of 200 characters"/>
 						</td>
 
 					</tr>
 					<tr>
-						<td>
-							<input id="inpImage" type='file'>
-						</td>
 						<td>
 							<label for="id_catergory" class="control-label requiredField">Categories<span class="asteriskField">*</span></label>
 						</td>
-						<td>
+						<td colspan="2">
+							<?php
+									$sql = "select * from category";
+									$category = query($sql);
+							?>
+								<ul class="span2 unstyled" style="width:158px;">
+										<li>
+											<input type="checkbox" checked="checked" name="checkbox[]" value="<?=$category[0][0]?>"><?=$category[0][1]?>
+										</li>
+									</ul>
+							<?php
+
+									for ($i=0; $i<count($category);$i++)
+									{
+								?>	
+									<ul class="span2 unstyled" style="width:158px;">
+										<li>
+											<input type="checkbox" name="checkbox[]" value="<?=$category[$i][0]?>"><?=$category[$i][1]?>
+										</li>
+									</ul>
+                				<?php 
+									}
+								?>
 							
 						</td>
-
 					</tr>
 					<tr>
 						<td>
+							<label for="id_description" class="control-label requiredField">Descriptions</label>
 						</td>
-						<td></td>
-						<td></td>
-
+						<td colspan="2">
+							<textarea style= "width: 500px;resize: none;" name="descriptions" type="textarea" rows="15" placeholder="Story Descriptions" class="textinput textInput" id="id_description" /></textarea> 
 					</tr>
-										
+					<tr>
+						<td></td>
+						<td></td>
+						<td>
+							<button style="width: 85px; height: 35px; font-size: 15" type="submit" class="btn btn-primary" data-loading-text="Loading" value="Submit">
+								Next
+							</button><br>
+						</td>
+						<td>
+							<button style="width: 85px; height: 35px; font-size: 15" type="reset" class="btn btn-default">Clear</button><br>
+						</td>
+					</tr>	
 					</form>
 				</table>
+		<!--	</div> -->
 			</div>
 		</div>
 	</div>
