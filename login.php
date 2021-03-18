@@ -74,10 +74,12 @@
 
 				if ($row[0][2] == 'member'){
 
+					$_SESSION['username'] = $us;
 					header("Location: ./home.php");
     				die();
 				}
 				else{
+					$_SESSION['username'] = $us;
 					header("Location: ./admin.php");
 					die();
 				}

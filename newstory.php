@@ -49,62 +49,123 @@
         })();
     </script>
 </head>
+
 <?php
 	require_once("./db.php");
     session_start();
-
-   	if(isset($_SESSION['username'])){
-   		$sql= "SELECT memberID FROM member WHERE username='".$_SESSION['username'] ."'";
+    if(isset($_SESSION['username'])){
+    	$sql= "SELECT memberID FROM member WHERE username='".$_SESSION['username'] ."'";
 		$row= query($sql);
 		$memberID = $row[0][0];
-   }
+		$check = false;
 
- if (isset($_POST['title']))
-	{
-		$title=$_POST['title'];
-		$descriptions=$_POST['descriptions'];
-		$image=$_POST['inpImage'];
-		$chkbox = $_POST['checkbox'];
+		if(isset($_POST['submit'])) {
+	/*		echo "<pre> ";
+				print_r($_FILES);
+			echo "</pre>";  */
 
-		$sql1 = "Insert into story values ('','" .$title ."','" .$memberID ."','" .$descriptions ."','" .$image ."','0','0','On going')"; 
-		$result1 = execsql($sql1);  
+			$error = array();
 
-		if($result1 != null){
-			$sql2 = "select * from story where storyName='" .$title ."'and memberID='".$memberID ."' ORDER BY storyID DESC;";   
-		
-			$row2= query($sql2);
+			// Create folder img to save file
+			$target_dir = "img/";
 
-			// Save story-category in db
-			
- 			$i = 0;
+			// Create file URL after uploading
+			$target_file = $target_dir.basename($_FILES['inpImage']['name']);
 
- 			While($i < sizeof($chkbox))
- 			{
- 
- 				$sql3= "Insert into story_category values (''," .$row2[0][0] ."," .$chkbox[$i] .")";
-				$result3 = execsql($sql3);  
- 				$i++;
- 			} 
-		  
-	 		if ($result3 != null){
-?>				
-				<script >
-					window.location.replace("./newchapter.php");
-				</script>
-<?php 		
-			}else{
-?>				
-				<script >
-					alert ("New story is not create. Try again");
-					window.location.replace("./newstory.php");
-				</script>
-<?php
-			}   
-		} 
-	 
+			// Check file upload conditions 
+
+			// 1. Check the file size (10MB <=> 10485760 bytes) 
+			if($_FILES['inpImage']['size'] >= 10485760)
+			{
+				$error['inpImage'] = "Only upload files under 10MB ";
+			}
+
+			// 2.Check file type (png; jpg; gif; jpeg) 
+			$file_type = pathinfo($_FILES['inpImage']['name'], PATHINFO_EXTENSION);
+
+			// File types allowed 
+			$file_type_allow =  array('png','PNG','jpg','JPG','jpeg','JPEG','gif','GIF');
 	
+			if(!in_array($file_type, $file_type_allow))
+			{
+				$error['inpImage'] = "Only upload image files";
+			}
 
-}
+			echo($file_type);
+		
+	/*		//3. Check for file existence 
+			if(file_exists($target_file)){
+				$error['inpImage'] = "File already exists ";
+			}  */
+
+	/*		print_r($error); */
+			// 3. Check and transfer files from clipboard to server 
+			if(empty($error)){
+				if(!move_uploaded_file($_FILES['inpImage']['tmp_name'], $target_file)){
+					echo("Upload failed");
+					$check = true;
+				}
+			
+			}
+
+		}
+
+
+		if ($check == false && isset($_POST['title']))
+		{
+			$title=$_POST['title'];
+			$descriptions=$_POST['descriptions'];
+			$image=$_FILES['inpImage']['name'];
+			$chkbox = $_POST['checkbox'];
+
+			$sql1 = "Insert into story values ('','" .$title ."','" .$memberID ."','" .$descriptions ."','" .$image ."','0','0','On going')"; 
+			$result1 = execsql($sql1);  
+
+			if($result1 != null){
+				$sql2 = "select * from story where storyName='" .$title ."'and memberID='".$memberID ."' ORDER BY storyID DESC;";   
+		
+				$row2= query($sql2);
+
+				// Save story-category in db
+			
+ 				$i = 0;
+
+ 				While($i < sizeof($chkbox))
+ 				{
+ 
+ 					$sql3= "Insert into story_category values (''," .$row2[0][0] ."," .$chkbox[$i] .")";
+					$result3 = execsql($sql3);  
+ 					$i++;
+ 				} 
+		  
+	 			if ($result3 != null){
+?>				
+					<script >
+						window.location.replace("./newchapter.php?storyID=<?=$row2[0][0]?>");
+					</script>
+<?php 		
+				}else{
+?>				
+					<script >
+						alert ("New story is not create. Try again");
+						window.location.replace("./newstory.php");
+					</script>
+<?php
+				}   
+			} 	
+
+		}
+	}else{
+?>
+		<script >
+			alert ("You must login to access this page!");
+			window.location.replace("./login.php");
+		</script> 
+<?php  
+	}
+
+
+ 
 ?>
 				
 
@@ -134,13 +195,14 @@
 			
 	<!--		<div class="thumbnails" >			-->
 			<div class="clearfix" style="background-color: #f2f2f2" >
-				<div></div>
-				<table width="90%" style=" margin-top: 20px; margin-bottom: 20px " align="center" border-spacing= "10px"  padding= "5px">
-					<form action="newstory.php" method="post" role="form">
+				
+				<table width="95%" style=" margin-top: 20px; margin-bottom: 20px " align="center" border-spacing= "10px">
+					<form action="newstory.php" method="post" role="form" enctype="multipart/form-data">
 					<tr>
 						<td rowspan="3">
-							<img style="background-color: white;" id="image" height="465px" width="320px"/>
-							<input id="inpImage" type='file' name="inpImage">
+							<img style="background-color: white; width:100%; height: 400px;  margin-top: 0px" id="image" />
+							<input style = "width:100%;" id="inpImage" type='file' name="inpImage">
+
 							<script type="text/javascript">
 								// Change URL of image to base64
 								function readFile() {
@@ -161,13 +223,13 @@
 								window.onload = function () {
             						document.getElementById("inpImage").addEventListener("change", readFile);
         						};
-							</script>
+							</script> 
 						</td>
 						<td>
 							<label for="id_title" class="control-label requiredField">Title<span class="asteriskField">*</span></label>
 						</td>
 						<td colspan="2">
-							<input style= "width: 500px;" name="title" maxlength="200" type="text" required="required" placeholder="Story Title" class="textinput textInput" id="id_title" title="Title has maximum of 200 characters"/>
+							<input style= "width: 100%;" name="title" maxlength="200" type="text" required="required" placeholder="Story Title" class="textinput textInput" id="id_title" title="Title has maximum of 200 characters"/>
 						</td>
 
 					</tr>
@@ -180,18 +242,18 @@
 									$sql = "select * from category";
 									$category = query($sql);
 							?>
-								<ul class="span2 unstyled" style="width:158px;">
-										<li>
+								<ul class="span2 unstyled">
+										<li style="width:100%;">
 											<input type="checkbox" checked="checked" name="checkbox[]" value="<?=$category[0][0]?>"><?=$category[0][1]?>
 										</li>
 									</ul>
 							<?php
 
-									for ($i=0; $i<count($category);$i++)
+									for ($i=1; $i < count($category);$i++)
 									{
 								?>	
-									<ul class="span2 unstyled" style="width:158px;">
-										<li>
+									<ul class="span2 unstyled">
+										<li style="width:100%;">
 											<input type="checkbox" name="checkbox[]" value="<?=$category[$i][0]?>"><?=$category[$i][1]?>
 										</li>
 									</ul>
@@ -206,18 +268,25 @@
 							<label for="id_description" class="control-label requiredField">Descriptions</label>
 						</td>
 						<td colspan="2">
-							<textarea style= "width: 500px;resize: none;" name="descriptions" type="textarea" rows="15" placeholder="Story Descriptions" class="textinput textInput" id="id_description" /></textarea> 
+							<textarea style= "width: 100%; resize: none;" name="descriptions" type="textarea" rows="15" placeholder="Story Descriptions" class="textinput textInput" id="id_description" /></textarea> 
 					</tr>
 					<tr>
 						<td></td>
 						<td></td>
 						<td>
-							<button style="width: 85px; height: 35px; font-size: 15" type="submit" class="btn btn-primary" data-loading-text="Loading" value="Submit">
+							<button style="width: 85px; height: 35px; font-size: 15" type="submit" name ="submit" class="btn btn-primary" data-loading-text="Loading" value="Submit">
 								Next
 							</button><br>
 						</td>
 						<td>
-							<button style="width: 85px; height: 35px; font-size: 15" type="reset" class="btn btn-default">Clear</button><br>
+							
+							<script type="text/javascript">
+								//Clear function
+								function Clear(){
+									document.getElementById("image").src = "";
+								}
+							</script>
+							<button style="width: 85px; height: 35px; font-size: 15" type="reset" class="btn btn-default" onclick="Clear()">Clear</button><br>
 						</td>
 					</tr>	
 					</form>
