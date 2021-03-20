@@ -57,8 +57,8 @@ body{position:relative;background:white;font-family:Verdana,"Times New Roman",sa
 .foo1 li{padding:0;margin-top:-23px;}
 .undo_del{float:right;font-size:14px;font-weight:bold;line-height:20px;color:#2242cc;text-shadow:0 1px 0 #fff;opacity:1;filter:alpha(opacity=20);padding:0;cursor:pointer;background:transparent;border:0;-webkit-appearance:none;}
 .undo_del:hover{color:#6a12cc;text-decoration:none;cursor:pointer;opacity:1;filter:alpha(opacity=40);}
-.ds-theloai span:after{content:", ";}
-.ds-theloai span:last-child:after{content:"";}
+.list-category span:after{content:", ";}
+.list-category span:last-child:after{content:"";}
 blockquote p,blockquote{margin-bottom:0;font-size:12px;}
 .go_to_top{position:fixed;bottom:100px;right:50px;width:30px;height:30px;border-radius:6px;background:#333;opacity:.5;}
 .go_to_top:hover{opacity:.8;}
@@ -90,11 +90,11 @@ hr.end-chap{background:url("../img/end-chap.png") 0 0 no-repeat;width:52px;heigh
 .YY .YY a:hover,.dich .dich a:hover,.kh .kh a:hover,.convert .convert a:hover,.th .th a:hover,.sh .sh a:hover,.hot .hot a:hover,.hay .hay a:hover,.moi .moi a:hover,.rd .rd a:hover,.hh .hh a:hover,.dt .dt a:hover,.dg .dg a:hover,.nt .nt a:hover{color:#ffffff;text-shadow:0 -1px 0 rgba(0,0,0,0.2);background-color:#0088cc;}
 .modal-admin{width:750px;margin-left:-375px;}
 .fb-comments,.fb-comments *{width:100%!important;}.rowest{width:670px;float:right;font-size:12px;}
-.xfor{width:200px;float:left;min-height:470px;margin-right:20px;height:auto;}
+.xfor{width:27%;float:left;min-height:500px;margin-right:20px;height:auto;}
 .lww{min-height:150px;border-right:1px solid #eeeeee;}
 .lww p{padding:0;margin:5px 0 0 5px;}
 .xleft{font-weight:bold;float:left;text-align:right;margin-left:0;}
-.rofx{width:450px;float:right;min-height:470px;text-align:justify;line-height:150%;}
+.rofx{width:60%;float:right;min-height:500px;text-align:justify;line-height:150%;}
 .rofx h1{font-size:16px;line-height:normal;text-align:center;margin:0;padding:0;text-transform:uppercase;}#desc_story{margin-top:20px;height:232px;overflow:hidden;}
 #desc_story h2,.related span{font-family:Arial,Helvetica,sans-serif;font-size:12px;text-align:justify;line-height:150%;margin:0;}
 .showmore{text-align:right;position:relative;}
@@ -448,3 +448,66 @@ hr.end-chap{background:url("../img/end-chap.png") 0 0 no-repeat;width:52px;heigh
     padding: 4px 5px;
 }
 .input-group-btn){width:500px}
+
+
+
+
+
+
+/* Notice Popup  */
+.tbpopup .tboverlay {
+position:fixed;
+top:0px;
+left:0px;
+width:100vw;
+height:100vh;
+background:rgba(0,0,0,1);
+z-index:1;
+display:none;
+}
+
+.tbpopup .tbcontent {
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%) scale(0);
+background:#fff;
+max-width:50%;
+z-index:2;
+text-align:center;
+padding:20px;
+box-sizing:border-box;
+font-family:"Open Sans",sans-serif;
+border-radius:20px;
+display: block;
+position: fixed;
+box-shadow:0px 0px 10px #111;
+}
+@media (max-width: 700px) {
+.tbpopup .tbcontent {width:90%;}
+}
+
+.tbpopup .tbclose-btn {
+cursor:pointer;
+position:absolute;
+right:20px;
+top:20px;
+width:35px;
+height:35px;
+color:#ff4444;
+font-size:30px;
+font-weight:600;
+line-height:35px;
+text-align:center;
+border-radius:50%;
+}
+
+.tbpopup.active .tboverlay {
+display:block;
+}
+
+.tbpopup.active .tbcontent {
+transition:all 300ms ease-in-out;
+transform:translate(-50%,-50%) scale(1);
+}
+.tbbuttom{background:#00cc00;color:#fff}

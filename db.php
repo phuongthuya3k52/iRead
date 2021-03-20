@@ -40,6 +40,30 @@
 		return $rows;
 	}
 
+	function querynull($sql)
+	{
+		global $hostname;
+		global $username;
+		global $password;
+		global $dbname;
+		global $port;
+
+		$conn = new mysqli($hostname, $username, $password, $dbname, $port);
+		
+		//If connection is not successful, stop the program 
+		if($conn->connect_error)
+		{
+			echo "Connection fail<br>";
+			//Stop the program
+			die($conn->connect_error);
+		}
+
+		// Run the query to get the results 
+		$result = $conn->query($sql);
+
+		return $result;
+	}
+
 	
 	function execsql($sql)
 	{

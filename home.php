@@ -64,6 +64,16 @@
 <div class="container">
 	<div class="row">
 		<div class="span12">
+			<ul class="breadcrumb">
+				<li>
+					<div itemscope>
+						<a href="home.php" itemprop="url"><span itemprop="title">Home</span></a>
+						<span class="divider">/</span>
+					</div>
+				</li>
+				<li class="active"><strong>All Stories</strong></li>
+			</ul>
+
 			<div class="row wrapper">
 				<?php 
 					require_once("./lefts/common_left.php");
@@ -138,21 +148,29 @@
 							}
 						?>
 						</ul>
-					<div style="text-align: center; font-size: 15px"> Pages 
-						<?php
-						// Link pagination
-						for($i = 1; $i <= $allpage; $i++)
-						{
-							if($currentpage == $i){
-								echo("<u>".$i ."</u>");
-							}else{
-						?>
-								<a href="home.php?currentpage=<?=$i?>"><?php echo $i ." "; ?></a>
-						<?php
+					<!--<div style="text-align: center; font-size: 15px"> -->
+					<div class="paging">
+						<div class="pagination pagination-centered">
+						<ul>
+							<li class="disable"><a href="">Pages</a></li>		
+							<?php
+							// Link pagination
+							for($i = 1; $i <= $allpage; $i++)
+							{
+								if($currentpage == $i){
+								?>
+									<li class="active"><a href=""><?=$i?></a></li> 
+								<?php
+								}else{
+							?>
+									<li class="disable"><a href="home.php?currentpage=<?=$i?>"><?php echo $i ." "; ?></a></li>
+							<?php
+								}
 							}
-						}
-						?>
-						Pages
+							?>
+							<li class="disable"><a href="">Pages</a></li>
+						</ul>
+						</div>
 					</div>
 
 				<!--	</div>   -->

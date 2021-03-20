@@ -120,11 +120,8 @@
 						<span class="divider">/</span>
 					</div>
 				</li>
-				<li class="ds-theloai">
-					<div itemscope>
-						<a href="" itemprop="url">New chapter</a></span>
-						<span class="divider">/</span>
-					</div>
+				<li class="active">
+						<strong>New Chapter</strong>
 				</li>	
 			</ul>
 			

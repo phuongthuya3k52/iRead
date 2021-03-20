@@ -8,7 +8,7 @@
 <meta property="og:type" content="website"/>
 <meta property="og:image" content="//truyenyy.com/media/book_covers/DaiChuaTe.jpg"/>
 <link rel="alternate" type="application/atom+xml" title="Đọc Truyện Online - Truyện Kiếm Hiệp" href="http://feeds.feedburner.com/">
-<title>Big Boss (Lastest - Chapter 1462) | iRead</title>
+<title>iRead</title>
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/yamm.css" rel="stylesheet">
@@ -20,8 +20,13 @@
 <script src="js/chosen.jquery.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/csrf.js"></script>
-<style>body{padding-top:60px;padding-bottom:40px;height:auto;}</style>
-<script type="text/javascript">
+<style>
+	body{
+		padding-top:60px;padding-bottom:40px;height:auto;
+	}
+</style>
+
+<!-- <script type="text/javascript">
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-37191528-1']);
         _gaq.push(['_trackPageview']);
@@ -34,8 +39,9 @@
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(ga, s);
         })();
-    </script>
+    </script> -->
 </head>
+
 <?php
 	require_once("./db.php");
     session_start();
@@ -49,8 +55,16 @@
 		</script>
 <?php
 	}else{	
-	}
+		if(isset($_GET['storyID'])){
+			$storyID=$_GET['storyID'];
+			$sql = "Select * from story where storyID='" .$storyID . "'";
+			$row = query($sql);
+			$memberID = $row[0][2];
 
+			$sql1 = "Select * from member where memberID='" .$memberID . "'";
+			$row1 = query($sql1);
+		}
+	}
 ?>
 
 <body>
@@ -61,6 +75,7 @@
 <div class="container">
 	<div class="row">
 		<div class="span12">
+	<!--	<div class="span10">  -->
 			<ul class="breadcrumb">
 				<li>
 					<div itemscope>
@@ -68,92 +83,80 @@
 						<span class="divider">/</span>
 					</div>
 				</li>
-				<li><span class="divider">/</span></li>
-				<li class="active"><strong>Big Boss Full</strong></li>
+				<li class="active"><strong><?=$row[0][1]?></strong></li>
 			</ul>
 			
-			<!--<div>
-				<div class="rightbar hide-s" style="width: 160px;box-sizing: border-box;float: left;margin-right: 20px;"></div>
-				<div class="rightbar hide-x" style="width: 300px;box-sizing: border-box;float: right;margin-left: 20px;">
-					<div class="related">
-						<h2>STORIES YOU SHOULD READ</h2>
-						
-						<div class="story">
-							<a href="#" target="_blank"><h3><i class="icon-star-empty"></i> Cửu Đỉnh Ký Full </h3></a>
-							<span> - Tác Giả: Ngã Cật Tây Hồng Thị</span>
-							<br>
-							<span> - Thể Loại: Tiên Hiệp</span>
-						</div>
-						<div class="story">
-							<a href="#" target="_blank"><h3><i class="icon-star-empty"></i> Băng Hỏa Ma Trù Full </h3></a>
-							<span> - Tác Giả: Đường Gia Tam Thiếu</span>
-							<br>
-							<span> - Thể Loại: Tiên Hiệp</span>
-						</div>
-						<div class="story">
-							<a href="#" target="_blank"><h3><i class="icon-star-empty"></i> Quang Chi Tử Full </h3></a>
-							<span> - Tác Giả: Đường Gia Tam Thiếu</span>
-							<br>
-							<span> - Thể Loại: Tiên Hiệp</span>
-						</div>
-						<div class="story">
-							<a href="#" target="_blank"><h3><i class="icon-star-empty"></i> Lộng Triều Full </h3></a>
-							<span> - Tác Giả: Thụy Căn</span>
-							<br>
-							<span> - Thể Loại: Đô Thị</span>
-						</div>	
-						<div class="story">
-							<a href="#" target="_blank"><h3><i class="icon-star-empty"></i> Huyền Giới Chi Môn Mới nhất: Chapter 408</h3></a>
-							<span> - Tác Giả: Vong Ngữ</span>
-							<br>
-							<span> - Thể Loại: Tiên Hiệp</span>
-						</div>
-					
-					</div>
-					<div class="fb-like-box" data-href="#" data-width="300" data-colorscheme="light" data-show-faces="true" data-header="false" data-stream="false" data-show-border="true"></div>
-				</div> -->
+			
+			<div class="row wrapper">  
+			<?php 
+				require_once("./lefts/common_left.php");
+			?>	
 				<div class="span10">
 					<div class="xfor">
 						<div class="thumbnail">
-						<img src="img/DaiChuaTe.jpg" alt="Đại Chúa Tể" style="width: 190px;height: 280px;"/>
+						<img src="img/<?=$row[0][4]?>" alt="<?=$row[0][1]?>" style="width: 100%;height: 300px;"/>
 						</div>
 						<div class="lww">
 						<p>
 						<span class="xleft">Author:</span>
-						<span>&nbsp;<a href="-q=Thiên Tàm Thổ Đậu.htm" target="_blank">Nguyen Phuong Thuy</a></span>
+						<span>&nbsp;<a href="#" target="_blank"><?=$row1[0][1]?></a></span>
 						</p>
+
 						<p>
 						<span class="xleft">Type:</span>
-						<span class="ds-theloai">&nbsp;<span>Something</span><span>Something</span><span>Something</span></span>
+						<span class="list-category">&nbsp;
+						<?php
+							$sql2 = "Select categoryName from category INNER JOIN story_category ON category.categoryID = story_category.categoryID WHERE storyID='" .$storyID . "'";
+
+							$row2 = query($sql2);
+
+							for ($i=0; $i < count($row2);$i++)
+							{
+						?>	
+								<span><a href="#"><?=$row2[$i][0]?></a></span>
+						<?php
+							}
+						?>
+						</span>
 						</p>
-						<p>
-						<span class="xleft">Category:</span>
-						<span>&nbsp;From Vietnam</span>
-						</p>
-						<p>
-						<span class="xleft">Views:</span>
-						<span>&nbsp;5353009</span>
-						</p>
+
 						<p>
 						<span class="xleft">Status:</span>
-						<span>&nbsp;DONE!</span>
+						<span>&nbsp;<?=$row[0][7]?></span>
 						</p>
+
+				<!--		<p>
+						<span class="xleft">Views:</span>
+						<span>&nbsp;5353009</span>
+						</p>  -->
+						
 						</div>
 					</div>
 					
 					<div class="rofx">
-						<h1>BIG BOSS</h1>
+						<h1><?=$row[0][1]?></h1>
 						<div style="display: block;margin: 5px auto;text-align: center;">
-							<a class="btn btn-mini btn-success" href="#/chuong-1/  #-1/%27" tppabs="#-1/">
-								<i class="icon-play icon-white"></i> Read the story from the beginning
+						<?php
+							$sql3 = "Select chapterID, chapterName from chapter WHERE storyID='" .$storyID . "' ORDER BY chapterID ASC";
+
+							$row3 = query($sql3);
+
+
+							$sql4 = "Select chapterID, chapterName from chapter WHERE storyID='" .$storyID . "' ORDER BY chapterID DESC";
+
+							$row4 = query($sql4);
+
+						?>
+							<a class="btn btn-mini btn-success" href="readstory.php?<?=$storyID?>&<?=$row3[0][0]?>">
+								<i class="icon-play icon-white"></i> Read from the beginning
 							</a>
-							<a class="btn btn-mini btn-success" href="#/chuong-1464/  #-1464/%27" tppabs="#-1464/">
+							<a class="btn btn-mini btn-success" href="readstory.php?<?=$storyID?>&<?=$row4[0][0]?>">
 								<i class="icon-fire icon-white"></i> Read the latest Chapter
 							</a>
-							<a type="button" class="btn btn-mini btn-success" href="#dschuong"><i class="icon-leaf icon-white"></i> List of Chapter</a>
+							<a type="button" class="btn btn-mini btn-success" href="#dschuong"><i class="icon-leaf icon-white"></i> List of Chapters</a>
 							<br><br>
 							
-							<ul class='foo1 star-rating'>
+						<!--	<ul class='foo1 star-rating'>
 								<li class='current-rating' id='current-rating' style="width:126px;"></li>
 								<li>
 									<a href="#" title='2/10' class='star one-star' data-rate='1'>1</a>
@@ -170,7 +173,7 @@
 								<li>
 									<a href="#" title='10/10' class='star five-stars' data-rate='5'>5</a>
 								</li>
-							</ul>
+							</ul>  
 							<span itemscope itemtype="http://data-vocabulary.org/Review-aggregate">
 								<span class="foo2">
 									<span itemprop="rating" itemscope itemtype="http://data-vocabulary.org/Rating">Point:
@@ -178,65 +181,130 @@
 									</span> -
 									<span itemprop="votes">179</span> votes
 								</span>
-							</span>
+							</span>   -->
 						</div>
+
 						<div id="desc_story">
-							<p>Introduction</p>
-							
-							<div class="fb-like" style="display:block;float:left;" data-href="#dai-chua-te  #  #%27" data-send="false" data-layout="button_count" data-width="200px" data-show-faces="false" data-font="verdana"></div>
-							&nbsp;<div class="g-plusone" data-size="medium" data-href="index-15.htm"></div>
-							<p style="float: right;"><em>Source</em></p>
+							<p><?=$row[0][3]?></p>
 						</div>
-						<div class="showmore"><a href="javascript:void(0)" class="btn btn-info btn-mini" onclick="$('#desc_story').css('height','auto');$('.showmore').hide()">Xem thêm »</a></div>
-						<span style="font-size: 15px;"><em>The latest chapters are updated:</em></span>
+						
+			<!--			<div class="showmore">
+							<a href="javascript:void(0)" class="btn btn-info btn-mini" onclick="$('#desc_story').css('height','auto');$('.showmore').hide()">Xem thêm »</a>
+						</div>
+						<span style="font-size: 15px;">
+							<em>The latest chapters are updated:</em>
+						</span>
 						<ul style="margin: 0 0 10px 0">
 							<li class="ip5"><a href="#"><i class="icon-arrow-right"></i> Chapter 1462 - Battle</a></li>
 							<li class="ip5"><a href="#"><i class="icon-arrow-right"></i> Chapter 1461 - Sparrows</a></li>
 							<li class="ip5"><a href="#"><i class="icon-arrow-right"></i> Chapter 1460 - Spirit</a></li>
 							<li class="ip5"><a href="#"><i class="icon-arrow-right"></i> Chapter 1459 - Three elves</a></li>
 							<li class="ip5"><a href="#"><i class="icon-arrow-right"></i> Chapter 1458: Sneak attack</a></li>
-						</ul>
-					</div>
+						</ul>   -->
+
+					</div>  
+
 					<div class="clearfix"></div>
 					<hr style="margin: 0; border-bottom: 1px solid #eee;">
-					<div class="chaplist" id="dschuong">
-						<h2>List of Chapter of "Boss"</h2>
-						<div><span style="width: 60px;display: inline-block;">1.</span><a class="jblack" href="#" target="_blank"><i class="icon-leaf"></i> Chapter 01</a></div>
-						<div><span style="width: 60px;display: inline-block;">2.</span><a class="jblack" href="#" target="_blank"><i class="icon-leaf"></i> Chapter 02</a></div>
-						<div><span style="width: 60px;display: inline-block;">3.</span><a class="jblack" href="#" target="_blank"><i class="icon-leaf"></i> Chapter 03</a></div>
-						<div><span style="width: 60px;display: inline-block;">4.</span><a class="jblack" href="#" target="_blank"><i class="icon-leaf"></i> Chapter 04</a></div>
-						<div><span style="width: 60px;display: inline-block;">5.</span><a class="jblack" href="#" target="_blank"><i class="icon-leaf"></i> Chapter 05</a></div>
-						<div><span style="width: 60px;display: inline-block;">6.</span><a class="jblack" href="#" target="_blank"><i class="icon-leaf"></i> Chapter 06</a></div>
-						<div><span style="width: 60px;display: inline-block;">7.</span><a class="jblack" href="#" target="_blank"><i class="icon-leaf"></i> Chapter 07</a></div>
-						<div><span style="width: 60px;display: inline-block;">8.</span><a class="jblack" href="#" target="_blank"><i class="icon-leaf"></i> Chapter 08</a></div>
-						<div><span style="width: 60px;display: inline-block;">9.</span><a class="jblack" href="#" target="_blank"><i class="icon-leaf"></i> Chapter 09</a></div>
-						<div><span style="width: 60px;display: inline-block;">10.</span><a class="jblack" href="#" target="_blank"><i class="icon-leaf"></i> Chapter 10</a></div>
-						<div><span style="width: 60px;display: inline-block;">11.</span><a class="jblack" href="#" target="_blank"><i class="icon-leaf"></i> Chapter 11</a></div>
+					<div class="chaplist" style="width: 100%;" id="dschuong">
+						<h2>List Chapter of "<?=$row[0][1]?>"</h2>
+						<ul class="thumbnails" style="width: 100%; margin-left: 0px; margin-right: -30px">
+						<?php
+							// Pagination
+
+							$allrow = count($row3);
+							$pagesize = 60;
+							$allpage = 1;
+
+							//Calculate how many pages there are all 
+							if($allrow % $pagesize == 0){
+								$allpage = $allrow / $pagesize;
+							}else{
+								$allpage = (int)($allrow / $pagesize) + 1;
+							}
+
+							$beginrow = 1;
+							$currentpage = 1;
+
+							// If the current page is page 1, then select from the first row
+
+
+							if((!isset($_GET['currentpage'])) || ($_GET['currentpage'] == '1'))
+							{
+								$beginrow = 0;
+								$currentpage = 1;
+							}else{
+								// Select the starting row and get current page
+								$beginrow = ($_GET['currentpage'] - 1) * $pagesize;
+								$currentpage = $_GET['currentpage'];
+							}
+
+							$sql5= "SELECT chapterID, chapterName FROM chapter WHERE storyID='" .$storyID . "'LIMIT {$beginrow} , {$pagesize}";
+							$row5=query($sql5);  
+
+							for ($i=0; $i < count($row5);$i++)
+							{
+
+						?>
+							<li style="float: left; width: 20%;">
+								<span style="width: 10%;display: inline-block;"><?=$i+1?>.</span><a class="jblack" href="readstory.php?storyID=<?=$storyID?>&chapterID=<?=$row3[$i][0]?>" target="_blank"><i class="icon-leaf"></i><?=$row5[$i][1]?></a>
+							</li>
+						<?php
+							}
+						?>
+						</ul>
+					</div>
+
 						
-						<div class="paging">
-							<form action="#" method="get" rel="nofollow">
-								<span>Go to:</span>
-								<input name="page" type="text" value="" style="width:40px;height: 17px;margin: 0;">
+					<div class="paging">
+							
+						<div class="pagination pagination-centered">
+							<form action="storydetail.php?storyID=<?=$storyID?>" method="POST">
+								<span>Go to chapter:</span>
+								<input name="chap" type="text" value="" style="width:40px;height: 17px;margin: 0;">
 								<button class="btn btn-warning btn-small"><i class="icon-arrow-right"></i> <span class="jblack">Go</span></button>
 							</form>
+							<?php
+								if(isset($_POST['chap'])){
+									$chap = $_POST['chap'];
+									if ($chap > count($row3)){
+									?>
+										<script >
+										alert ("This story have <?=count($row3)?> chapters. Please try again!");
+										</script>
+									<?php
+									}
+									for ($i=0; $i < count($row3);$i++){
+										if($i == $chap){
+											header("location: ./readstory.php?storyID=<?=$storyID?>&chapterID=<?=$row3[$i][0]?>");
+									}
+									}
+								}
+							?>
 							
-							<div class="pagination pagination-centered">
-								<ul>
-									<li class="disabled"><a href="javascript:">&larr;</a></li>
-									<li class="active"><a href="javascript:">1</a></li>
-									<li><a href="#">2</a></li>
-									<li><a href="#">3</a></li>
-									<li><a href="#">4</a></li>
-									<li><a href="#">5</a></li>
-									<li><a href="javascript:">...</a></li>
-									<li><a href="#">28</a></li>
-									<li><a href="">29</a></li>
-									<li><a href="#">30</a></li>
-									<li><a href="">&rarr;</a></li>
-								</ul>
-							</div>
+							<ul>
+								<li class="disable"><a href="">Pages</a></li>		
+							<?php
+								// Link pagination
+								for($i = 1; $i <= $allpage; $i++)
+								{
+								if($currentpage == $i){
+							?>
+									<li class="active"><a href=""><?=$i?></a></li> 
+								<?php
+								}else{
+							?>
+									<li class="disable"><a href="storydetail.php?storyID=<?=$storyID?>&currentpage=<?=$i?>"><?php echo $i ." "; ?></a></li>
+							<?php
+								}
+							}
+							?>
+								<li class="disable"><a href="">Pages</a></li>
+							</ul>
+
 						</div>
 					</div>
+				</div>
 					<div class="clearfix"></div>
 					<!-- tính năng comment
 					<div class="cl"><a href="javascript:void(0)" class="btn btn-info btn-mini" onclick="$('.cc').show();$('.cl').hide()">Xem bình luận truyện Đại Chúa Tể</a></div>
@@ -252,6 +320,7 @@
 		<?php 
 			require_once("./footer.php");
 		?>
+		</div>
 	</div>
 </div>
 <!--<script>(function(d,s,a,i,j,r,l,m,t){try{l=d.getElementsByTagName('a');t=d.createElement('textarea');for(i=0;l.length-i;i++){try{a=l[i].href;s=a.indexOf('/cdn-cgi/l/email-protection');m=a.length;if(a&&s>-1&&m>28){j=28+s;s='';if(j<m){r='0x'+a.substr(j,2)|0;for(j+=2;j<m&&a.charAt(j)!='X';j+=2)s+='%'+('0'+('0x'+a.substr(j,2)^r).toString(16)).slice(-2);j++;s=decodeURIComponent(s)+a.substr(j,m-j)}t.innerHTML=s.replace(/</g,'&lt;').replace(/\>/g,'&gt;');l[i].href='mailto:'+t.value}}catch(e){}}}catch(e){}})(document);</script>  -->

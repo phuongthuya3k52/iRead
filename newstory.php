@@ -186,10 +186,8 @@
 						<span class="divider">/</span>
 					</div>
 				</li>
-				<li class="ds-theloai">
-					<div itemscope>
-					 	<span itemprop="title"><a href="newstory.php" itemprop="url">New story</a></span>
-					</div>
+				<li class="active">
+					<strong>New Story</strong>
 				</li>
 			</ul>
 			

@@ -9,7 +9,7 @@
 			<a class="brand iread-logo" href="home.php"></a>
 			<div class="nav-collapse">
 				<ul class="nav">
-					<li class="active"><a href="home.php"><i class="icon-home"></i> Home</a></li>
+					<li class="disable"><a href="home.php"><i class="icon-home"></i> Home</a></li>
 					<li class="dropdown">
 						<a href="javascript:" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-book"></i> Category<b class="caret"></b></a>
 

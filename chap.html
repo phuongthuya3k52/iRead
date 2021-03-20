@@ -378,7 +378,7 @@
 						go2top.click(function () {
 							$.scrollTo('0', 800);
 							return false;
-						});
+						});    
 
 
 						$(document).keyup(function (e) {
@@ -392,7 +392,7 @@
 							else if (e.keyCode == 39) {
 								$.scrollTo($(document).scrollTop() + ($(window).height() - 80), 100);
 							}
-						});
+						});  
 
 
 						var godown = $('.next_btn');
@@ -405,7 +405,7 @@
 							if(x<0){x=0;}
 							$.scrollTo(x, 100);
 						});
-					});
+					});  
 
 					function changeFont(font_name){
 						$('#noidungtruyen').css('font-family', font_name+', sans-serif');
