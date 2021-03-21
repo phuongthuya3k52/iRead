@@ -1,5 +1,6 @@
 <?php
 	require_once("./db.php");
+    session_start();
 
 	if(isset($_GET['destinaton_chap']) && isset($_GET['story_id'])){
 		$destinaton_chap = $_GET['destinaton_chap'];

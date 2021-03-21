@@ -159,7 +159,7 @@
 						<!--	<ul class='foo1 star-rating'>
 								<li class='current-rating' id='current-rating' style="width:126px;"></li>
 								<li>
-									<a href="#" title='2/10' class='star one-star' data-rate='1'>1</a>
+									<a href="#" title='2/10'  data-rate='1'>1</a>
 								</li>
 								<li>
 									<a href="#" title='4/10' class='star two-stars' data-rate='2'>2</a>

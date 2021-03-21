@@ -66,36 +66,59 @@
 
 			$sql = "SELECT * FROM chapter WHERE chapterID='" .$chapterID . "'";
 			$row = query($sql);
+			$view = $row[0][5];
 
-			$memberID = $row[0][2];
-
+		// Get authorID (memberID)
 			$sql1 = "SELECT * FROM story WHERE storyID='" .$storyID . "'";
 			$row1 = query($sql1);
+			$memberID = $row1[0][2];
 
-/*			//check coin payment 
-			if($row[0][4] == 1){
-				$sql4 = "SELECT * FROM transaction WHERE chapterID='" .$chapterID . "'";
+		// Get readerID
+			$sql5 = "SELECT * FROM member WHERE username='" .$_SESSION['username'] . "'";
+			$row5 = query($sql5);
+			$readerID = $row5[0][0];
+			$readerwallet = $row5[0][5];
+
+		//check coin payment 
+			if($row[0][4] == 1 && $readerID != $memberID){
+				$sql4 = "SELECT * FROM chapter_payment WHERE chapterID='" .$chapterID . "'";
+
 				if(querynull($sql4)!=null){
-					$row4 = query($sql4);  
+					$row4 = query($sql4); 
 
-					if($row4[$i][1] == $memberID){
-						$is_paided = 1;
-					}else{
-						$is_paided = 0;
+					for($i=0; $i < count($row4); $i++){
+						if($row4[$i][1] == $readerID){
+							$is_paided = 1;
+						}else{
+							$is_paided = 0;
+						}
 					}
 				}else{
 					$is_paided = 0;
-				}  */
+				}  
 
-				if($is_paided == 0){
+					if($is_paided == 0){
 			?>
 					<body onload="activepopup()">
 			<?php	
-				}
+				}else{
+					$sql6 = "UPDATE chapter SET view='" .$view+1 ."'WHERE chapterID='" .$chapterID ."'";
+					$result6 = execsql($sql6);
+					$row8 = query($sql);
+					$view1 = $row8[0][5];
+			?>
+					<body>
+			<?php
+				} 
 			}else{
-			<body>
-		}  
-			
+				$sql6 = "UPDATE chapter SET view='" .$view+1 ."'WHERE chapterID='" .$chapterID ."'";
+				$result6 = execsql($sql6);
+				$row8 = query($sql);
+				$view1 = $row8[0][5];
+		?>
+				<body>
+		<?php	
+			}
 		}
 	}
 ?>
@@ -109,9 +132,9 @@
 <div class="tbpopup" id="tbpopup-1">
 	<div class="tboverlay"></div>
 	<div class="tbcontent">
-		<form method="get" action="choosechapter.php">
+		<form method="get" action="chapterpayment.php">
 				<div class="modal-header">
-					<h4>Do you want pay 1 coin for read this chapter?</h4>
+					<h4>You have <?=$readerwallet?> coins. Would you like to pay 1 coin for read this chapter?</h4>
 				</div>
 				<div class="modal-body">
 					<img src="img/coin.jpg" style="width: 80%; height: auto;">
@@ -119,8 +142,10 @@
 					<input type="hidden" name="chapter_id" value="<?=$chapterID?>"> 
 					<input type="hidden" name="member_id" value="<?=$memberID?>">
 				</div>
-					<button type="submit" class="btn btn-info">Yes</button>
-					<a href="#" class="btn" onclick="activepopup()">Cancel</a>
+					<button type="submit" name="submit" class="btn btn-info">Yes</button>
+					<a data-toggle="modal" href="#chap_jump" class="btn btn-warning"><i class="icon-move icon-white"></i></a>
+					<a href="storydetail.php?storyID=<?=$storyID?>" class="btn">Story Introduction</a>
+				<!--	<a href="#" class="btn" onclick="activepopup()">Cancel</a>  -->
 				</div>
 			</form>
 </div>
@@ -129,12 +154,7 @@
 		document.getElementById("tbpopup-1").classList.toggle("active");
 	}
 </script>
-<?php	
-	if(isset($_GET['story_id']) && isset($_GET['chapter_id'])&& isset($_GET['member_id']))
-	{
-		
-	}
-?>
+
 
 <div class="container">
 	<div class="row">
@@ -179,6 +199,55 @@
 				<div class="span10">
 					<div id="noidungtruyen">
 						<h1 style="text-align: center;text-transform: uppercase; font-weight: bold;"><?=$row[0][1]?></h1>
+
+					<!-- Vote	-->
+						<div style="text-align: center; font-size: 16px;">
+						<?php
+							$is_vote = 0;
+							$sql7 = "SELECT * FROM vote WHERE chapterID='" .$chapterID . "'";
+
+							if(querynull($sql7)!=null){
+								$row7 = query($sql7);
+								$vote = count($row7);
+
+								for($i=0; $i < count($row7); $i++){
+									if($row7[$i][1] == $readerID){
+										$is_vote = 1;
+									}else{
+										$is_vote = 0;
+									}
+								}
+							}else{
+								$is_vote = 0;
+							}  
+						
+							if($is_vote == 0){
+						?>
+								<form method="post" action="chaptervote.php">
+									<button type="submit" name="vote_submit" class="btn-warning">Vote</button> <?=$vote?> votes - 
+									<span itemprop="votes"><?=$view1?> views</span>
+
+									<input type="hidden" name="story_id" value="<?=$storyID?>">
+									<input type="hidden" name="chapter_id" value="<?=$chapterID?>"> 
+									<input type="hidden" name="reader_id" value="<?=$readerID?>">
+								</form>
+						<?php
+							}else{
+						?>
+								<form method="post" action="chaptervote.php">
+									<button type="submit" name="unvote_submit" class="btn">Voted</button> <?=$vote?> votes - 
+									<span itemprop="votes"><?=$view1?> views</span>
+
+									<input type="hidden" name="story_id" value="<?=$storyID?>">
+									<input type="hidden" name="chapter_id" value="<?=$chapterID?>"> 
+									<input type="hidden" name="reader_id" value="<?=$readerID?>">
+								</form>
+						<?php
+							}
+						?>
+							
+						</div>
+						
 						<hr class="start-chap">
 						<div class="text-truyen" id="id_noidung_chuong" style="margin:50px;">
 							<?=$row[0][3]?>
@@ -186,18 +255,57 @@
 						</div>
 					</div>
 			
-					<div style="width:300px;float: left;margin: 25px 0 0 35px;">
-					</div>
 					
 					<div class="chapfoot" style=" width:100%; float:left; ">
 					<h2 style="text-align: center;text-transform: uppercase; font-weight: bold;"><?=$row[0][1]?></h2>
+					<div style="text-align: center; font-size: 16px">
+						<?php
+							$is_vote = 0;
+							$sql7 = "SELECT * FROM vote WHERE chapterID='" .$chapterID . "'";
+
+							if(querynull($sql7)!=null){
+								$row7 = query($sql7);
+								$vote = count($row7);
+
+								for($i=0; $i < count($row7); $i++){
+									if($row7[$i][1] == $readerID){
+										$is_vote = 1;
+									}else{
+										$is_vote = 0;
+									}
+								}
+							}else{
+								$is_vote = 0;
+							}  
+						
+							if($is_vote == 0){
+						?>
+								<form method="post" action="chaptervote.php">
+									<button type="submit" name="vote_submit" class="btn-warning">Vote</button> <?=$vote?> votes - 
+									<span itemprop="votes"><?=$view1?> views</span>
+
+									<input type="hidden" name="story_id" value="<?=$storyID?>">
+									<input type="hidden" name="chapter_id" value="<?=$chapterID?>"> 
+									<input type="hidden" name="reader_id" value="<?=$readerID?>">
+								</form>
+						<?php
+							}else{
+						?>
+								<form method="post" action="chaptervote.php">
+									<button type="submit" name="unvote_submit" class="btn">Voted</button> <?=$vote?> votes - 
+									<span itemprop="votes"><?=$view1?> views</span>
+
+									<input type="hidden" name="story_id" value="<?=$storyID?>">
+									<input type="hidden" name="chapter_id" value="<?=$chapterID?>"> 
+									<input type="hidden" name="reader_id" value="<?=$readerID?>">
+								</form>
+						<?php
+							}
+						?>
+					</div>
 					<hr class="end-chap">
 					
-			<!--		<div style="width: 220px;margin: auto;text-align:center;">
-						<div class="fb-like" style="display:block;float:left;" data-href="#" data-layout="button_count" data-width="200px" data-show-faces="false" data-font="verdana">gjdgjdghsfh
-						</div>
-						<div class="g-plusone" data-size="medium" data-href="#">dfghfkg</div>
-					</div> -->
+
 					<?php
 					$sql2 = "Select * from chapter where storyID='" .$storyID . "'";
 					$row2 = query($sql2);
@@ -265,23 +373,7 @@
 		<?php 
 			require_once("./footer.php");
 		?>
-			<!--	<div style="text-align:center;font-weight:bold" class=""><a href="#" rel="nofollow" target="_blank">Báo Lỗi Truyện</a></div>
-			</div>
-			<div class="clearfix"></div>
-			<div id="bottom_progressbar" class="bar_fixed progress progress-info">
-				<span class="bar_description">Chương 1434/1464</span>
-				<div class="bar" style="width: 97%;"></div>
-			</div>
-			<div class="go_to_top hide"><span class="top"></span><span class="bottom"></span></div>
-			<div id="copyright" style="text-align:center;margin-top:20px;">
-				Copyright © 2017 <a href="index.html">N.T.L</a>.
-				<br><br>
-				<a href="#" title="DMCA.com Protection Status" class="dmca-badge"> <img src="img/dmca.png" alt="DMCA.com Protection Status"/></a>
-			</div>     
 			
-			<div style='display:none'><input type='hidden' name='csrfmiddlewaretoken' value='ANzD3jUNexdNQDAsiDHPskQPrXsv1mty'/></div>   -->
-
-
 			<script type="text/javascript" src="js/bootstrap-modalmanager.js"></script>
 			<script type="text/javascript" src="js/bootstrap-modal.js"></script>
 			<script type="text/javascript" src="js/jquery-scrolltofixed-min.js"></script>
@@ -304,7 +396,6 @@
 					<input class="slider" type="range" min="1" max="<?=count($row2)?>" step="1" name="destinaton_chap" value="<?=$curentchap?>">
 					<input type="text" value="<?=$curentchap?>" class="slider-input input-mini" require="require" min="1" max="<?=count($row2)?>" title="Please input number between 1-<?=count($row2)?>">
 					<input type="hidden" name="story_id" value="<?=$storyID?>">
-				<!--	<input type="hidden" name="chuong_ht" value="1434"> -->
 				</div>
 				<div class="modal-footer">
 					<button type="submit" class="btn btn-info">Go</button>
@@ -345,10 +436,10 @@
 						}
 						else {$('body').css('background-color', '#eee');}
 						if (init_font) {
-							$('#noidungtruyen').css('font-family', init_font+', sans serif');
+							$('#id_noidung_chuong').css('font-family', init_font+', sans serif');
 						}
 						if (init_fontsize) {
-							$('#noidungtruyen').css('font-size', init_fontsize+'px');
+							$('#id_noidung_chuong').css('font-size', init_fontsize+'px');
 						}
 						
 							$('#bottom_progressbar').hide();

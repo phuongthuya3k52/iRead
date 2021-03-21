@@ -64,8 +64,8 @@ blockquote p,blockquote{margin-bottom:0;font-size:12px;}
 .go_to_top:hover{opacity:.8;}
 .go_to_top .top{width:0;height:0;border-bottom:10px solid #555;border-left:8px solid transparent;border-right:8px solid transparent;position:absolute;display:inline-block;top:3px;left:7px;}
 .go_to_top .bottom{background:#555;width:10px;height:16px;position:absolute;display:block;left:10px;top:10px;}
-hr.start-chap{background:url("../img/option.png") 0 0 no-repeat;width:59px;height:20px;border:0;margin:10px auto;display:block;}
-hr.end-chap{background:url("../img/end-chap.png") 0 0 no-repeat;width:52px;height:30px;border:0;margin:10px auto;display:block;}
+hr.start-chap{background:url("../img/option.png") 0 0 no-repeat;width:52px;height:30px;border:0;margin:10px auto;display:block;}
+hr.end-chap{background:url("../img/end-chap.png") 0 0 no-repeat;width:59px;height:20px;border:0;margin:10px auto;display:block;}
 .mobi-chuyentrang{text-align:center;display:block;margin:20px 0;}
 #noidungtruyen h1,h2{font-size:18px;}
 .well blockquote h1,.well blockquote h2,.well blockquote h3{display:inline-block;font-size:12px;line-height:18px;font-weight:bold;margin:0;}
