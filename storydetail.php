@@ -60,6 +60,8 @@
 			$sql = "Select * from story where storyID='" .$storyID . "'";
 			$row = query($sql);
 			$memberID = $row[0][2];
+			$viewNumber = $row[0][5];
+			$voteNumber = $row[0][6];
 
 			$sql1 = "Select * from member where memberID='" .$memberID . "'";
 			$row1 = query($sql1);
@@ -106,14 +108,14 @@
 						<span class="xleft">Type:</span>
 						<span class="list-category">&nbsp;
 						<?php
-							$sql2 = "Select categoryName from category INNER JOIN story_category ON category.categoryID = story_category.categoryID WHERE storyID='" .$storyID . "'";
+							$sql2 = "Select * from category INNER JOIN story_category ON category.categoryID = story_category.categoryID WHERE storyID='" .$storyID . "'";
 
 							$row2 = query($sql2);
 
 							for ($i=0; $i < count($row2);$i++)
 							{
 						?>	
-								<span><a href="#"><?=$row2[$i][0]?></a></span>
+								<span><a href="./storybycat.php?categoryID=<?=$row2[$i][0]?>"><?=$row2[$i][1]?></a></span>
 						<?php
 							}
 						?>
@@ -135,6 +137,13 @@
 					
 					<div class="rofx">
 						<h1><?=$row[0][1]?></h1>
+						<div class="foo2" style="text-align: center;">
+								<span itemprop="votes">Votes: <?=$voteNumber?></span> votes
+								</span> - 
+								<span itemprop="rating">Views: <?=$viewNumber?>
+								</span>
+									
+						</div>
 						<div style="display: block;margin: 5px auto;text-align: center;">
 						<?php
 							$sql3 = "Select chapterID, chapterName from chapter WHERE storyID='" .$storyID . "' ORDER BY chapterID ASC";
@@ -147,44 +156,18 @@
 							$row4 = query($sql4);
 
 						?>
-							<a class="btn btn-mini btn-success" href="readstory.php?<?=$storyID?>&<?=$row3[0][0]?>">
+							<a class="btn btn-mini btn-success" href="readstory.php?storyID=<?=$storyID?>&chapterID=<?=$row3[0][0]?>">
 								<i class="icon-play icon-white"></i> Read from the beginning
 							</a>
-							<a class="btn btn-mini btn-success" href="readstory.php?<?=$storyID?>&<?=$row4[0][0]?>">
+							<a class="btn btn-mini btn-success" href="readstory.php?storyID=<?=$storyID?>&chapterID=<?=$row4[0][0]?>">
 								<i class="icon-fire icon-white"></i> Read the latest Chapter
 							</a>
 							<a type="button" class="btn btn-mini btn-success" href="#dschuong"><i class="icon-leaf icon-white"></i> List of Chapters</a>
 							<br><br>
-							
-						<!--	<ul class='foo1 star-rating'>
-								<li class='current-rating' id='current-rating' style="width:126px;"></li>
-								<li>
-									<a href="#" title='2/10'  data-rate='1'>1</a>
-								</li>
-								<li>
-									<a href="#" title='4/10' class='star two-stars' data-rate='2'>2</a>
-								</li>
-								<li>
-									<a href="#" title='6/10' class='star three-stars' data-rate='3'>3</a>
-								</li>
-								<li>
-									<a href="#" title='8/10' class='star four-stars' data-rate='4'>4</a>
-								</li>
-								<li>
-									<a href="#" title='10/10' class='star five-stars' data-rate='5'>5</a>
-								</li>
-							</ul>  
-							<span itemscope itemtype="http://data-vocabulary.org/Review-aggregate">
-								<span class="foo2">
-									<span itemprop="rating" itemscope itemtype="http://data-vocabulary.org/Rating">Point:
-										<span itemprop="average">9,7</span>/<span itemprop="best">10</span>
-									</span> -
-									<span itemprop="votes">179</span> votes
-								</span>
-							</span>   -->
+	  
 						</div>
 
-						<div id="desc_story">
+						<div id="desc_story" style=" font-size: 14px">
 							<p><?=$row[0][3]?></p>
 						</div>
 						
@@ -239,17 +222,26 @@
 								$currentpage = $_GET['currentpage'];
 							}
 
-							$sql5= "SELECT chapterID, chapterName FROM chapter WHERE storyID='" .$storyID . "'LIMIT {$beginrow} , {$pagesize}";
+							$sql5= "SELECT chapterID, chapterName, requireCoin FROM chapter WHERE storyID='" .$storyID . "'LIMIT {$beginrow} , {$pagesize}";
 							$row5=query($sql5);  
 
 							for ($i=0; $i < count($row5);$i++)
 							{
+								if($row5[$i][2] == 0){	
 
 						?>
-							<li style="float: left; width: 20%;">
-								<span style="width: 10%;display: inline-block;"><?=$i+1?>.</span><a class="jblack" href="readstory.php?storyID=<?=$storyID?>&chapterID=<?=$row3[$i][0]?>" target="_blank"><i class="icon-leaf"></i><?=$row5[$i][1]?></a>
-							</li>
+									<li style="float: left; width: 20%;">
+										<span style="width: 10%;display: inline-block;"><?=$i+1?>.</span><a class="jblack" href="readstory.php?storyID=<?=$storyID?>&chapterID=<?=$row3[$i][0]?>" target="_blank"><i class="icon-leaf"></i><?=$row5[$i][1]?></a>
+									</li>
 						<?php
+								}else{
+						?>
+									<li style="float: left; width: 20%;">
+										<span style="width: 10%;display: inline-block;"><?=$i+1?>.</span><a class="jblack" href="readstory.php?storyID=<?=$storyID?>&chapterID=<?=$row3[$i][0]?>" target="_blank"><i class="icon-leaf"></i><?=$row5[$i][1]?></a><i class="icon-lock"></i>
+									</li>
+						<?php
+
+								}
 							}
 						?>
 						</ul>

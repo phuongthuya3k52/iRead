@@ -71,7 +71,7 @@
 						<span class="divider">/</span>
 					</div>
 				</li>
-				<li class="active"><strong>All Stories</strong></li>
+				<li class="active"><strong>Completed Stories</strong></li>
 			</ul>
 
 			<div class="row wrapper">
@@ -83,7 +83,7 @@
 						<ul class="thumbnails">
 						<?php
 						// Pagination
-							$sql= "select * from story";
+							$sql= "SELECT * FROM story WHERE status='Completed' ORDER BY storyName ASC";
 							$row=query($sql);
 
 							$allrow = count($row);
@@ -113,7 +113,7 @@
 								$currentpage = $_GET['currentpage'];
 							}
 
-							$sql1= "select * from story LIMIT {$beginrow} , {$pagesize}";
+							$sql1= "SELECT * from story WHERE status='Completed' ORDER BY storyName ASC LIMIT {$beginrow} , {$pagesize}";
 							$row1=query($sql1);  
 
 							for ($i=0; $i < count($row1);$i++)
@@ -127,7 +127,7 @@
 									</a>
 									<div class="caption">
 										<a href="storydetail.php?storyID=<?=$row1[$i][0]?>" target="_blank" >
-											<h2 style="width: 100%; height: auto;"><?=$row1[$i][1]?></h2>
+											<h2><?=$row1[$i][1]?></h2>
 
 											<?php 
 											$sql2= "select * from chapter WHERE storyID = '" .$row1[$i][0] ."' ORDER BY chapterID DESC";

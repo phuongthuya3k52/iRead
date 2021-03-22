@@ -72,6 +72,7 @@
 			$sql1 = "SELECT * FROM story WHERE storyID='" .$storyID . "'";
 			$row1 = query($sql1);
 			$memberID = $row1[0][2];
+			$viewNumber = $row1[0][5];
 
 		// Get readerID
 			$sql5 = "SELECT * FROM member WHERE username='" .$_SESSION['username'] . "'";
@@ -102,19 +103,30 @@
 					<body onload="activepopup()">
 			<?php	
 				}else{
+				// Update chapter view number 
 					$sql6 = "UPDATE chapter SET view='" .$view+1 ."'WHERE chapterID='" .$chapterID ."'";
 					$result6 = execsql($sql6);
 					$row8 = query($sql);
 					$view1 = $row8[0][5];
+
+				// Update story view number 
+					$sql9 = "UPDATE story SET viewNumber='" .$viewNumber+1 ."'WHERE storyID='" .$storyID ."'";
+					$result9 = execsql($sql9);
+
 			?>
 					<body>
 			<?php
 				} 
 			}else{
+			// Update chapter view number 
 				$sql6 = "UPDATE chapter SET view='" .$view+1 ."'WHERE chapterID='" .$chapterID ."'";
 				$result6 = execsql($sql6);
 				$row8 = query($sql);
 				$view1 = $row8[0][5];
+
+			// Update story view number 
+					$sql9 = "UPDATE story SET viewNumber='" .$viewNumber+1 ."'WHERE storyID='" .$storyID ."'";
+					$result9 = execsql($sql9);	
 		?>
 				<body>
 		<?php	

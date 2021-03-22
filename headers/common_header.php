@@ -24,7 +24,7 @@
 								?>	
 									<ul class="span2 unstyled" style="width:158px;">
 										<li>
-											<input type="hidden" value="<?=$i?>"><a href="./storybycat.php?catergoryID=<?=$category[$i][0]?>"><?=$category[$i][1]?></a>
+											<input type="hidden" value="<?=$i?>"><a href="./storybycat.php?categoryID=<?=$category[$i][0]?>"><?=$category[$i][1]?></a>
 										</li>
 									</ul>
 								<?php 
@@ -51,7 +51,7 @@
 				</ul>
 				<form class="navbar-search form-search pull-right" action="search.php" method="GET">
 					<div class="input-append">
-						<input type="text" name="search" class="search-query span2" placeholder="Enter name...">
+						<input type="text" name="search" class="search-query span2" placeholder="Enter story name...">
 						<button class="btn" type="submit" value=""><i class="icon-search"></i></button>
 					</div>
 				</form>

@@ -51,6 +51,14 @@
 		</script>
 <?php
 	}else{	
+		if(isset($_GET['categoryID'])){
+			$categoryID = $_GET['categoryID'];
+
+			$sql2 = "select * from category WHERE categoryID='" .$categoryID ."'";
+			$row2 = query($sql2);	
+			$categoryName = $row2[0][1];		
+
+		}
 	}
 
 ?>
@@ -71,7 +79,7 @@
 						<span class="divider">/</span>
 					</div>
 				</li>
-				<li class="active"><strong>All Stories</strong></li>
+				<li class="active"><strong>"<?=$categoryName?>" Stories</strong></li>
 			</ul>
 
 			<div class="row wrapper">
@@ -83,7 +91,7 @@
 						<ul class="thumbnails">
 						<?php
 						// Pagination
-							$sql= "select * from story";
+							$sql= "SELECT * FROM story INNER JOIN story_category ON story.storyID = story_category.storyID WHERE categoryID='" .$categoryID ."'";
 							$row=query($sql);
 
 							$allrow = count($row);
@@ -113,8 +121,12 @@
 								$currentpage = $_GET['currentpage'];
 							}
 
-							$sql1= "select * from story LIMIT {$beginrow} , {$pagesize}";
+							$sql1= "SELECT * FROM story INNER JOIN story_category ON story.storyID = story_category.storyID WHERE categoryID='" .$categoryID ."' LIMIT {$beginrow} , {$pagesize}";
 							$row1=query($sql1);  
+
+							if(count($row1)==0){
+								echo('<span style="font-size: 16px;text-align: center; color: red;">There are no stories of "'. $categoryName .'" category </span>');
+							}else{
 
 							for ($i=0; $i < count($row1);$i++)
 							{
@@ -123,7 +135,7 @@
 							
 								<li class="span2" style="float: left; height: 250px; width: 160px">
 									<a href="storydetail.php?storyID=<?=$row1[$i][0]?>" class="thumbnail" target="_blank">
-										<img style="width: 150px; height: 200px;" alt="<?=$row1[$i][1]?>" src="img/<?=$row1[$i][4]?>">
+										<img alt="<?=$row1[$i][1]?>" width="150px" height="200px" src="img/<?=$row1[$i][4]?>">
 									</a>
 									<div class="caption">
 										<a href="storydetail.php?storyID=<?=$row1[$i][0]?>" target="_blank" >
@@ -149,6 +161,7 @@
 								</li>  
 						<?php
 							}
+						}
 						?>
 						</ul>
 					<!--<div style="text-align: center; font-size: 15px"> -->

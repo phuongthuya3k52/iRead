@@ -20,9 +20,22 @@
 			$row1 = query($sql1);
 			$view = $row1[0][5];
 
+		// Update chapter view number	
 			$sql2 = "UPDATE chapter SET view='" .$view-1 ."'WHERE chapterID='" .$chapterID ."'";
-			$result2 = execsql($sql2); 
-			header("location: readstory.php?storyID=$storyID&chapterID=$chapterID");
+			$result2 = execsql($sql2);
+
+		// Update story vote number
+			$sql3 = "SELECT * FROM story WHERE storyID='" .$storyID . "'";
+			$row3 = query($sql3);
+			$voteNumber = $row3[0][6];
+			$viewNumber = $row3[0][5];
+		/*	echo "voteNumber: " .$voteNumber;
+			echo "viewNumber: " .$viewNumber;  */
+
+			$sql4 = "UPDATE story SET voteNumber='" .$voteNumber+1 ." ', viewNumber='".$viewNumber-1 ."' WHERE storyID='" .$storyID ."'";
+			$result4 = execsql($sql4);
+			 
+			header("location: readstory.php?storyID=$storyID&chapterID=$chapterID"); 
 		}else{
 		?>
 			<script>
@@ -48,9 +61,22 @@
 			$row1 = query($sql1);
 			$view = $row1[0][5];
 
+		// Update chapter view number
 			$sql2 = "UPDATE chapter SET view='" .$view-1 ."'WHERE chapterID='" .$chapterID ."'";
 			$result2 = execsql($sql2); 
-			header("location: readstory.php?storyID=$storyID&chapterID=$chapterID");
+
+		// Update story vote number
+			$sql3 = "SELECT * FROM story WHERE storyID='" .$storyID . "'";
+			$row3 = query($sql3);
+			$voteNumber = $row3[0][6];
+			$viewNumber = $row3[0][5];
+		/*	echo "voteNumber: " .$voteNumber;
+			echo "viewNumber: " .$viewNumber;  */
+
+			$sql4 = "UPDATE story SET voteNumber='" .$voteNumber-1 ." ', viewNumber='".$viewNumber-1 ."' WHERE storyID='" .$storyID ."'";
+			$result4 = execsql($sql4);
+
+			header("location: readstory.php?storyID=$storyID&chapterID=$chapterID"); 
 		}else{
 		?>
 			<script>
