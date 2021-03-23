@@ -127,7 +127,7 @@
 									</a>
 									<div class="caption">
 										<a href="storydetail.php?storyID=<?=$row1[$i][0]?>" target="_blank" >
-											<h2><?=$row1[$i][1]?></h2>
+											<h2><?=decryptString($row1[$i][1])?></h2>
 
 											<?php 
 											$sql2= "select * from chapter WHERE storyID = '" .$row1[$i][0] ."' ORDER BY chapterID DESC";
@@ -138,7 +138,7 @@
 											<?php
 
 												if(count($row2) > 0){
-													echo($row2[0][1]);
+													echo(decryptString($row2[0][1]));
 												}else{
 													echo("No chapter");
 												}
@@ -162,7 +162,7 @@
 							{
 								if($currentpage == $i){
 								?>
-									<li class="active"><a href=""><?=$i?></a></li> 
+									<li class="active"><?=$i?></li> 
 								<?php
 								}else{
 							?>

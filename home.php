@@ -127,7 +127,7 @@
 									</a>
 									<div class="caption">
 										<a href="storydetail.php?storyID=<?=$row1[$i][0]?>" target="_blank" >
-											<h2 style="width: 100%; height: auto;"><?=$row1[$i][1]?></h2>
+											<h2 style="width: 100%; height: auto;"><?=decryptString($row1[$i][1])?></h2>
 
 											<?php 
 											$sql2= "select * from chapter WHERE storyID = '" .$row1[$i][0] ."' ORDER BY chapterID DESC";
@@ -138,7 +138,7 @@
 											<?php
 
 												if(count($row2) > 0){
-													echo($row2[0][1]);
+													echo(decryptString($row2[0][1]));
 												}else{
 													echo("No chapter");
 												}
@@ -155,7 +155,7 @@
 					<div class="paging">
 						<div class="pagination pagination-centered">
 						<ul>
-							<li class="disable"><a href="">Pages</a></li>		
+							<li class="disable"><a href="">Pages</a></li>	
 							<?php
 							// Link pagination
 							for($i = 1; $i <= $allpage; $i++)

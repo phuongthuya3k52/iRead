@@ -81,24 +81,24 @@
 
 			$error = array();
 
-			// Create folder img to save file
+		// Create folder img to save file
 			$target_dir = "img/";
 
-			// Create file URL after uploading
+		// Create file URL after uploading
 			$target_file = $target_dir.basename($_FILES['inpImage']['name']);
 
-			// Check file upload conditions 
+		// Check file upload conditions 
 
-			// 1. Check the file size (10MB <=> 10485760 bytes) 
+		// 1. Check the file size (10MB <=> 10485760 bytes) 
 			if($_FILES['inpImage']['size'] >= 10485760)
 			{
 				$error['inpImage'] = "Only upload files under 10MB ";
 			}
 
-			// 2.Check file type (png; jpg; gif; jpeg) 
+		// 2.Check file type (png; jpg; gif; jpeg) 
 			$file_type = pathinfo($_FILES['inpImage']['name'], PATHINFO_EXTENSION);
 
-			// File types allowed 
+		// File types allowed 
 			$file_type_allow =  array('','png','PNG','jpg','JPG','jpeg','JPEG','gif','GIF');
 	
 			if(!in_array($file_type, $file_type_allow))
@@ -114,7 +114,7 @@
 			}  */
 
 	/*		print_r($error); */
-			// 3. Check and transfer files from clipboard to server 
+		// 3. Check and transfer files from clipboard to server 
 			if(empty($error)){
 				if($file_type != ""){
 					if(!move_uploaded_file($_FILES['inpImage']['tmp_name'], $target_file)){
@@ -129,7 +129,7 @@
 			<!--		-->
 		<?php
 			}	
-		}
+		
 		}
 
 	// Update story infomation
@@ -157,8 +157,6 @@
 		//Code update story
 			$sql1 = "UPDATE story SET storyName='" .$title ."', description='" .$descriptions ."', image='" .$image ."',status='" .$status ."' WHERE storyID='" .$storyID ."'"; 
 			$result1 = execsql($sql1); 
-			echo $sql1;
-			echo "rs1 = ".$result1;
 
 
 		//Code update story-category
@@ -232,7 +230,7 @@
 				</li>
 				<li>
 					<div itemscope>
-						<a href="./mystories.php" itemprop="url"><span itemprop="title"><?=$row4[0][1]?></span></a>
+						<a href="./mystories.php" itemprop="url"><span itemprop="title"><?=decryptString($row4[0][1])?></span></a>
 						<span class="divider">/</span>
 					</div>
 				</li>
@@ -253,7 +251,7 @@
 							<input style = "width:100%;" id="inpImage" type='file' name="inpImage">
 
 							<script type="text/javascript">
-								// Change URL of image to base64
+							// Change URL of image to base64
 								function readFile() {
 
             						if (this.files && this.files[0]) {
@@ -268,7 +266,7 @@
             						}
         						}
 
-        						// Show image to review
+        					// Show image to review
 								window.onload = function () {
             						document.getElementById("inpImage").addEventListener("change", readFile);
         						};

@@ -54,13 +54,15 @@
 		</script>
 <?php
 	}else{
-		$sql = "Select * from member where username='" .$_SESSION['username'] . "'";
-		$row = query($sql);
-		$memberID = $row[0][0];
+		$storyID = $_GET["storyID"];
 
-		$sql1 = "SELECT * FROM story WHERE memberID='" .$memberID . "'";
+		$sql = "SELECT * FROM story WHERE storyID='" .$storyID . "'";
+		$row = query($sql);
+		$storyName = decryptString($row[0][1]);
+
+		$sql1 = "SELECT * FROM chapter WHERE storyID='" .$storyID . "'";
 		$row1 = query($sql1);
-		
+
 	}
 ?>
 
@@ -75,11 +77,23 @@
 			<ul class="breadcrumb">
 				<li>
 					<div itemscope>
-						<a href="home.php" itemprop="url"><span itemprop="title">Home</span></a>
+						<a href="./home.php" itemprop="url"><span itemprop="title">Home</span></a>
 						<span class="divider">/</span>
 					</div>
 				</li>
-				<li class="active"><strong>My Stories</strong></li>
+				<li>
+					<div itemscope>
+						<a href="./mystories.php" itemprop="url"><span itemprop="title">My Stories</span></a>
+						<span class="divider">/</span>
+					</div>
+				</li>
+				<li>
+					<div itemscope>
+						<a href="./mystories.php" itemprop="url"><span itemprop="title"><?=$storyName?></span></a>
+						<span class="divider">/</span>
+					</div>
+				</li>
+				<li class="active"><strong>Chapter list</strong></li>
 			</ul>
 			<div class="row wrapper">
 				<?php 
@@ -87,22 +101,22 @@
 			?>
 				<div class="span10">
 						
-						<h1 style="text-align: center;margin-top: 10px;">My Stories</h1>
+						<h1 style="text-align: center;margin-top: 10px;"><?=$storyName?></h1>
 						<ul class="nav" style="margin-top: 40px; margin-bottom: 40px">
-							<li class="disable" style="float:left;width: 50%; color: Orange;"><h2><i class="icon-book icon-large"></i>Total Stories: <?=count($row1)?></h2></li>
+							<li class="disable" style="float:left;width: 50%; color: Orange;"><h2><i class="icon-book icon-large"></i>Total Chapter: <?=count($row1)?></h2></li>
 
-							<li style="float: right;width: 50%"><a href="./newstory.php?" style="width: 30%; height: auto; min-height: 25px; float: right; font-size: 15px; background-color: blue"  class="btn btn-primary"><i class="icon-plus icon-large"></i> New Story</a></li>
+							<li style="float: right;width: 50%"><a href="./editchapter.php?" style="width: 30%; height: auto; min-height: 25px; float: right; font-size: 15px; background-color: blue"  class="btn btn-primary"><i class="icon-plus icon-large"></i> New chapter</a></li>
 						</ul>
 
 						<div style="margin-top: 120px; width:100%">
-						<table class="table">
+						<table class="table" style="margin-top: 30px">
 							<thead>
 								<tr >
 								<th style="text-align: center; font-size: 14px; width: 5%;">No.</th>
-								<th style="text-align: center; font-size: 14px; width: 20%;">Story Title</th>
-								<th style="text-align: center; font-size: 14px; width: 47%;">Information</th>
-								<th style="text-align: center; font-size: 14px; width: 7%;">Chapters</th>
-								<th style="text-align: center; font-size: 14px; width: 10%;">Status</th>
+								<th style="text-align: center; font-size: 14px; width: 20%;">Chapter Title</th>
+								<th style="text-align: center; font-size: 14px; width: 10%;">Views</th>
+								<th style="text-align: center; font-size: 14px; width: 10%;">Votes</th>
+								<th style="text-align: center; font-size: 14px; width: 15%;">Required Coins</th>
 								<th style="text-align: center; font-size: 14px; width: 11%;">Action</th>
 								</tr>
 							</thead>
@@ -111,7 +125,7 @@
 							// Pagination
 								
 								$allrow = count($row1);
-								$pagesize = 5;
+								$pagesize = 15;
 								$allpage = 1;
 
 								//Calculate how many pages there are all 
@@ -137,69 +151,48 @@
 									$currentpage = $_GET['currentpage'];
 								}
 
-								$sql2= "SELECT * FROM story WHERE memberID='" .$memberID . "' LIMIT {$beginrow} , {$pagesize}";
+								$sql2= "SELECT * FROM chapter WHERE storyID='" .$storyID . "' LIMIT {$beginrow} , {$pagesize}";
 
 								$row2=query($sql2);  
 
 
 								for($i=0; $i < count($row2); $i++)
 								{
-									$storyID = $row2[$i][0];
+									$chapterID = $row2[$i][0];
 									$viewNumber = $row2[$i][5];
-									$voteNumber = $row2[$i][6];
-							?>	
+							?>
 								<tr>
-									<td style="padding-top: 20px; width: 5%;"><?=$i+1?></td>
-									<td class="nav-list name_list" style="width: 20%">
-										<div class="media truyen-item">
-											<a class="pull-left" href="chapterlist.php?storyID=<?=$row1[$i][0]?>">
-												<img class="media-object" alt="<?=$row1[$i][1]?>" style="width: 100%; height: auto;" src="img/<?=$row1[$i][4]?>">
-											</a>
-										</div>
-										
-									</td>
-									<td style="width: 47%">
+									<td style="padding-top: 10px; width: 5%;"><?=$i+1?></td>
+									
+									<td style="width: 20%">
 										<div  style="text-align: center; width: 100%">
 											<div class="media-body">
-												<a href="chapterlist.php?storyID=<?=$row1[$i][0]?>" target="_blank"><h2 class="media-heading" style="font-size: 15px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#333333;"><?=decryptString($row2[$i][1])?></h2></a>
-												
-												<?php
-													$sql3 = "Select * from category INNER JOIN story_category ON category.categoryID = story_category.categoryID WHERE storyID='" .$storyID . "'";
+												<a href="storydetail.php?storyID=<?=$chapterID?>" target="_blank"><h2 class="media-heading" style="font-size: 15px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#333333;"><?=decryptString($row2[$i][1])?></h2></a>
 
-													$row3 = query($sql3);
-
-													for ($j=0; $j < count($row3);$j++)
-													{
-												?>	
-														<span class="list-category" style="font-size: 14px; text-align: justify;">
-															<span><a href="./storybycat.php?categoryID=<?=$row3[$i][0]?>"><?=$row3[$j][1]?></a></span>,
-														</span>
-												<?php
-													}
-												?>
-											</div>
-
-											<span itemprop="votes"><b> <?=$voteNumber?> Votes</b>
-											</span> - 
-											<span itemprop="rating"><b> <?=$viewNumber?> Views</b>
-											</span>
-
-
-											<p style="text-align: justify;"><?=decryptString($row2[$i][3])?></p>			
+											</div>		
 										</div>
 									</td>
-									<td style="width: 7%; text-align: center;">
+									<td style="width: 10%; text-align: center;"><?=$viewNumber?></td>
+									<td style="width: 10%; text-align: center;">
 									<?php
-										$sql4 = "SELECT * FROM chapter WHERE storyID='" .$storyID . "'";
-										$row4 = query($sql4);
-
-										echo('<a href="./chapterlist.php?storyID='.$storyID.'" style= "color: black;">'.count($row4).'</a>');
-									?>
+										$sql3 = "SELECT * FROM vote WHERE chapterID='" .$chapterID . "'";
+										$row3 = query($sql3);
+										$voteNumber = count($row3);
+										echo($voteNumber);
+									?>	
 									</td>
-									<td style="width: 10%; text-align: center;"><?=$row2[$i][7]?></td>
+									<td style="width: 15%; text-align: center;">
+									<?php
+										if($row2[$i][4] == 0){
+											echo("No");
+										}else{
+											echo("Yes");
+										}
+									?>	
+									</td>
 									<td style="width: 11%; text-align: center; ">
-										<a href="editstory.php?storyID=<?=$storyID?>" class="btn"><i class="icon-edit"></i></a>
-										<a href="#delete_confirm" class="btn btn-warning" ><i class="icon-remove-sign"></i></a>
+										<a href="editchapter.php?chapterID=<?=$chapterID?>" class="btn"><i class="icon-edit icon-large"></i></a>
+										<a href="#delete_confirm" class="btn btn-warning" ><i class="icon-remove-sign icon-large"></i></a>
 									</td>
 								</tr>
 							<?php
@@ -207,7 +200,7 @@
 							?>
 							</tbody>
 						</table>
-						</div>
+					</div>
 					
 					<div class="paging">
 						<div class="pagination pagination-centered">
@@ -223,7 +216,7 @@
 								<?php
 								}else{
 							?>
-									<li class="disable"><a href="mystories.php?currentpage=<?=$i?>"><?php echo $i ." "; ?></a></li>
+									<li class="disable"><a href="chapterlist.php?currentpage=<?=$i?>"><?php echo $i ." "; ?></a></li>
 							<?php
 								}
 							}
@@ -233,7 +226,6 @@
 						</div>
 					</div>
 
-				<!--	<div class="fb-comments" style="display: block;left: 0;margin-top: 5px;" data-href="index-3.htm" data-width="" data-num-posts="10"></div> -->
 				
 			</div>
 

@@ -85,7 +85,7 @@
 						<span class="divider">/</span>
 					</div>
 				</li>
-				<li class="active"><strong><?=$row[0][1]?></strong></li>
+				<li class="active"><strong><?=decryptString($row[0][1])?></strong></li>
 			</ul>
 			
 			
@@ -136,7 +136,7 @@
 					</div>
 					
 					<div class="rofx">
-						<h1><?=$row[0][1]?></h1>
+						<h1><?=decryptString($row[0][1])?></h1>
 						<div class="foo2" style="text-align: center;">
 								<span itemprop="votes">Votes: <?=$voteNumber?></span> votes
 								</span> - 
@@ -231,13 +231,13 @@
 
 						?>
 									<li style="float: left; width: 20%;">
-										<span style="width: 10%;display: inline-block;"><?=$i+1?>.</span><a class="jblack" href="readstory.php?storyID=<?=$storyID?>&chapterID=<?=$row3[$i][0]?>" target="_blank"><i class="icon-leaf"></i><?=$row5[$i][1]?></a>
+										<span style="width: 10%;display: inline-block;"><?=$i+1?>.</span><a class="jblack" href="readstory.php?storyID=<?=$storyID?>&chapterID=<?=$row3[$i][0]?>" target="_blank"><i class="icon-leaf"></i><?=decryptString($row5[$i][1])?></a>
 									</li>
 						<?php
 								}else{
 						?>
 									<li style="float: left; width: 20%;">
-										<span style="width: 10%;display: inline-block;"><?=$i+1?>.</span><a class="jblack" href="readstory.php?storyID=<?=$storyID?>&chapterID=<?=$row3[$i][0]?>" target="_blank"><i class="icon-leaf"></i><?=$row5[$i][1]?></a><i class="icon-lock"></i>
+										<span style="width: 10%;display: inline-block;"><?=$i+1?>.</span><a class="jblack" href="readstory.php?storyID=<?=$storyID?>&chapterID=<?=$row3[$i][0]?>" target="_blank"><i class="icon-leaf"></i><?=decryptString($row5[$i][1])?></a><i class="icon-lock"></i>
 									</li>
 						<?php
 
