@@ -448,6 +448,8 @@ hr.end-chap{background:url("../img/end-chap.png") 0 0 no-repeat;width:59px;heigh
     padding: 4px 5px;
 }
 .input-group-btn){width:500px}
+.asteriskField{color: red;}
+.requiredField{font-weight: bold;}
 
 
 

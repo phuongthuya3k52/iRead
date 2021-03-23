@@ -12,7 +12,7 @@
 <link href="http://fonts.googleapis.com/css?family=Patrick+Hand|Noticia+Text:400,400italic&subset=latin,vietnamese" rel='stylesheet' type='text/css'>
 <link href="css/bootstrap-modal.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
-<title>New stories | iRead</title>
+<title>Edit stories | iRead</title>
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/yamm.css" rel="stylesheet">
@@ -32,6 +32,13 @@
 <script type="text/javascript" src="js/csrf.js"></script>
 <style>
 	body{padding-top:60px;padding-bottom:40px;height:auto;background-image:none;}
+	table, th, td {
+  		<!-- border: 1px solid black; -->
+  		border-collapse: collapse;
+	}
+	th, td {
+  		padding: 3px;
+	}
 </style>
 
 <!--<script type="text/javascript">
@@ -47,7 +54,7 @@
             var s = document.getElementsByTagName('script')[0];
             s.parentNode.insertBefore(ga, s);
         })();
-    </script>   -->
+    </script>  -->
 </head>
 
 <?php
@@ -59,8 +66,15 @@
 		$memberID = $row[0][0];
 		$check = false;
 
+	// Get story information
+		if(isset($_GET['storyID'])){
+			$storyID = $_GET['storyID'];
+			$sql4= "SELECT * FROM story WHERE storyID='".$storyID ."'";
+			$row4= query($sql4);
+
+	// Post File on server
 		if(isset($_POST['submit'])) {
-		if(isset($_FILES['inpImage'])){
+			if(isset($_FILES['inpImage'])){
 	/*		echo "<pre> ";
 				print_r($_FILES);
 			echo "</pre>";  */
@@ -85,40 +99,40 @@
 			$file_type = pathinfo($_FILES['inpImage']['name'], PATHINFO_EXTENSION);
 
 			// File types allowed 
-			$file_type_allow =  array('png','PNG','jpg','JPG','jpeg','JPEG','gif','GIF');
+			$file_type_allow =  array('','png','PNG','jpg','JPG','jpeg','JPEG','gif','GIF');
 	
 			if(!in_array($file_type, $file_type_allow))
 			{
-				$error['inpImage'] = "Only upload image files";
+				$error['inpImage'] = "Only upload image type files";
 			}
 
-		//	echo($file_type);
+		//	echo("file_type = ".$file_type);
 		
 	/*		//3. Check for file existence 
 			if(file_exists($target_file)){
 				$error['inpImage'] = "File already exists ";
 			}  */
 
-		//	print_r($error); 
-			// 3. Check and transfer files from clipboard to server
-
+	/*		print_r($error); */
+			// 3. Check and transfer files from clipboard to server 
 			if(empty($error)){
-				if(!move_uploaded_file($_FILES['inpImage']['tmp_name'], $target_file)){
-					echo("Upload failed");
+				if($file_type != ""){
+					if(!move_uploaded_file($_FILES['inpImage']['tmp_name'], $target_file)){
+					echo("Upload image failed");
 					$check = true;
+					}
 				}
-			
 			}else{
 				$check = true;
+				print_r($error);
 		?>
-				<script>
-					alert ("Failure to save story cover image! You must upload an image type file under 10MB");	
-					window.location.replace("./newstory.php");
-				</script>	
+			<!--		-->
 		<?php
-			}
+			}	
 		}
-		
+		}
+
+	// Update story infomation
 
 		if(!isset($_POST['checkbox'])){
 	?>
@@ -129,30 +143,40 @@
 	<?php
 		}
 
-
 		if ($check == false && isset($_POST['title']) && isset($_POST['checkbox']))
-		{
 			$title=encryptString($_POST['title']);
 			$descriptions=encryptString($_POST['descriptions']);
-			$image=$_FILES['inpImage']['name'];
 			$chkbox = $_POST['checkbox'];
+			$status = $_POST['status'];
+			if($_FILES['inpImage']['name'] == ""){
+				$image = $row4[0][4];
+			}else{
+				$image = $_FILES['inpImage']['name'];
+			}
 
-			$sql1 = "Insert into story values ('','" .$title ."','" .$memberID ."','" .$descriptions ."','" .$image ."','0','0','On going')"; 
-			$result1 = execsql($sql1);  
+		//Code update story
+			$sql1 = "UPDATE story SET storyName='" .$title ."', description='" .$descriptions ."', image='" .$image ."',status='" .$status ."' WHERE storyID='" .$storyID ."'"; 
+			$result1 = execsql($sql1); 
+			echo $sql1;
+			echo "rs1 = ".$result1;
 
-			if($result1 != null){
-				$sql2 = "select * from story where storyName='" .$title ."'and memberID='".$memberID ."' ORDER BY storyID DESC;";   
+
+		//Code update story-category
+			$sql5 = "DELETE FROM story_category WHERE storyID='" .$storyID ."'";
+			$result5 = execsql($sql5);
+
+			if($result5 != null){
+				$sql2 = "select * from story where storyID='" .$storyID ."'";   
 		
 				$row2= query($sql2);
 
-				// Save story-category in db
-			
+				// Save new story-category in db			
  				$i = 0;
 
  				While($i < sizeof($chkbox))
  				{
- 
- 					$sql3= "Insert into story_category values (''," .$row2[0][0] ."," .$chkbox[$i] .")";
+ 							
+ 					$sql3= "INSERT INTO story_category VALUES (''," .$row2[0][0] ."," .$chkbox[$i] .")";
 					$result3 = execsql($sql3);  
  					$i++;
  				} 
@@ -160,19 +184,19 @@
 	 			if ($result3 != null){
 ?>				
 					<script >
-						window.location.replace("./newchapter.php?storyID=<?=$row2[0][0]?>");
+						alert ("Update story infomation successfull!");
+						window.location.replace("./mystories.php?storyID=<?=$storyID?>");
 					</script>
 <?php 		
 				}else{
 ?>				
 					<script >
-						alert ("New story is not create. Try again");
-						window.location.replace("./newstory.php");
+						alert ("Update story information failed. Try again");
+					window.location.replace("./editstories.php?storyID=<?=$storyID?>");
 					</script>
 <?php
 				}   
 			} 	
-
 		}
 		}
 	}else{
@@ -182,7 +206,10 @@
 			window.location.replace("./login.php");
 		</script> 
 <?php  
-	} 
+	}
+
+
+ 
 ?>
 				
 
@@ -203,21 +230,26 @@
 						<span class="divider">/</span>
 					</div>
 				</li>
+				<li>
+					<div itemscope>
+						<a href="./mystories.php" itemprop="url"><span itemprop="title"><?=$row4[0][1]?></span></a>
+						<span class="divider">/</span>
+					</div>
+				</li>
+				
 				<li class="active">
-					<strong>New Story</strong>
+					<strong>Edit</strong>
 				</li>
 			</ul>
 			
 	<!--		<div class="thumbnails" >			-->
 			<div class="clearfix" style="background-color: #f2f2f2" >
 				
-				<table width="95%" style=" margin-top: 20px; margin-bottom: 20px " align="center" border-spacing= "10px">
-					<form action="newstory.php" method="post" role="form" enctype="multipart/form-data">
+				<table width="99%" style=" margin-top: 20px; margin-bottom: 20px;" align="center" border-spacing= "10px" >
+					<form action="editstory.php?storyID=<?=$storyID?>" method="post" role="form" enctype="multipart/form-data">
 					<tr>
-						<td rowspan="3">
-							<label for="id_title" class="control-label requiredField"> Cover image<span class="asteriskField">*: </span></label>
-							<img style="background-color: white; width:100%; height: 400px;  margin-top: 0px" id="image" />
-						
+						<td rowspan="4" >
+							<img style="background-color: white; width:200px; height: 400px;  margin-top: 0px; " id="image" src="./img/<?=$row4[0][4]?>"/>
 							<input style = "width:100%;" id="inpImage" type='file' name="inpImage">
 
 							<script type="text/javascript">
@@ -236,17 +268,43 @@
             						}
         						}
 
-        						// Show imgae to review
+        						// Show image to review
 								window.onload = function () {
             						document.getElementById("inpImage").addEventListener("change", readFile);
         						};
 							</script> 
+						</td>	
+						
+						<td>
+							<label for="id_title" class="control-label requiredField">Status<span class="asteriskField">*</span></label>
 						</td>
+						<td colspan="2">
+							
+							<select name="status" id="status">
+							<?php
+							if($row4[0][7] == "On going"){
+							?>
+      							<option selected value="On going">On going</option>
+      							<option value="Completed">Complete</option>
+      						<?php
+      						}else{
+							?>
+								<option value="On going">On going</option>
+      							<option selected value="Completed">Completed</option>
+							<?php
+							}
+							?>
+      						</select>
+						</td>
+
+					</tr>
+					<tr>
+						
 						<td>
 							<label for="id_title" class="control-label requiredField">Title<span class="asteriskField">*</span></label>
 						</td>
 						<td colspan="2">
-							<input style= "width: 100%;" name="title" maxlength="200" type="text" required="required" placeholder="Story Title" class="textinput textInput" id="id_title" title="Title has maximum of 200 characters"/>
+							<input style= "width: 100%;" value='<?=decryptString($row4[0][1])?>' name="title" maxlength="200" type="text" required="required" placeholder="Story Title" class="textinput textInput" id="id_title" title="Title has maximum of 200 characters"/>
 						</td>
 
 					</tr>
@@ -255,20 +313,36 @@
 							<label for="id_catergory" class="control-label requiredField">Categories<span class="asteriskField">*</span></label>
 						</td>
 						<td colspan="2">
+						
 							<?php
-									$sql = "select * from category";
-									$category = query($sql);
+								$sql = "select * from category";
+								$category = query($sql);
 
-									for ($i=0; $i < count($category);$i++)
+								$sql6 = "SELECT categoryID FROM story_category WHERE storyID='".$storyID."'";
+								$row6 = query($sql6);
+								//print_r($row6);
+
+								for($i=0; $i < count($category); $i++)
+								{
+									if(in_array($category[$i][0],array_column($row6, '0')))
 									{
 								?>	
-									<ul class="span2 unstyled">
-										<li style="width:100%;">
-											<input id="checkbox" type="checkbox" id="checkbox" name="checkbox[]" value="<?=$category[$i][0]?>"><?=$category[$i][1]?>
-										</li>
-									</ul>
-                				<?php 
+										<ul class="span2 unstyled">
+											<li style="width:100%;">
+												<input id="checkbox" type="checkbox" name="checkbox[]" checked="checked" value="<?=$category[$i][0]?>"><?=$category[$i][1]?>
+											</li>
+										</ul>
+                				<?php
+                					}else{
+                				?>
+                						<ul class="span2 unstyled">
+											<li style="width:100%;">
+												<input type="checkbox" name="checkbox[]" value="<?=$category[$i][0]?>"><?=$category[$i][1]?>
+											</li>
+										</ul>
+								<?php
 									}
+								}
 								?>
 							
 						</td>
@@ -278,14 +352,14 @@
 							<label for="id_description" class="control-label requiredField">Descriptions</label>
 						</td>
 						<td colspan="2">
-							<textarea style= "width: 100%; resize: none;" name="descriptions" type="textarea" rows="15" placeholder="Story Descriptions" class="textinput textInput" id="id_description" /></textarea> 
+							<textarea style= "width: 100%; resize: none;" name="descriptions" type="textarea" rows="15" placeholder="Story Descriptions" class="textinput textInput" id="id_description" /><?=decryptString($row4[0][3])?></textarea> 
 					</tr>
 					<tr>
 						<td></td>
 						<td></td>
 						<td>
 							<button style="width: 85px; height: 35px; font-size: 15" type="submit" name ="submit" class="btn btn-primary" data-loading-text="Loading" value="Submit">
-								Next
+								Save
 							</button><br>
 						</td>
 						<td>

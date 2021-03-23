@@ -87,5 +87,19 @@
 		$result = $conn->query($sql);
 		return $result;
 	}
+
+	//function for string
+	function encryptString($string)
+	{
+		$string = str_replace('"', '!1$#5', $string);
+		$string = str_replace("'", "^-&~5", $string);
+		return($string);
+	}
+	function decryptString($string)
+	{
+		$string = str_replace('!1$#5', '"', $string);
+		$string = str_replace("^-&~5", "'", $string);
+		return($string);
+	}
 	
 ?>

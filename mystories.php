@@ -81,7 +81,6 @@
 				</li>
 				<li class="active"><strong>My Stories</strong></li>
 			</ul>
-
 			<div class="row wrapper">
 				<?php 
 				require_once("./lefts/common_left.php");
@@ -94,7 +93,7 @@
 								<tr >
 								<th style="text-align: center; font-size: 14px; width: 5%;">No.</th>
 								<th style="text-align: center; font-size: 14px; width: 20%;">Story Title</th>
-								<th style="text-align: center; font-size: 14px; width: 54%;">Innomation</th>
+								<th style="text-align: center; font-size: 14px; width: 54%;">Information</th>
 								<th style="text-align: center; font-size: 14px; width: 10%;">Status</th>
 								<th style="text-align: center; font-size: 14px; width: 11%;">Action</th>
 								</tr>
@@ -120,7 +119,7 @@
 									<td style="width: 54%">
 										<div  style="text-align: center; width: 100%">
 											<div class="media-body">
-												<a href="storydetail.php?storyID=<?=$row1[$i][0]?>" target="_blank"><h2 class="media-heading" style="font-size: 15px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#333333;"><?=$row1[$i][1]?></h2></a>
+												<a href="storydetail.php?storyID=<?=$row1[$i][0]?>" target="_blank"><h2 class="media-heading" style="font-size: 15px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#333333;"><?=decryptString($row1[$i][1])?></h2></a>
 												
 												<?php
 													$sql2 = "Select * from category INNER JOIN story_category ON category.categoryID = story_category.categoryID WHERE storyID='" .$storyID . "'";
@@ -144,7 +143,7 @@
 											</span>
 
 
-											<p style="text-align: justify;"><?=$row1[$i][3]?></p>			
+											<p style="text-align: justify;"><?=decryptString($row1[$i][3])?></p>			
 										</div>
 									</td>
 									<td style="width: 10%; text-align: center;"><?=$row1[$i][7]?></td>
@@ -178,6 +177,8 @@
 			require_once("./footer.php");
 		?>
 
+
+	<!-- Modal delete confirm -->
 		<script type="text/javascript" src="js/bootstrap-modalmanager.js"></script>
 		<script type="text/javascript" src="js/bootstrap-modal.js"></script>
 		<script type="text/javascript" src="js/jquery-scrolltofixed-min.js"></script>

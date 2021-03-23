@@ -65,23 +65,22 @@
 				$title=$_POST['title'];
 				$content=$_POST['content'];
 				
-				$sql1 = "Insert into chapter values ('','" .$title ."','" .$storyID ."','" .$content ."','" .$requireCoin ."')"; 
+				$sql1 = "Insert into chapter values ('','" .$title ."','" .$storyID ."','" .$content ."','" .$requireCoin ."','0')"; 
 				
 				$result1 = execsql($sql1);
 
 				if ($result1 != null){
-				echo("New chapter is saved succesfully!");
 ?>				
 					<script>
 						alert("New chapter is saved succesfully!");
-					//	window.location.replace("./newchapter.php?storyID=<?=$row2[0][0]?>");
+						window.location.replace("./newchapter.php?storyID=<?=$row2[0][0]?>");
 					</script>
 <?php 		
 				}else{
 ?>				
 					<script >
 						alert ("New chapter is not saved. Try again!");
-					//	window.location.replace("./newchapter.php?storyID=<?=$row2[0][0]?>");
+						window.location.replace("./newchapter.php?storyID=<?=$row2[0][0]?>");
 					</script>
 <?php
 				}   
@@ -136,15 +135,15 @@
 				<table width="90%" style=" margin-top: 20px; margin-bottom: 20px " align="center" border-spacing= "10px"  padding= "5px">
 					<form action="newchapter.php?storyID=<?=$row[0][0]?>" method="post" role="form">
 					<tr>
-						<td>
+						<td colspan="3">
 							<input style="width: 20px; height: 20px; " type="checkbox" id="requireCoin" name="requireCoin" value="1"> Require Coin 
 						</td>
 					</tr>
-					<tr><td>
+					<tr><td colspan="3">
 						<br>
 					</td></tr>
 					<tr>
-						<td>
+						<td colspan="3">
 							<input style= "width: 99%; height: 40px; font-size: 20px; font-weight: bold; text-align: center;" align="center" name="title" maxlength="200" type="text" required="required" placeholder="Story Title" class="breadcrumb" id="id_title" title="Title has maximum of 200 characters"/>
 						</td>
 
@@ -161,7 +160,7 @@
 				   	</script>
 				  	<tr>
 					
-      					<td>
+      					<td colspan="3">
       						<textarea style= "width: 90%;" name="content" id="content" required="required"></textarea>
 				      	<script>CKEDITOR.replace('content');</script> 
 
@@ -169,10 +168,15 @@
 				    	
 				  	</tr>
 				  	<tr>
-				  		<td class="mobi-chuyentrang">
-				  			<button style="width: 85px; height: 35px; font-size: 15; text-align: center;" type="submit" class="btn btn-primary" data-loading-text="Loading" value="Submit">
+				  		<td></td>
+				  		<td style="width: 40%">
+							<div style="text-align: center; margin:20px 0;">				  			<button style="width: 35%; height: 35px; float: left; font-size: 15px; text-align: center;" type="submit" class="btn btn-primary" data-loading-text="Loading" value="Submit">
 								Save
 							</button>
+							<a href="./mystories.php" style="width: 30%; height: 25px; float: right; font-size: 15px"  class="btn btn-default"> Cancle</a>
+							</div>
+
+
 				  		<!--	<div class="mobi-chuyentrang">
 							<a href="#" class="btn btn-small btn-warning">
 								<i class="fa fa-floppy-o" aria-hidden="true" onclick="getContext()"></i> Save
@@ -183,7 +187,7 @@
 							</a>
 						</div>   -->
 				  		</td>
-				  		
+				  		<td></td>
 				  	</tr>
 				
 				   	</form>
