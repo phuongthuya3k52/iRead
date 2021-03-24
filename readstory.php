@@ -147,6 +147,7 @@
 		<form method="get" action="chapterpayment.php">
 				<div class="modal-header">
 					<h4>You have <?=$readerwallet?> coins. Would you like to pay 1 coin for read this chapter?</h4>
+				<!--	<div class="tbclose-btn" onclick="thongbaopopup()">&times;</div> -->
 				</div>
 				<div class="modal-body">
 					<img src="img/coin.jpg" style="width: 80%; height: auto;">
@@ -154,9 +155,9 @@
 					<input type="hidden" name="chapter_id" value="<?=$chapterID?>"> 
 					<input type="hidden" name="member_id" value="<?=$memberID?>">
 				</div>
-					<button type="submit" name="submit" class="btn btn-info">Yes</button>
+					<button type="submit" name="submit" class="btn btn-primary">Yes</button>
 					<a data-toggle="modal" href="#chap_jump" class="btn btn-warning"><i class="icon-move icon-white"></i></a>
-					<a href="storydetail.php?storyID=<?=$storyID?>" class="btn">Story Introduction</a>
+					<a href="storydetail.php?storyID=<?=$storyID?>" class="btn">No</a>
 				<!--	<a href="#" class="btn" onclick="activepopup()">Cancel</a>  -->
 				</div>
 			</form>
@@ -180,11 +181,11 @@
 				</li>
 				<li >
 					<div itemscope>
-						<a href="storydetail.php?storyID=<?=$storyID?>" itemprop="url"><span itemprop="title"><?=$row1[0][1]?></span></a>
+						<a href="storydetail.php?storyID=<?=$storyID?>" itemprop="url"><span itemprop="title"><?=decryptString($row1[0][1])?></span></a>
 						<span class="divider">/</span>
 					</div>
 				</li>
-				<li class="active"><strong><?=$row[0][1]?></strong></li>
+				<li class="active"><strong><?=decryptString($row[0][1])?></strong></li>
 			</ul>
 			
 	<!--		<a href="javascript:">
@@ -210,7 +211,7 @@
 			?>
 				<div class="span10">
 					<div id="noidungtruyen">
-						<h1 style="text-align: center;text-transform: uppercase; font-weight: bold;"><?=$row[0][1]?></h1>
+						<h1 style="text-align: center;text-transform: uppercase; font-weight: bold;"><?=decryptString($row[0][1])?></h1>
 
 					<!-- Vote	-->
 						<div style="text-align: center; font-size: 16px;">
@@ -262,14 +263,14 @@
 						
 						<hr class="start-chap">
 						<div class="text-truyen" id="id_noidung_chuong" style="margin:50px;">
-							<?=$row[0][3]?>
+							<?=decryptString($row[0][3])?>
 						
 						</div>
 					</div>
 			
 					
 					<div class="chapfoot" style=" width:100%; float:left; ">
-					<h2 style="text-align: center;text-transform: uppercase; font-weight: bold;"><?=$row[0][1]?></h2>
+					<h2 style="text-align: center;text-transform: uppercase; font-weight: bold;"><?=decryptString($row[0][1])?></h2>
 					<div style="text-align: center; font-size: 16px">
 						<?php
 							$is_vote = 0;

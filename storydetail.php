@@ -101,7 +101,7 @@
 						<div class="lww">
 						<p>
 						<span class="xleft">Author:</span>
-						<span>&nbsp;<a href="#" target="_blank"><?=$row1[0][1]?></a></span>
+						<span>&nbsp;<a href="#"><?=$row1[0][1]?></a></span>
 						</p>
 
 						<p>
@@ -231,13 +231,13 @@
 
 						?>
 									<li style="float: left; width: 20%;">
-										<span style="width: 10%;display: inline-block;"><?=$i+1?>.</span><a class="jblack" href="readstory.php?storyID=<?=$storyID?>&chapterID=<?=$row3[$i][0]?>" target="_blank"><i class="icon-leaf"></i><?=decryptString($row5[$i][1])?></a>
+										<span style="width: 10%;display: inline-block;"><?=$i+1?>.</span><a class="jblack" href="readstory.php?storyID=<?=$storyID?>&chapterID=<?=$row3[$i][0]?>"><i class="icon-leaf"></i><?=decryptString($row5[$i][1])?></a>
 									</li>
 						<?php
 								}else{
 						?>
 									<li style="float: left; width: 20%;">
-										<span style="width: 10%;display: inline-block;"><?=$i+1?>.</span><a class="jblack" href="readstory.php?storyID=<?=$storyID?>&chapterID=<?=$row3[$i][0]?>" target="_blank"><i class="icon-leaf"></i><?=decryptString($row5[$i][1])?></a><i class="icon-lock"></i>
+										<span style="width: 10%;display: inline-block;"><?=$i+1?>.</span><a class="jblack" href="readstory.php?storyID=<?=$storyID?>&chapterID=<?=$row3[$i][0]?>"><i class="icon-leaf"></i><?=decryptString($row5[$i][1])?></a><i class="icon-lock"></i>
 									</li>
 						<?php
 

@@ -6,6 +6,7 @@
 
  //   echo("unvote_submit = ".isset($_POST['unvote_submit']));
 
+// Vote feature
 	if(isset($_POST['vote_submit']) && isset($_POST['story_id']) && isset($_POST['chapter_id'])&& isset($_POST['reader_id']))
 	{
 		$storyID = $_POST['story_id'];
@@ -46,7 +47,7 @@
 		}
 	}
 
-
+// UnVote feature
 	if(isset($_POST['unvote_submit']) && isset($_POST['story_id']) && isset($_POST['chapter_id'])&& isset($_POST['reader_id']))
 	{
 		$storyID = $_POST['story_id'];

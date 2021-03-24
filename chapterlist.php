@@ -93,7 +93,7 @@
 						<span class="divider">/</span>
 					</div>
 				</li>
-				<li class="active"><strong>Chapter list</strong></li>
+				<li class="active"><strong>Chapter List</strong></li>
 			</ul>
 			<div class="row wrapper">
 				<?php 
@@ -105,11 +105,11 @@
 						<ul class="nav" style="margin-top: 40px; margin-bottom: 40px">
 							<li class="disable" style="float:left;width: 50%; color: Orange;"><h2><i class="icon-book icon-large"></i>Total Chapter: <?=count($row1)?></h2></li>
 
-							<li style="float: right;width: 50%"><a href="./editchapter.php?" style="width: 30%; height: auto; min-height: 25px; float: right; font-size: 15px; background-color: blue"  class="btn btn-primary"><i class="icon-plus icon-large"></i> New chapter</a></li>
+							<li style="float: right;width: 50%"><a href="./newchapter.php?storyID=<?=$storyID?>" style="width: 30%; height: auto; min-height: 25px; float: right; font-size: 15px; background-color: blue"  class="btn btn-primary"><i class="icon-plus icon-large"></i> New chapter</a></li>
 						</ul>
 
-						<div style="margin-top: 120px; width:100%">
-						<table class="table" style="margin-top: 30px">
+						<p style="margin-top: 120px; width:90%">
+						<table class="table" style="margin-top: 30px; width:100%">
 							<thead>
 								<tr >
 								<th style="text-align: center; font-size: 14px; width: 5%;">No.</th>
@@ -159,6 +159,7 @@
 								for($i=0; $i < count($row2); $i++)
 								{
 									$chapterID = $row2[$i][0];
+									$chapterName = $row2[$i][1];
 									$viewNumber = $row2[$i][5];
 							?>
 								<tr>
@@ -167,7 +168,7 @@
 									<td style="width: 20%">
 										<div  style="text-align: center; width: 100%">
 											<div class="media-body">
-												<a href="storydetail.php?storyID=<?=$chapterID?>" target="_blank"><h2 class="media-heading" style="font-size: 15px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#333333;"><?=decryptString($row2[$i][1])?></h2></a>
+												<a href="readstory.php?storyID=<?=$storyID?>&chapterID=<?=$chapterID?>"><h2 class="media-heading" style="font-size: 15px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#333333;"><?=decryptString($row2[$i][1])?></h2></a>
 
 											</div>		
 										</div>
@@ -192,15 +193,42 @@
 									</td>
 									<td style="width: 11%; text-align: center; ">
 										<a href="editchapter.php?chapterID=<?=$chapterID?>" class="btn"><i class="icon-edit icon-large"></i></a>
-										<a href="#delete_confirm" class="btn btn-warning" ><i class="icon-remove-sign icon-large"></i></a>
+										<button type="button" name="btn_delete" id="btn_delete<?=$storyID?>" class="btn btn-warning" data-toggle="modal" data-target="#delete_confirm<?=$chapterID?>"><i class="icon-remove-sign"></i>
+											</button>
 									</td>
 								</tr>
+							<!-- Delete confirm modal -->
+								<script type="text/javascript" src="js/bootstrap-modalmanager.js"></script>
+								<script type="text/javascript" src="js/bootstrap-modal.js"></script>
+
+								<div class="modal hide fade" id="delete_confirm<?=$chapterID?>" style="display: none;">
+									<form  method="POST" action="delete.php" >
+									<div class="modal-header">
+										<span class="disable" data-dismiss="modal" aria-hidden="true" style="color: #ff4444; font-size: 44px; font-weight: bold; float: right;cursor:pointer;">&times;</span>
+										<h3>Delete Chapter</h3>
+										
+									</div>
+									<div class="modal-body" style="text-align: center; margin-top:0px">
+										<h2>Are you sure to Delete this chapter of story: "<?=decryptString($storyName)?>"?</h2>
+										<img style="width: 200px; height: 200px;" src="img/remove-chapter.jpg">
+										<h5><?=decryptString($chapterName)?></h5>
+
+										<input type="hidden" name="chapter_id" value="<?=$chapterID?>">
+										<input type="hidden" name="story_id" value="<?=$storyID?>">
+
+										<button type="submit" name="cf_del_chapter" class="btn btn-primary" style="background-color: blue; width:14% ">Yes</button>&emsp;&emsp;
+									
+										<button type="button" class="btn" data-dismiss="modal" aria-hidden="true">Cancle</button>
+									</div>
+
+									</form>
+								</div>
 							<?php
 								}
 							?>
 							</tbody>
 						</table>
-					</div>
+					</p>
 					
 					<div class="paging">
 						<div class="pagination pagination-centered">
@@ -235,45 +263,11 @@
 			require_once("./footer.php");
 		?>
 
-
-	<!-- Modal delete confirm -->
-		<script type="text/javascript" src="js/bootstrap-modalmanager.js"></script>
-		<script type="text/javascript" src="js/bootstrap-modal.js"></script>
-		<script type="text/javascript" src="js/jquery-scrolltofixed-min.js"></script>
-			
-			<form class="modal hide fade" id="delete_confirm" method="get" action="choosechapter.php">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4>Going to chapter</h4>
-				</div>
-				<div class="modal-body">
-					<label>Choose chapter (1-<?=count($row2)?>):</label>
-				<?php
-					for($i=0; $i< count($row2);$i++)
-					{
-						if($row2[$i][0] == $chapterID){
-							$curentchap = $i+1;
-						}
-					}
-				?>
-					<input class="slider" type="range" min="1" max="<?=count($row2)?>" step="1" name="destinaton_chap" value="<?=$curentchap?>">
-					<input type="text" value="<?=$curentchap?>" class="slider-input input-mini" require="require" min="1" max="<?=count($row2)?>" title="Please input number between 1-<?=count($row2)?>">
-					<input type="hidden" name="story_id" value="<?=$storyID?>">
-				</div>
-				<div class="modal-footer">
-					<button type="submit" class="btn btn-info">Go</button>
-					<a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</a>
-				</div>
-			</form>
-			<?php
-				if(isset($_GET['destinaton_chap'])){
-				echo('destinaton_chap');
-			}
-			?>
-
 		</div>
 	</div>
 </div>
 <!--<script>(function(d,s,a,i,j,r,l,m,t){try{l=d.getElementsByTagName('a');t=d.createElement('textarea');for(i=0;l.length-i;i++){try{a=l[i].href;s=a.indexOf('/cdn-cgi/l/email-protection');m=a.length;if(a&&s>-1&&m>28){j=28+s;s='';if(j<m){r='0x'+a.substr(j,2)|0;for(j+=2;j<m&&a.charAt(j)!='X';j+=2)s+='%'+('0'+('0x'+a.substr(j,2)^r).toString(16)).slice(-2);j++;s=decodeURIComponent(s)+a.substr(j,m-j)}t.innerHTML=s.replace(/</g,'&lt;').replace(/\>/g,'&gt;');l[i].href='mailto:'+t.value}}catch(e){}}}catch(e){}})(document);</script>  -->
 </body>
 </html>
+
+<!-- add target="_blank" into <a> tag to open URL in new tab -->

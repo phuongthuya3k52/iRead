@@ -52,7 +52,7 @@
 				<form class="navbar-search form-search pull-right" action="search.php" method="GET">
 					<div class="input-append">
 						<input type="text" name="search" class="search-query span2" placeholder="Enter story name...">
-						<button class="btn" type="submit" value=""><i class="icon-search"></i></button>
+						<button class="btn" type="submit" name="search_home" value=""><i class="icon-search"></i></button>
 					</div>
 				</form>
 			</div>

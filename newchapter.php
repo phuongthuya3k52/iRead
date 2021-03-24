@@ -42,7 +42,7 @@
 
     if(!isset($_SESSION['username'])){
 ?>
-    	<script >
+    <script >
 			alert ("You must login to access this page!");
 			window.location.replace("./login.php");
 		</script>
@@ -50,6 +50,7 @@
 	}else{		
 		if(isset($_GET['storyID']))
 		{
+
 			$storyID=$_GET['storyID'];
 			$sql = "Select * from story where storyID='" .$storyID . "'";
 			$row = query($sql);
@@ -72,19 +73,22 @@
 				if ($result1 != null){
 ?>				
 					<script>
-						alert("New chapter is saved succesfully!");
-						window.location.replace("./newchapter.php?storyID=<?=$row2[0][0]?>");
-					</script>
-<?php 		
-				}else{
-?>				
-					<script >
-						alert ("New chapter is not saved. Try again!");
-						window.location.replace("./newchapter.php?storyID=<?=$row2[0][0]?>");
+						alert ("New chapter is saved succesfully!");
+					//	window.location.replace("./mystories.php");
 					</script>
 <?php
+		
+				}else{  
+?>				
+					<script>
+						alert ("New chapter is not saved! Try again");
+				//		window.location.replace("./newchapter.php?storyID=<?=$row2[0][0]?>");
+					</script>
+		
+					
+<?php
 				}   
-		}
+			}
 		}
 							
 	}
@@ -115,7 +119,7 @@
 				</li>
 				<li class="ds-theloai">
 					<div itemscope>
-						<a href="./mystory.php?storyID=<?=$row[0][0]?>" itemprop="url"><?=decryptString($row[0][1])?></a>
+						<a href="./mystories.php?" itemprop="url"><?=decryptString($row[0][1])?></a>
 						<span class="divider">/</span>
 					</div>
 				</li>
@@ -169,11 +173,11 @@
 				  	</tr>
 				  	<tr>
 				  		<td></td>
-				  		<td style="width: 40%">
+				  		<td style="width: 50%">
 							<div style="text-align: center; margin:20px 0;">				  			<button style="width: 35%; height: 35px; float: left; font-size: 15px; text-align: center;" type="submit" class="btn btn-primary" data-loading-text="Loading" value="Submit">
 								Save
 							</button>
-							<a href="./mystories.php" style="width: 30%; height: 25px; float: right; font-size: 15px"  class="btn btn-default"> Cancle</a>
+							<a href="./chapterlist.php?storyID=<?=$storyID?>" style="width: 30%; height: 25px; float: right; font-size: 15px"  class="btn btn-default"> Cancle</a>
 							</div>
 
 

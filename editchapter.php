@@ -48,11 +48,21 @@
 		</script>
 <?php
 	}else{		
-		if(isset($_GET['storyID']))
+		if(isset($_GET['chapterID']))
 		{
-			$storyID=$_GET['storyID'];
-			$sql = "Select * from story where storyID='" .$storyID . "'";
+			$chapterID=$_GET['chapterID'];
+			$sql = "Select * from chapter where chapterID='" .$chapterID . "'";
 			$row = query($sql);
+
+			$storyID = $row[0][2];
+			$chapterName = decryptString($row[0][1]);
+			$chapterContent = $row[0][3];
+			$is_require = $row[0][4];
+
+			$sql2 = "Select * from story WHERE storyID='" .$storyID . "'";
+			$row2 = query($sql2);
+			$storyName = decryptString($row2[0][1]);
+
 
 			if(isset($_POST['requireCoin'])){
 				$requireCoin=1;
@@ -65,22 +75,22 @@
 				$title=encryptString($_POST['title']);
 				$content=$_POST['content'];
 				
-				$sql1 = "Insert into chapter values ('','" .$title ."','" .$storyID ."','" .$content ."','" .$requireCoin ."','0')"; 
-				
+				$sql1 = "UPDATE chapter SET  chapterName='" .$title ."',content='" .$content ."',requireCoin='" .$requireCoin ."' WHERE chapterID= '".$chapterID."'"; 
+
 				$result1 = execsql($sql1);
 
 				if ($result1 != null){
 ?>				
 					<script>
-						alert("New chapter is saved succesfully!");
-						window.location.replace("./newchapter.php?storyID=<?=$row2[0][0]?>");
+						alert("Update chapter succesfull!");
+						window.location.replace("./chapterlist.php?storyID=<?=$storyID?>");
 					</script>
 <?php 		
 				}else{
 ?>				
 					<script >
 						alert ("New chapter is not saved. Try again!");
-						window.location.replace("./newchapter.php?storyID=<?=$row2[0][0]?>");
+						window.location.replace("./editchapter.php?chapterID=<?=chapterID?>");
 					</script>
 <?php
 				}   
@@ -113,14 +123,20 @@
 						<span class="divider">/</span>
 					</div>
 				</li>
+				<li>
+					<div itemscope>
+						<a href="./mystories.php" itemprop="url"><span itemprop="title"><?=$storyName?></span></a>
+						<span class="divider">/</span>
+					</div>
+				</li>
 				<li class="ds-theloai">
 					<div itemscope>
-						<a href="./mystory.php?storyID=<?=$row[0][0]?>" itemprop="url"><?=decryptString($row[0][1])?></a>
+						<a href="./chapterlist.php?storyID=<?=$chapterID?>" itemprop="url"><?=$chapterName?></a>
 						<span class="divider">/</span>
 					</div>
 				</li>
 				<li class="active">
-						<strong>New Chapter</strong>
+						<strong>Edit</strong>
 				</li>	
 			</ul>
 			
@@ -133,10 +149,20 @@
 			<div class="clearfix" style="background-color: #f2f2f2">
 
 				<table width="90%" style=" margin-top: 20px; margin-bottom: 20px " align="center" border-spacing= "10px"  padding= "5px">
-					<form action="newchapter.php?storyID=<?=$row[0][0]?>" method="post" role="form">
+					<form action="editchapter.php?chapterID=<?=$chapterID?>" method="post" role="form">
 					<tr>
 						<td colspan="3">
-							<input style="width: 20px; height: 20px; " type="checkbox" id="requireCoin" name="requireCoin" value="1"> Require Coin 
+						<?php
+							if($is_require == 1){ 
+						?>
+							<input style="width: 20px; height: 20px; " type="checkbox" id="requireCoin" name="requireCoin" checked="checked" value="0"> Require Coin 
+						<?php
+							}else{ 
+						?>
+							<input style="width: 20px; height: 20px; " type="checkbox" id="requireCoin" name="requireCoin" value="1"> Require Coin
+						<?php
+							} 
+						?>
 						</td>
 					</tr>
 					<tr><td colspan="3">
@@ -144,7 +170,7 @@
 					</td></tr>
 					<tr>
 						<td colspan="3">
-							<input style= "width: 99%; height: 40px; font-size: 20px; font-weight: bold; text-align: center;" align="center" name="title" maxlength="200" type="text" required="required" placeholder="Story Title" class="breadcrumb" id="id_title" title="Title has maximum of 200 characters"/>
+							<input style= "width: 99%; height: 40px; font-size: 20px; font-weight: bold; text-align: center;" align="center" name="title" maxlength="200" type="text" required="required" placeholder="Story Title" class="breadcrumb" id="id_title" title="Title has maximum of 200 characters" value='<?=$chapterName?>'>
 						</td>
 
 					
@@ -161,7 +187,7 @@
 				  	<tr>
 					
       					<td colspan="3">
-      						<textarea style= "width: 90%;" name="content" id="content" required="required"></textarea>
+      						<textarea style= "width: 90%;" name="content" id="content" required="required"><?=$chapterContent?></textarea>
 				      	<script>CKEDITOR.replace('content');</script> 
 
       					</td>
@@ -169,11 +195,12 @@
 				  	</tr>
 				  	<tr>
 				  		<td></td>
-				  		<td style="width: 40%">
-							<div style="text-align: center; margin:20px 0;">				  			<button style="width: 35%; height: 35px; float: left; font-size: 15px; text-align: center;" type="submit" class="btn btn-primary" data-loading-text="Loading" value="Submit">
+				  		<td style="width: 50%;">
+							<div style="text-align: center; margin:20px 0;">	<button style="width: 35%; height: 35px; float: left; font-size: 15px; text-align: center;" type="submit" class="btn btn-primary" data-loading-text="Loading" value="Submit">
 								Save
 							</button>
-							<a href="./mystories.php" style="width: 30%; height: 25px; float: right; font-size: 15px"  class="btn btn-default"> Cancle</a>
+							<a href="./chapterlist.php?storyID=<?=$storyID?>" style="width: 30%; height: 25px; float: right; font-size: 15px"  class="btn btn-default"> Cancle</a>
+							
 							</div>
 
 

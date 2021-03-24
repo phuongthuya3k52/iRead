@@ -243,12 +243,41 @@
 	<!--		<div class="thumbnails" >			-->
 			<div class="clearfix" style="background-color: #f2f2f2" >
 				
-				<table width="99%" style=" margin-top: 20px; margin-bottom: 20px;" align="center" border-spacing= "10px" >
+				<table width="95%" style=" margin-top: 20px; margin-bottom: 20px;" align="center" border-spacing= "10px" >
 					<form action="editstory.php?storyID=<?=$storyID?>" method="post" role="form" enctype="multipart/form-data">
 					<tr>
-						<td rowspan="4" >
-							<img style="background-color: white; width:200px; height: 400px;  margin-top: 0px; " id="image" src="./img/<?=$row4[0][4]?>"/>
-							<input style = "width:100%;" id="inpImage" type='file' name="inpImage">
+						<td style="width: 40%">
+							<label for="id_title" class="control-label requiredField"> Cover image<span class="asteriskField">*</span></label>
+							 
+						</td>	
+						
+						<td>
+							<label for="id_title" class="control-label requiredField">Status<span class="asteriskField">*</span></label>
+						</td>
+						<td colspan="2" style="width: 60%">
+							
+							<select name="status" id="status" style="width: 90%">
+							<?php
+							if($row4[0][7] == "On going"){
+							?>
+      							<option selected value="On going">On going</option>
+      							<option value="Completed">Complete</option>
+      						<?php
+      						}else{
+							?>
+								<option value="On going">On going</option>
+      							<option selected value="Completed">Completed</option>
+							<?php
+							}
+							?>
+      						</select>
+						</td>
+
+					</tr>
+					<tr>
+						<td rowspan="2" style="width: 40%">
+							<img style="background-color: white; width:230px; height: 300px; margin-top: 0px; " id="image" src="./img/<?=$row4[0][4]?>"/>
+							<input style = "width: 100%;" id="inpImage" type='file' name="inpImage">
 
 							<script type="text/javascript">
 							// Change URL of image to base64
@@ -270,39 +299,13 @@
 								window.onload = function () {
             						document.getElementById("inpImage").addEventListener("change", readFile);
         						};
-							</script> 
-						</td>	
-						
-						<td>
-							<label for="id_title" class="control-label requiredField">Status<span class="asteriskField">*</span></label>
+							</script>
 						</td>
-						<td colspan="2">
-							
-							<select name="status" id="status">
-							<?php
-							if($row4[0][7] == "On going"){
-							?>
-      							<option selected value="On going">On going</option>
-      							<option value="Completed">Complete</option>
-      						<?php
-      						}else{
-							?>
-								<option value="On going">On going</option>
-      							<option selected value="Completed">Completed</option>
-							<?php
-							}
-							?>
-      						</select>
-						</td>
-
-					</tr>
-					<tr>
-						
 						<td>
 							<label for="id_title" class="control-label requiredField">Title<span class="asteriskField">*</span></label>
 						</td>
-						<td colspan="2">
-							<input style= "width: 100%;" value='<?=decryptString($row4[0][1])?>' name="title" maxlength="200" type="text" required="required" placeholder="Story Title" class="textinput textInput" id="id_title" title="Title has maximum of 200 characters"/>
+						<td colspan="2" style="width: 60%">
+							<input style= "width: 88%;" value='<?=decryptString($row4[0][1])?>' name="title" maxlength="200" type="text" required="required" placeholder="Story Title" class="textinput textInput" id="id_title" title="Title has maximum of 200 characters"/>
 						</td>
 
 					</tr>
@@ -310,7 +313,7 @@
 						<td>
 							<label for="id_catergory" class="control-label requiredField">Categories<span class="asteriskField">*</span></label>
 						</td>
-						<td colspan="2">
+						<td colspan="2" style="width: 60%">
 						
 							<?php
 								$sql = "select * from category";
@@ -326,7 +329,7 @@
 									{
 								?>	
 										<ul class="span2 unstyled">
-											<li style="width:100%;">
+											<li style="width:100%; font-size: 14px; float: left;">
 												<input id="checkbox" type="checkbox" name="checkbox[]" checked="checked" value="<?=$category[$i][0]?>"><?=$category[$i][1]?>
 											</li>
 										</ul>
@@ -334,7 +337,7 @@
                 					}else{
                 				?>
                 						<ul class="span2 unstyled">
-											<li style="width:100%;">
+											<li style="width:100%;  font-size: 14px; float: left;">
 												<input type="checkbox" name="checkbox[]" value="<?=$category[$i][0]?>"><?=$category[$i][1]?>
 											</li>
 										</ul>
@@ -346,21 +349,22 @@
 						</td>
 					</tr>
 					<tr>
+						<td></td>
 						<td>
 							<label for="id_description" class="control-label requiredField">Descriptions</label>
 						</td>
-						<td colspan="2">
-							<textarea style= "width: 100%; resize: none;" name="descriptions" type="textarea" rows="15" placeholder="Story Descriptions" class="textinput textInput" id="id_description" /><?=decryptString($row4[0][3])?></textarea> 
+						<td colspan="2" style="width: 60%">
+							<textarea style= "width: 88%; resize: none;" name="descriptions" type="textarea" rows="15" placeholder="Story Descriptions" class="textinput textInput" id="id_description" /><?=decryptString($row4[0][3])?></textarea> 
 					</tr>
 					<tr>
 						<td></td>
 						<td></td>
-						<td>
+						<td style="text-align: center;">
 							<button style="width: 85px; height: 35px; font-size: 15" type="submit" name ="submit" class="btn btn-primary" data-loading-text="Loading" value="Submit">
 								Save
 							</button><br>
 						</td>
-						<td>
+						<td style="text-align: center;">
 							
 							<script type="text/javascript">
 								//Clear function

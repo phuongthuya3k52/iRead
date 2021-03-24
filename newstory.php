@@ -214,9 +214,21 @@
 				<table width="95%" style=" margin-top: 20px; margin-bottom: 20px " align="center" border-spacing= "10px">
 					<form action="newstory.php" method="post" role="form" enctype="multipart/form-data">
 					<tr>
-						<td rowspan="3">
-							<label for="id_title" class="control-label requiredField"> Cover image<span class="asteriskField">*: </span></label>
-							<img style="background-color: white; width:100%; height: 400px;  margin-top: 0px" id="image" />
+						<td style="width: 40%">
+							<label for="id_title" class="control-label requiredField"> Cover image<span class="asteriskField">* </span></label>
+							
+						</td>
+						<td>
+							<label for="id_title" class="control-label requiredField">Title<span class="asteriskField">*</span></label>
+						</td>
+						<td colspan="2" style="width: 60%">
+							<input style= "width: 90%;" name="title" maxlength="200" type="text" required="required" placeholder="Story Title" class="textinput textInput" id="id_title" title="Title has maximum of 200 characters"/>
+						</td>
+
+					</tr>
+					<tr>
+						<td style="width: 40%">
+							<img style="background-color: white; width:230px; height: 300px;  margin-top: 0px" id="image" />
 						
 							<input style = "width:100%;" id="inpImage" type='file' name="inpImage">
 
@@ -243,18 +255,9 @@
 							</script> 
 						</td>
 						<td>
-							<label for="id_title" class="control-label requiredField">Title<span class="asteriskField">*</span></label>
-						</td>
-						<td colspan="2">
-							<input style= "width: 100%;" name="title" maxlength="200" type="text" required="required" placeholder="Story Title" class="textinput textInput" id="id_title" title="Title has maximum of 200 characters"/>
-						</td>
-
-					</tr>
-					<tr>
-						<td>
 							<label for="id_catergory" class="control-label requiredField">Categories<span class="asteriskField">*</span></label>
 						</td>
-						<td colspan="2">
+						<td colspan="2" style="width: 60%">
 							<?php
 									$sql = "select * from category";
 									$category = query($sql);
@@ -263,7 +266,7 @@
 									{
 								?>	
 									<ul class="span2 unstyled">
-										<li style="width:100%;">
+										<li style="width:100%; font-size: 14px; float: left;">
 											<input id="checkbox" type="checkbox" id="checkbox" name="checkbox[]" value="<?=$category[$i][0]?>"><?=$category[$i][1]?>
 										</li>
 									</ul>
@@ -274,21 +277,23 @@
 						</td>
 					</tr>
 					<tr>
+						<td></td>
 						<td>
 							<label for="id_description" class="control-label requiredField">Descriptions</label>
 						</td>
-						<td colspan="2">
-							<textarea style= "width: 100%; resize: none;" name="descriptions" type="textarea" rows="15" placeholder="Story Descriptions" class="textinput textInput" id="id_description" /></textarea> 
+						<td colspan="2" style="width: 60%">
+							<textarea style= "width: 90%; resize: none;" name="descriptions" type="textarea" rows="15" placeholder="Story Descriptions" class="textinput textInput" id="id_description" /></textarea> 
+						</td>
 					</tr>
 					<tr>
 						<td></td>
 						<td></td>
-						<td>
+						<td style="text-align: center;">
 							<button style="width: 85px; height: 35px; font-size: 15" type="submit" name ="submit" class="btn btn-primary" data-loading-text="Loading" value="Submit">
 								Next
 							</button><br>
 						</td>
-						<td>
+						<td style="text-align: center;">
 							
 							<script type="text/javascript">
 								//Clear function

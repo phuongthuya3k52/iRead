@@ -94,8 +94,8 @@
 							<li style="float: right;width: 50%"><a href="./newstory.php?" style="width: 30%; height: auto; min-height: 25px; float: right; font-size: 15px; background-color: blue"  class="btn btn-primary"><i class="icon-plus icon-large"></i> New Story</a></li>
 						</ul>
 
-						<div style="margin-top: 120px; width:100%">
-						<table class="table">
+						<div style="margin-top: 120px; width:100%"> 
+						<table class="table" style="width: 100%">
 							<thead>
 								<tr >
 								<th style="text-align: center; font-size: 14px; width: 5%;">No.</th>
@@ -145,6 +145,8 @@
 								for($i=0; $i < count($row2); $i++)
 								{
 									$storyID = $row2[$i][0];
+									$storyName = $row2[$i][1];
+									$storyImage = $row2[$i][4];
 									$viewNumber = $row2[$i][5];
 									$voteNumber = $row2[$i][6];
 							?>	
@@ -152,8 +154,8 @@
 									<td style="padding-top: 20px; width: 5%;"><?=$i+1?></td>
 									<td class="nav-list name_list" style="width: 20%">
 										<div class="media truyen-item">
-											<a class="pull-left" href="chapterlist.php?storyID=<?=$row1[$i][0]?>">
-												<img class="media-object" alt="<?=$row1[$i][1]?>" style="width: 100%; height: auto;" src="img/<?=$row1[$i][4]?>">
+											<a class="pull-left" href="chapterlist.php?storyID=<?=$row2[$i][0]?>">
+												<img class="media-object" alt="<?=$row2[$i][1]?>" style="width: 100%; height: auto;" src="img/<?=$storyImage?>">
 											</a>
 										</div>
 										
@@ -161,7 +163,7 @@
 									<td style="width: 47%">
 										<div  style="text-align: center; width: 100%">
 											<div class="media-body">
-												<a href="chapterlist.php?storyID=<?=$row1[$i][0]?>" target="_blank"><h2 class="media-heading" style="font-size: 15px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#333333;"><?=decryptString($row2[$i][1])?></h2></a>
+												<a href="chapterlist.php?storyID=<?=$storyID?>"><h2 class="media-heading" style="font-size: 15px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#333333;"><?=decryptString($storyName)?></h2></a>
 												
 												<?php
 													$sql3 = "Select * from category INNER JOIN story_category ON category.categoryID = story_category.categoryID WHERE storyID='" .$storyID . "'";
@@ -199,12 +201,42 @@
 									<td style="width: 10%; text-align: center;"><?=$row2[$i][7]?></td>
 									<td style="width: 11%; text-align: center; ">
 										<a href="editstory.php?storyID=<?=$storyID?>" class="btn"><i class="icon-edit"></i></a>
-										<a href="#delete_confirm" class="btn btn-warning" ><i class="icon-remove-sign"></i></a>
+										<button type="button" name="btn_delete" id="btn_delete<?=$storyID?>" class="btn btn-warning" data-toggle="modal" data-target="#delete_confirm<?=$storyID?>"><i class="icon-remove-sign"></i>
+											</button>
+									
 									</td>
 								</tr>
+
+						<!-- Delete confirm modal -->
+								<script type="text/javascript" src="js/bootstrap-modalmanager.js"></script>
+								<script type="text/javascript" src="js/bootstrap-modal.js"></script>
+
+								<div class="modal hide fade" id="delete_confirm<?=$storyID?>" style="display: none;">
+									<form  method="POST" action="delete.php" >
+									<div class="modal-header">
+										<span class="disable" data-dismiss="modal" aria-hidden="true" style="color: #ff4444; font-size: 44px; font-weight: bold; float: right;cursor:pointer;">&times;</span>
+										<h3>Delete Story</h3>
+										
+									</div>
+									<div class="modal-body" style="text-align: center; margin-top:0px">
+										<h2>Are you sure to Delete this story?</h2>
+										<img style="width: 150px; height: 200px;" src="img/<?=$storyImage?>">
+										<h5><?=decryptString($storyName)?></h5>
+										<input type="hidden" name="story_id" value="<?=$storyID?>">
+									
+
+										<button type="submit" name="cf_del_story" class="btn btn-primary" style="background-color: blue; width:14% ">Yes</button>&emsp;&emsp;
+									
+										<button type="button" class="btn" data-dismiss="modal" aria-hidden="true">Cancle</button>
+									</div>
+
+									</form>
+								</div>
+			
 							<?php
 								}
 							?>
+
 							</tbody>
 						</table>
 						</div>
@@ -244,40 +276,7 @@
 		?>
 
 
-	<!-- Modal delete confirm -->
-		<script type="text/javascript" src="js/bootstrap-modalmanager.js"></script>
-		<script type="text/javascript" src="js/bootstrap-modal.js"></script>
-		<script type="text/javascript" src="js/jquery-scrolltofixed-min.js"></script>
-			
-			<form class="modal hide fade" id="delete_confirm" method="get" action="choosechapter.php">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4>Going to chapter</h4>
-				</div>
-				<div class="modal-body">
-					<label>Choose chapter (1-<?=count($row2)?>):</label>
-				<?php
-					for($i=0; $i< count($row2);$i++)
-					{
-						if($row2[$i][0] == $chapterID){
-							$curentchap = $i+1;
-						}
-					}
-				?>
-					<input class="slider" type="range" min="1" max="<?=count($row2)?>" step="1" name="destinaton_chap" value="<?=$curentchap?>">
-					<input type="text" value="<?=$curentchap?>" class="slider-input input-mini" require="require" min="1" max="<?=count($row2)?>" title="Please input number between 1-<?=count($row2)?>">
-					<input type="hidden" name="story_id" value="<?=$storyID?>">
-				</div>
-				<div class="modal-footer">
-					<button type="submit" class="btn btn-info">Go</button>
-					<a href="#" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</a>
-				</div>
-			</form>
-			<?php
-				if(isset($_GET['destinaton_chap'])){
-				echo('destinaton_chap');
-			}
-			?>
+	
 
 		</div>
 	</div>
