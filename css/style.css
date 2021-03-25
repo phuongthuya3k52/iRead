@@ -596,10 +596,6 @@ transform:translate(-50%,-50%) scale(1);
 
 
 /*Form résposive*/
-.label {
-  padding: 12px 12px 12px 0;
-  display: inline-block;
-}
 
 .container1 {
   border-radius: 5px;
@@ -609,13 +605,13 @@ transform:translate(-50%,-50%) scale(1);
 
 .col-25 {
   float: left;
-  width: 25%;
+  width: 50%;
   margin-top: 6px;
 }
 
 .col-75 {
   float: left;
-  width: 75%;
+  width: 50%;
   margin-top: 6px;
 }
 

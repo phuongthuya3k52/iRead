@@ -101,8 +101,7 @@
 						<h3 style="color:#D36337">Members	</h3>
 						<hr>	
 						<h2 style="color:#D36337">About: <?=count($row)?> results</h2>  
-						<ul class="thumbnails">
-							
+						<ul class="thumbnails">							
 
 						<?php
 						// Pagination
@@ -143,9 +142,7 @@
 								$memberID = $row2[$i][0];
 								$memberName = $row2[$i][1];
 								$image = $row2[$i][6];
-						?>
-
-							
+						?>							
 								<li style="float: left; width: 100%" >
 									<a href="member.php?memberID=<?=$memberID?>" class="thumbnail"style= "width: 96%; height: 62px; color: black;">
 										<img style="width: 60px; height: 60px; float: left;" alt="<?=$memberName?>" src="img/<?=$image?>">
@@ -155,8 +152,7 @@
 								</li>  
 						<?php
 							}
-						?>
-							
+						?>							
 						</ul>
 					<!--<div style="text-align: center; font-size: 15px"> -->
 					<div class="paging">

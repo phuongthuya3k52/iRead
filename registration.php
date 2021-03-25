@@ -135,7 +135,7 @@
 											</label>
 										</td>
 										<td>
-											<input name="fullname" maxlength="254" type="text" required="required" placeholder="Fullname" class="textinput textInput" id="id_fullname"/>
+											<input name="fullname" maxlength="254" type="text" required="required" placeholder="Full name" class="textinput textInput" id="id_fullname" title="Max length of Full name is 254 characters"/>
 										</td>
 									</tr>
 
@@ -174,7 +174,7 @@
 										</td>
 										<td>
 											<div class="controls">
-											<input name="password" placeholder="Password" type="password" class="textinput textInput" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 6 or more characters" required>
+											<input name="password" placeholder="Password" type="password" class="textinput textInput" id="password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6" required = "required">
 										<!--	<label class='error' id = 'erPassword' style="display: none;"> This username already exists. Please choose another username </label>  -->
 										</td>
 									
@@ -183,7 +183,7 @@
 											<label for="id_phonenumber" class="control-label">Phone number</label>
 										</td>
 										<td>
-											<input name="phonenumber" maxlength="15" type="text" autofocus="placeholder="Phone number" class="textinput textInput" id="id_phonenumber"/>
+											<input name="phonenumber" maxlength="15" type="text"placeholder="Phone number" class="textinput textInput" id="id_phonenumber" pattern="^\+?\d{1,3}?[- .]?\(?(?:\d{2,3})\)?[- .]?\d\d\d[- .]?\d\d\d\d$" title="Please enter the correct format phone number " />
 										</td>
 									
 									</tr>
