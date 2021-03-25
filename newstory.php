@@ -134,7 +134,12 @@
 		{
 			$title=encryptString($_POST['title']);
 			$descriptions=encryptString($_POST['descriptions']);
-			$image=$_FILES['inpImage']['name'];
+			if($_FILES['inpImage']['name'] != ""){
+				$image=$_FILES['inpImage']['name'];
+			}else{
+				$image="default cover book.png";
+			}
+			
 			$chkbox = $_POST['checkbox'];
 
 			$sql1 = "Insert into story values ('','" .$title ."','" .$memberID ."','" .$descriptions ."','" .$image ."','0','0','On going')"; 
@@ -228,7 +233,7 @@
 					</tr>
 					<tr>
 						<td style="width: 40%">
-							<img style="background-color: white; width:230px; height: 300px;  margin-top: 0px" id="image" />
+							<img style="background-color: white; width:230px; height: 300px;  margin-top: 0px" id="image" src="./img/default cover book.png" />
 						
 							<input style = "width:100%;" id="inpImage" type='file' name="inpImage">
 

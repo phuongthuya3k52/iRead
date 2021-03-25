@@ -324,7 +324,7 @@ myInput.onkeyup = function() {
 		if($errormsg == False){
 			$sql= "Insert into account values ('" .$uname ."','" .$pass."','member','".$email ."')";
 
-			$sql1 = "Insert into member values ('','" .$fullname ."','" .$dob ."','" .$phone ."','" .$uname ."','0')";  
+			$sql1 = "Insert into member values ('','" .$fullname ."','" .$dob ."','" .$phone ."','" .$uname ."','0','default avt.jpg')";  
 
 			$result = execsql($sql);
 			echo('result: =' .$result);

@@ -50,12 +50,37 @@
 					</li>
 				</ul>
 				<form class="navbar-search form-search pull-right" action="search.php" method="GET">
+					
 					<div class="input-append">
-						<input type="text" name="search" class="search-query span2" placeholder="Enter story name...">
-						<button class="btn" type="submit" name="search_home" value=""><i class="icon-search"></i></button>
+							<input type="text" name="search" class="search-query span2" placeholder="Enter story name..." id = "myInput" onkeyup="filterFunction()" onclick="myFunction()">
+							<button class="btn" type="submit" name="search_home"><i class="icon-search"></i></button>
 					</div>
 				</form>
 			</div>
 		</div>
 	</div>
 </div>
+
+<script>
+/* When the user clicks on the button,
+toggle between hiding and showing the dropdown content */
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+
+function filterFunction() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  div = document.getElementById("myDropdown");
+  a = div.getElementsByTagName("a");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+</script>

@@ -54,7 +54,7 @@
 		</script>
 <?php
 	}else{
-		$sql = "Select * from member where username='" .$_SESSION['username'] . "'";
+		$sql = "SELECT * FROM member WHERE username='" .$_SESSION['username'] . "'";
 		$row = query($sql);
 		$memberID = $row[0][0];
 
