@@ -41,7 +41,6 @@
 					</li>
 				
 					<li><a href=""><i class="fa fa-calendar-check-o" aria-hidden="true"></i> Attendence</a></li>
-					<li><a href=""><i class="fa fa-user" aria-hidden="true"></i></i> My Account</a></li>
 				
 					
 					<li class="dropdown">
@@ -99,8 +98,8 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i></a>
 						<ul class="dropdown-menu">
-							<li><a href="./newstory.php"><i class="icon-refresh"></i>New story</a></li>
-							<li><a href="./mystories.php"><i class="icon-refresh"></i>My stories</a></li>
+							<li><a href="./profile.php"><i class="icon-user" aria-hidden="true"></i>My Account</a></li>
+							<li><a href="./mystories.php"><i class="icon-folder-open"></i>My Stories</a></li>
 							<li><a href="./logout.php"><i class="icon-arrow-right"></i> Logout</a></li>
 							
 						</ul>
@@ -110,7 +109,7 @@
 				<form class="navbar-search form-search pull-right" action="search.php" method="GET">
 					<div class="input-append">
 						<input type="text" name="search" class="search-query span2" placeholder="Enter name...">
-						<button class="btn" type="submit" value=""><i class="icon-search"></i></button>
+						<button class="btn" type="submit"  value=""><i class="icon-search"></i></button>
 					</div>
 				</form>  
 			</div>

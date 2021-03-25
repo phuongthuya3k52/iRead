@@ -101,7 +101,7 @@
 						<div class="lww">
 						<p>
 						<span class="xleft">Author:</span>
-						<span>&nbsp;<a href="#"><?=$row1[0][1]?></a></span>
+						<span>&nbsp;<a href="./member.php?memberID=<?=$row1[0][0]?>"><?=$row1[0][1]?></a></span>
 						</p>
 
 						<p>

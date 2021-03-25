@@ -36,21 +36,23 @@
 		</script>
 <?php
 	}else{
-		if(!isset($_GET['search']) && !isset($_GET['search_home']) || $_GET['search' ] == ""){
+		if(!isset($_GET['memberID'])){
 		?>
     		<script >
-				alert ("You must enter at least a keyword to search!");
+				alert ("There is no member");
 				window.location.replace("./home.php");
 			</script>
 		<?php	
 		}else{
-			$search = $_GET['search'];
+			$memberID = $_GET['memberID'];
 
-			$sql = "SELECT * FROM member WHERE fullName LIKE '%" .$search . "%'";
+			$sql = "SELECT * FROM member WHERE memberID = '" .$memberID . "'";
 			//echo($sql);
 			$row = query($sql);
+			$memberName = $row[0][1];
+			$image = $row[0][6];
 
-			$sql1 = "SELECT * FROM story WHERE storyName LIKE '%" .$search . "%'";
+			$sql1 = "SELECT * FROM story WHERE memberID = '" .$memberID . "'";
 			$row1 = query($sql1);
 			//echo($sql1);
 
@@ -76,7 +78,7 @@
 						<span class="divider">/</span>
 					</div>
 				</li>
-				<li class="active"><strong>Search</strong></li>
+				<li class="active"><strong>Member</strong></li>
 			</ul>
 
 			<div class="row wrapper">
@@ -87,109 +89,25 @@
 
 				<!-- Result of member -->
 					<div class="thumbnails">
-						<div style =" width: 100%; text-align: center;" >
-
-						<form action="search.php" method="GET">
-							<input type="text" name="search" class=" " placeholder="Enter story name..." value="<?=$search?>" style =" width: 60%; margin-top: 25px;margin-left: 25px;">
-
-							<button class="btn" type="submit" name="search_home" style="float: right; margin-top: 25px; margin-right: 40px; width: 15%"><i class="icon-search"></i></button>
-
-						</form>
+						<div class="bg-img">
+  							<img src="./img/<?=$image?>" class="avatar" style="border-radius: 50%;  ">
 						</div>
+						<h3 style="text-align: center;position: relative; margin-top:100px; top: 50%; left: 50%; transform: translate(-50%, -25%)"><?=$memberName?></h3>
 
-
-						<h3 style="color:#D36337">Members	</h3>
-						<hr>	
-						<h2 style="color:#D36337">About: <?=count($row)?> results</h2>  
-						<ul class="thumbnails">
-							
-
-						<?php
-						// Pagination
-
-							$allrow = count($row);
-							$pagesize = 5;
-							$allpage = 1;
-
-							//Calculate how many pages there are all 
-							if($allrow % $pagesize == 0){
-								$allpage = $allrow / $pagesize;
-							}else{
-								$allpage = (int)($allrow / $pagesize) + 1;
-							}
-
-							$beginrow = 1;
-							$currentpage = 1;
-
-							// If the current page is page 1, then select from the first row
-
-
-							if((!isset($_GET['currentpage'])) || ($_GET['currentpage'] == '1'))
-							{
-								$beginrow = 0;
-								$currentpage = 1;
-							}else{
-								// Select the starting row and get current page
-								$beginrow = ($_GET['currentpage'] - 1) * $pagesize;
-								$currentpage = $_GET['currentpage'];
-							}
-
-							$sql2= "SELECT * FROM member WHERE fullName LIKE '%" .$search . "%' LIMIT {$beginrow} , {$pagesize}";
-							$row2=query($sql2); 
-
-
-							for ($i=0; $i < count($row2);$i++)
-							{
-								$memberID = $row2[$i][0];
-								$memberName = $row2[$i][1];
-								$image = $row2[$i][6];
-						?>
-
-							
-								<li style="float: left; width: 100%" >
-									<a href="member.php?memberID=<?=$memberID?>" class="thumbnail"style= "width: 96%; height: 62px; color: black;">
-										<img style="width: 60px; height: 60px; float: left;" alt="<?=$memberName?>" src="img/<?=$image?>">
-							
-									<h5 style="width: 80%; height: auto; margin-left: 80px"><?=$memberName?></h5>
-										</a>
-								</li>  
-						<?php
-							}
-						?>
-							
-						</ul>
-					<!--<div style="text-align: center; font-size: 15px"> -->
-					<div class="paging">
-						<div class="pagination pagination-centered">
-						<ul>
-							<li class="disable"><a href="" style="color: #6C6A6A">Pages</a></li>	
-							<?php
-							// Link pagination
-							for($i = 1; $i <= $allpage; $i++)
-							{
-								if($currentpage == $i){
-								?>
-									<li class="active"><a href=""><?=$i?></a></li> 
-								<?php
-								}else{
-							?>
-									<li class="disable"><a href="home.php?currentpage=<?=$i?>"><?php echo $i ." "; ?></a></li>
-							<?php
-								}
-							}
-							?>
-							<li class="disable"><a href="" style="color: #6C6A6A">Pages</a></li>
-						</ul>
-						</div>
-					</div>
-				</div>
-
+						
+				  
 					
 				<!-- Result of Story  -->
 					<div class="thumbnails">
-						<h3 style="color: #D36337">Stories	</h3>
-						<hr>	
-						<h2 style="color: #D36337">About: <?=count($row1)?> results</h2>  
+					<?php
+					if(count($row1) == 0){
+					?>
+						<div style="text-align: center"><img src="./img/nothing.jpg?>"  style="border-radius: 10%; width: 50%"></div>
+					<?php
+					}else{
+					?>
+						<h3 style="color: #D36337">Uploaded Stories (<?=count($row1)?>)</h3>
+						<hr>	  
 						<ul class="thumbnails">
 
 						<?php
@@ -222,7 +140,7 @@
 								$currentpage = $_GET['currentpage'];
 							}
 
-							$sql3= "SELECT * FROM story WHERE storyName LIKE '%" .$search . "%' LIMIT {$beginrow} , {$pagesize}";
+							$sql3= "SELECT * FROM story WHERE memberID= '" .$memberID . "' LIMIT {$beginrow} , {$pagesize}";
 
 							$row3=query($sql3);  
 
@@ -261,6 +179,7 @@
 							}
 						?>
 						</ul>
+					
 					<!--<div style="text-align: center; font-size: 15px"> -->
 					<div class="paging">
 						<div class="pagination pagination-centered">
@@ -285,6 +204,9 @@
 						</ul>
 						</div>
 					</div>
+					<?php
+						}
+					?>
 
 					</div>  
 				</div>

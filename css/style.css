@@ -563,4 +563,73 @@ transform:translate(-50%,-50%) scale(1);
 
 .thumbnail a{color: black;}
 
+.thumbnail {border: 1px solid #08c }
 
+
+/* CSS for avartar */
+.bg-img {
+  /* The image used */
+  background-image: url("../img/default-cover1.png");
+
+  height: 380px;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  border: 1px solid black;
+}
+
+/* Add styles to the form avatar */
+.avatar {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -20%);
+  margin-top: 20px;
+  max-width: 300px;
+  width: 50%;
+  padding: 16px;
+  background-color: white;
+}
+
+
+/*Form résposive*/
+.label {
+  padding: 12px 12px 12px 0;
+  display: inline-block;
+}
+
+.container1 {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+}
+
+.col-25 {
+  float: left;
+  width: 25%;
+  margin-top: 6px;
+}
+
+.col-75 {
+  float: left;
+  width: 75%;
+  margin-top: 6px;
+}
+
+/* Clear floats after the columns */
+.row1:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .col-25, .col-75, input[type=submit] {
+    width: 100%;
+    margin-top: 0;
+  }
+}
