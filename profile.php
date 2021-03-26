@@ -86,7 +86,7 @@
 				<!-- Result of member -->
 					<div class="thumbnails">
 						<div class="bg-img">
-  								<img src="./img/<?=$image?>" class="avatar" style="border-radius: 50%;  ">
+  								<a href="#change_avatar" data-toggle="modal"><img src="./img/<?=$image?>" class="avatar" style=" width: 310px; height: 310px;border-radius: 50%;"></a>
 						</div>
 						<h3 style="text-align: center;position: relative; margin-top:100px; top: 50%; left: 50%; transform: translate(-50%, -25%)"><?=$memberName?></h3>
 						<div style="text-align: center;position: relative; font-size: 20px; font-weight: bold;">
@@ -282,11 +282,57 @@
 	</div>
 </div>
 
-
-<!-- Change_pw_confirm modal -->
+<!-- Change_avatar modal -->
 	<script type="text/javascript" src="js/bootstrap-modalmanager.js"></script>
 	<script type="text/javascript" src="js/bootstrap-modal.js"></script>
+	<div class="modal hide fade" id="change_avatar" style="display: none;">
+	<form  method="POST" action="profile.php" role="form" enctype="multipart/form-data" >
+		<div class="modal-header">
+			<span class="disable" data-dismiss="modal" aria-hidden="true" style="color: #ff4444; font-size: 44px; font-weight: bold; float: right;cursor:pointer;">&times;</span>
+			<h3>Change Avatar</h3>
+										
+		</div>
+		<div class="modal-body" style="text-align: center; margin-top:-10px">
+			<h2>Choose one Image to be new your avatar! </h2>
+			<div style="width:100%">
+				<img style="width: 180px; height: 180px; border-radius: 50%; border: 0.5px solid black" src="./img/<?=$image?>" id="img_avatar">
+			</div>
+			<div style="width: 100%; text-align: center; margin-left:35px; margin-top: 15px">
+				<input type="file" id="inpAvt" name="inpAvt" value="<?=$image?>">
+			</div>
+			<script type="text/javascript">
+			// Change URL of image to base64
+				function readFile() {
 
+            		if (this.files && this.files[0]) {
+
+                		var fileReader = new FileReader();
+
+                		fileReader.addEventListener("load", function (e) {
+                    	document.getElementById("img_avatar").src = e.target.result;
+                						});
+
+                		fileReader.readAsDataURL(this.files[0]);
+            						}
+        						}
+
+        	// Show imgae to review
+				window.onload = function () {
+            		document.getElementById("inpAvt").addEventListener("change", readFile);
+        						};
+			</script> 
+
+			<div style="margin-top: 20px">	
+				<button type="submit" name="cf_change_avatar" class="btn btn-primary" style="background-color: blue; width:14% ">Submit</button>&emsp;&emsp;
+									
+				<button type="button" class="btn" data-dismiss="modal" aria-hidden="true">Cancle</button>
+			</div>
+		</div>
+
+	</form>
+	</div>
+
+<!-- Change_pw_confirm modal -->
 	<div class="modal hide fade" id="change_pw_confirm" style="display: none;">
 	<form  method="POST" action="profile.php" >
 		<div class="modal-header">
@@ -298,11 +344,11 @@
 			<div class="container1" style="padding: 10px">
 				<div class="row1">
       				<div class="col-25">	
-    					<label><b>Old Password</b></label>
-    					<div class="control"><input style="width: 70%" type="password" placeholder="Old Password" name="old_password" required="required" id="old_password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6 characters"></span></div>	
+    					<label><b>Current Password</b></label>
+    					<div class="control"><input style="width: 70%" type="password" placeholder="Current Password" name="cur_password" required="required" id="cur_password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6 characters"></span></div>	
 
     					<label><b>New Password</b></label>
-    					<div class="control"><input style="width: 70%" type="password" placeholder="New Password" name="new_password" required="required" id="new_password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6 characters"></span></div>	
+    					<div class="control"><input style="width: 70%" type="password" placeholder="New Password" name="new_password" required="required" id="new_password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6 characters" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"></span></div>	
 
     					<label><b>Confirm New Password</b></label>
     					<div class="control"><input style="width: 70%" type="password" placeholder="Confirm New Password" name="cf_new_password" required="required" id="cf_new_password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6 characters"></span></div>
@@ -327,7 +373,7 @@
 			<input type="hidden" name="story_id" value="<?=$storyID?>">
 									
 
-			<button type="submit" name="cf_del_story" class="btn btn-primary" style="background-color: blue; width:14% ">Yes</button>&emsp;&emsp;
+			<button type="submit" name="cf_change_pw" class="btn btn-primary" style="background-color: blue; width:14% ">Yes</button>&emsp;&emsp;
 									
 			<button type="button" class="btn" data-dismiss="modal" aria-hidden="true">Cancle</button>
 		</div>
@@ -344,7 +390,7 @@
 // Update Infomation
 	if(isset($_POST['info_submit']))
 	{
-		echo("POST['info_submit'] = ".$_POST['info_submit']);
+		//echo("POST['info_submit'] = ".$_POST['info_submit']);
 		if(isset($_POST['fullname']) && isset($_POST['email']) && $_POST['fullname'] != "" && $_POST['email'] != "")
 		{
 			$fullname=$_POST['fullname'];
@@ -385,6 +431,145 @@
 <?php
 			}
 			 				
+		}
+	}
+
+// Change Password
+	if(isset($_POST['cf_change_pw']))
+	{
+		//echo("POST['info_submit'] = ".$_POST['info_submit']);
+		if(isset($_POST['cur_password']) && isset($_POST['new_password']) && isset($_POST['cf_new_password'])) 
+		{
+			$error_change_pass = array();
+			$cur_password = $_POST['cur_password'];
+			$new_password = $_POST['new_password'];
+			$cf_new_password = $_POST['cf_new_password'];
+
+			if(md5($cur_password) != $pass){
+				$error_change_pass[] = "The Current Password is not correct.";
+			}
+			if($new_password != $cf_new_password){
+				$error_change_pass[] = "The Confirm New Password and New Password are not correct.";
+			}
+
+			if(!empty($error_change_pass))
+			{ 
+				print_r($error_change_pass);
+	?>
+			<script>
+				alert ("<?php for($i=0; $i<sizeof($error_change_pass); $i++){echo $error_change_pass[$i] . " ";echo(" Please try again!");} ?>");	
+				window.location.replace("./profile.php");
+			</script>	
+	<?php		
+			}else{
+
+				$sql8 = "UPDATE account SET password='" .md5($new_password) ."' WHERE username='" .$user ."'"; 
+			//	echo("sql8=".$sql8);
+
+				$result8 = execsql($sql8);
+			//	echo("result8 = ".$result8);
+				if($result8 != null)
+				{
+	?>				
+					<script >
+						alert ("Change password successfully!");
+						//window.location.replace("./profile.php");
+					</script>
+	<?php 		
+				}else{
+	?>				
+					<script >
+						alert ("Change password is not successfully. Please try again");
+						//window.location.replace("./profile.php");
+					</script>
+	<?php							
+				}  
+			}  
+		}
+	}
+
+// Change Avatar
+
+if(isset($_POST['cf_change_avatar'])) {
+	$checkFile = "False";
+
+	if(isset($_FILES['inpAvt'])){
+		$error = array();
+
+		// Create folder img to save file
+		$target_dir = "img/";
+
+		// Create file URL after uploading
+		$target_file = $target_dir.basename($_FILES['inpAvt']['name']);
+
+		// Check file upload conditions 
+
+		// 1. Check the file size (10MB <=> 10485760 bytes) 
+		if($_FILES['inpAvt']['size'] >= 10485760)
+		{
+			$error['inpAvt'] = "Only upload files under 10MB ";
+		}
+
+		// 2.Check file type (png; jpg; gif; jpeg) 
+		$file_type = pathinfo($_FILES['inpAvt']['name'], PATHINFO_EXTENSION);
+
+		// File types allowed 
+		$file_type_allow =  array('','png','PNG','jpg','JPG','jpeg','JPEG','gif','GIF');
+	
+		if(!in_array($file_type, $file_type_allow))
+		{
+			$error['inpAvt'] = "Only upload image files";
+		}
+
+		//echo($file_type);
+
+		//print_r($error); 
+		// 3. Check and transfer files from clipboard to server
+
+		if(empty($error)){
+			if($file_type != ""){
+				if(!move_uploaded_file($_FILES['inpAvt']['tmp_name'], $target_file)){
+					echo("Upload failed");
+					$checkFile = "true";
+				}
+			}
+			
+		}else{
+			$checkFile = "true";
+	?>
+			<script>
+				alert ("Failure to save image! You must upload an image type file under 10MB");	
+				window.location.replace("./profile.php");
+			</script>	
+	<?php
+		}
+	}
+		if ($checkFile == "False"){
+			
+			if($_FILES['inpAvt']['name'] == ""){
+				$newAva = $image;
+			}else{
+				$newAva = $_FILES['inpAvt']['name'];
+			}
+			//Code update Avatar
+			$sql9 = "UPDATE member SET image='" .$newAva  ."' WHERE memberID='" .$memberID ."'";
+			$result9 = execsql($sql9); 
+
+			if ($result9 != null){
+?>				
+				<script >
+					alert ("Change avatar successfull!");
+					window.location.replace("./profile.php");
+				</script>
+<?php 		
+			}else{
+?>				
+				<script >
+					alert ("Change avatar failed. Please try again");
+					window.location.replace("./profile.php");
+				</script>
+<?php
+			} 
 		}
 	}
 ?>

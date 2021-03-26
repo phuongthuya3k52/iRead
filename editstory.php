@@ -124,9 +124,12 @@
 				}
 			}else{
 				$check = true;
-				print_r($error);
+				//print_r($error);
 		?>
-			<!--		-->
+				<script>
+					alert ("Failure to save image! You must upload an image type file under 10MB");	
+					window.location.replace("./editstory.php");
+				</script>		
 		<?php
 			}	
 		

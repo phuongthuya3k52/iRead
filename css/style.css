@@ -322,7 +322,7 @@ hr.end-chap{background:url("../img/end-chap.png") 0 0 no-repeat;width:59px;heigh
     }
 
     .modal { 
-        position: fixed; 
+        position: absolute; 
         top: 3%; 
         right: 3%;
         left: 3%; 
@@ -335,6 +335,9 @@ hr.end-chap{background:url("../img/end-chap.png") 0 0 no-repeat;width:59px;heigh
         padding: 15px; 
         overflow-y: auto; 
         -webkit-overflow-scrolling: touch;
+    }
+    .modal-header{
+        border-color: #E78646;
     }
 
     .sub-mobile {
@@ -629,3 +632,5 @@ transform:translate(-50%,-50%) scale(1);
     margin-top: 0;
   }
 }
+
+.thumbnails .thumbnail a{text-decoration: none;}

@@ -85,7 +85,7 @@
 <div class="yamm navbar navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container">
-			<a class="brand truyenyy-logo" href="index.html">iRead</a>
+			<a class="brand iread-logo" href="./login.php">iRead</a>
 		</div>
 	</div>
 </div>
@@ -160,7 +160,7 @@
 										<td></td>
 
 										<td>
-											<label for="id_dob" class="control-label">Date of birth
+											<label for="id_dob" class="control-label"><b>Date of birth</b>
 											</label>
 										</td>
 										<td>
@@ -174,13 +174,14 @@
 										</td>
 										<td>
 											<div class="controls">
-											<input name="password" placeholder="Password" type="password" class="textinput textInput" id="password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6" required = "required">
+											<input name="password" placeholder="Password" type="password" class="textinput textInput" id="password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6" required = "required" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}">
+
 										<!--	<label class='error' id = 'erPassword' style="display: none;"> This username already exists. Please choose another username </label>  -->
 										</td>
 									
 										<td></td>
 										<td>
-											<label for="id_phonenumber" class="control-label">Phone number</label>
+											<label for="id_phonenumber" class="control-label"><b>Phone number</b></label>
 										</td>
 										<td>
 											<input name="phonenumber" maxlength="15" type="text"placeholder="Phone number" class="textinput textInput" id="id_phonenumber" pattern="^\+?\d{1,3}?[- .]?\(?(?:\d{2,3})\)?[- .]?\d\d\d[- .]?\d\d\d\d$" title="Please enter the correct format phone number " />
@@ -215,7 +216,7 @@
 					 				<tr>
 					 					<td></td>
 										<td style="text-align: center;">
-											<button type="submit" class="btn btn-primary" data-loading-text="Loading" value="Submit">
+											<button type="submit" name="submit" class="btn btn-primary" data-loading-text="Loading" id="submit"  >
 											Submit
 											</button>
 										<td></td>
@@ -256,9 +257,12 @@ var capital = document.getElementById("capital");
 var number = document.getElementById("number");
 var length = document.getElementById("length");
 
+var submit_btn = document.getElementById("submit");
+
 // When the user clicks on the password field, show the message box
 myInput.onfocus = function() {
   document.getElementById("message").style.display = "block";
+
 }
 
 // When the user clicks outside of the password field, hide the message box
@@ -276,7 +280,7 @@ myInput.onkeyup = function() {
   } else {
     letter.classList.remove("valid");
     letter.classList.add("invalid");
-}
+	}
 
   // Validate capital letters
   var upperCaseLetters = /[A-Z]/g;
@@ -305,13 +309,16 @@ myInput.onkeyup = function() {
   } else {
     length.classList.remove("valid");
     length.classList.add("invalid");
-  }
+  } 
 }
+
+
 </script>
 
 </body>
 </html>
 <?php 
+
 	if (isset($_POST['fullname']) && isset($_POST['email']) && isset($_POST['username']) && isset($_POST['password']))
 	{
 		$fullname=$_POST['fullname'];
@@ -327,9 +334,9 @@ myInput.onkeyup = function() {
 			$sql1 = "Insert into member values ('','" .$fullname ."','" .$dob ."','" .$phone ."','" .$uname ."','0','default avt.jpg')";  
 
 			$result = execsql($sql);
-			echo('result: =' .$result);
+			//echo('result: =' .$result);
 			$result1 = execsql($sql1);  
-			echo('result1: =' .$result1);			
+			//echo('result1: =' .$result1);			
 						
 			if ($result != null && $result1 != null){
 ?>				
@@ -349,4 +356,4 @@ myInput.onkeyup = function() {
 		}
 	}
 	
-?>
+?>  

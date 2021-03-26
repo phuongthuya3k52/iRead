@@ -155,14 +155,14 @@
 					<div class="paging">
 						<div class="pagination pagination-centered">
 						<ul>
-							<li class="disable"><a href="">Pages</a></li>		
+							<li class="disable"><a href="">Pages</a></li>	
 							<?php
 							// Link pagination
 							for($i = 1; $i <= $allpage; $i++)
 							{
 								if($currentpage == $i){
 								?>
-									<li class="active"><?=$i?></li> 
+									<li class="active"><a href=""><?=$i?></a></li> 
 								<?php
 								}else{
 							?>
@@ -175,6 +175,7 @@
 						</ul>
 						</div>
 					</div>
+
 
 				<!--	</div>   -->
 				</div>

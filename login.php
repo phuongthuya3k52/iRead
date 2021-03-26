@@ -118,7 +118,7 @@
 								<form action="login.php" method="post" role="form">
 								<tr>
 									<td>
-										<label for="id_username" class="control-label requiredField">Username<span class="asteriskField">*:</span></label>
+										<label for="id_username" class="control-label requiredField">Username<span class="asteriskField">*</span></label>
 									</td>
 
 									<td>
@@ -129,7 +129,7 @@
 								</tr>
 								<tr>
 									<td>
-										<label for="id_password" class="control-label requiredField">Password<span class="asteriskField">*:</span></label>
+										<label for="id_password" class="control-label requiredField">Password<span class="asteriskField">*</span></label>
 									</td>
 									<td>
 										<div class="controls">
