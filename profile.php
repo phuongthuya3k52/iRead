@@ -27,7 +27,7 @@
 	require_once("./db.php");
     session_start();
 
-
+// Check transaction status
     if(!isset($_SESSION['username'])){
 ?>
     	<script >
@@ -36,6 +36,29 @@
 		</script>
 <?php
 	}else{
+		if($_GET['transtt'] == 0){
+?>
+    		<script >
+				alert ("Successful transaction!");
+				window.location.replace("./profile.php");
+			</script>
+<?php
+		}else if($_GET['transtt'] == 1){
+?>
+    		<script >
+				alert ("Transaction failed. Please try again!");
+				window.location.replace("./profile.php");
+			</script>
+<?php			
+		}else{
+?>
+    		<script >
+				alert ("Transaction has been canceled!");
+				window.location.replace("./profile.php");
+			</script>
+<?php			
+		}
+
 		$sql = "SELECT * FROM member WHERE username = '" .$_SESSION['username'] . "'";
 			//echo($sql);
 			$row = query($sql);
@@ -90,7 +113,7 @@
 						</div>
 						<h3 style="text-align: center;position: relative; margin-top:100px; top: 50%; left: 50%; transform: translate(-50%, -25%)"><?=$memberName?></h3>
 						<div style="text-align: center;position: relative; font-size: 20px; font-weight: bold;">
-							<a href="" style="color: black"><img src="./img/coin.jpg" style="border-radius: 50%; width: 35px;height: 35px;"><?=$walet?></a>
+							<a href="#recharge" data-toggle="modal" style="color: black"><img src="./img/coin.jpg" style="border-radius: 50%; width: 35px;height: 35px;"><?=$walet?></a>
 						</div>
 						
 
@@ -324,6 +347,67 @@
 
 			<div style="margin-top: 20px">	
 				<button type="submit" name="cf_change_avatar" class="btn btn-primary" style="background-color: blue; width:14% ">Submit</button>&emsp;&emsp;
+									
+				<button type="button" class="btn" data-dismiss="modal" aria-hidden="true">Cancle</button>
+			</div>
+		</div>
+
+	</form>
+	</div>
+
+<!-- Recharge modal -->
+	<div class="modal hide fade" id="recharge" style="display: none;">
+	<form  method="POST" role="form" action="./vnpay_php/vnpay_create_payment.php" >
+		<div class="modal-header">
+			<span class="disable" data-dismiss="modal" aria-hidden="true" style="color: #ff4444; font-size: 44px; font-weight: bold; float: right;cursor:pointer;">&times;</span>
+			<h3>Recharge</h3>
+										
+		</div>
+		<div class="modal-body" style="text-align: center; margin-top:-10px">
+			<h2>Choose one Image to be new your avatar! </h2>
+			
+			<div style="width: 100%; text-align: center;">
+				<label for="amount">Amount (1$ ~ 1coin) </label>
+                <input class="form-control" id="amount"
+                               name="amount" type="number" value="50000"/>
+			</div>
+
+			<div class="form-group">
+                <label for="bank_code">Bank</label>
+                <select name="bank_code" id="bank_code" class="form-control">
+                            <option value="">No bank choosen</option>
+                            <option value="NCB">NCB Bank</option>
+                            <option value="AGRIBANK">Agribank</option>
+                            <option value="SCB">SCB bank</option>
+                            <option value="SACOMBANK">SacomBank</option>
+                            <option value="EXIMBANK">EximBank</option>
+                            <option value="MSBANK"> MSBANK</option>
+                            <option value="NAMABANK">NamABank</option>
+                            <option value="VNMART"><b> VnMart e-wallet</b></option>
+                            <option value="VIETINBANK">Vietinbank</option>
+                            <option value="VIETCOMBANK">VCB</option>
+                            <option value="HDBANK">HDBank</option>
+                            <option value="DONGABANK">Dong A Bank</option>
+                            <option value="TPBANK">TPBank</option>
+                            <option value="OJB">OceanBank</option>
+                            <option value="BIDV">BIDV Bank</option>
+                            <option value="TECHCOMBANK">Techcombank</option>
+                            <option value="VPBANK">VPBank</option>
+                            <option value="MBBANK"> MBBank</option>
+                            <option value="ACB">ACB Bank</option>
+                            <option value="OCB">OCB Bank</option>
+                            <option value="IVB">IVB Bank</option>
+                            <option value="VISA"><b> Payment through  VISA/MASTER card</b></option>
+                        </select>
+            </div>
+
+			<input type="hidden" name="trans_type" id="trans_type" value="billpayment">
+			<input type="hidden" name="trans_desc" id="trans_desc" value="Coin recharge into account">
+			<input type="hidden" name="language" id="language" value="en">
+			<input type="hidden" name="memberID" id="memberID" value="<?=$memberID?>">
+
+			<div style="margin-top: 20px">	
+				<button type="submit" name="cf_recharge" class="btn btn-primary" style="background-color: blue; width:14% ">Submit</button>&emsp;&emsp;
 									
 				<button type="button" class="btn" data-dismiss="modal" aria-hidden="true">Cancle</button>
 			</div>
