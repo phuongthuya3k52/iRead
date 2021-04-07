@@ -34,7 +34,7 @@
 						</ul>					
 					</li>
 				
-					<li><a href=""><i class=" fa fa-calendar-check-o" aria-hidden="true"></i> Attendence</a></li>
+					<li><a href="#check_attendence" data-toggle="modal"><i class=" fa fa-calendar-check-o" aria-hidden="true"></i> Attendence</a></li>
 					<li><a href="./newstory.php"><i class="icon-book"></i>New story</a></li>
 				</ul>
 				
@@ -55,9 +55,46 @@
 						<button class="btn" type="submit" name="search_home" value=""><i class="icon-search"></i></button>
 					</div>
 				</form> 
+
+
+
 			</div>
+
 		</div>
+		
 	</div>
+	<form method="get" class="modal hide fade" id="check_attendence" style="display: none;width: 50%; height: auto; background-color: white">
+	<?php
+		date_default_timezone_set("Asia/Ho_Chi_Minh");
+		$begin_date = 
+		if(date("H:i:s") == "00:00:00"){$check = 0;}
+		if($check == 0){
+			$check = 1;
+	?>
+		<div class="modal-header" style="text-align: center">
+			<span class="disable" data-dismiss="modal" aria-hidden="true" style="color: #ff4444; font-size: 44px; font-weight: bold; float: right;cursor:pointer;">&times;</span>
+			<h4>Attendance successful! You get 1 coin plus</h4>
+			<!--	<div class="tbclose-btn" onclick="thongbaopopup()">&times;</div> -->
+		</div>
+		<div class="modal-body" style="text-align: center">
+			<img src="img/one_coin.jpg" style="width: 60%; height: 60%;">
+		</div>
+	<?php
+		}else if($check == 1){
+	?>
+		<div class="modal-header" style="text-align: center">
+			<span class="disable" data-dismiss="modal" aria-hidden="true" style="color: #ff4444; font-size: 44px; font-weight: bold; float: right;cursor:pointer;">&times;</span>
+			<h4>You have taken attendance. Come back tomorrow!</h4>
+			<!--	<div class="tbclose-btn" onclick="thongbaopopup()">&times;</div> -->
+		</div>
+		<div class="modal-body" style="text-align: center">
+			<img src="img/attendance_checked.png" style="width: 60%; height: 60%;">
+		</div>
+	<?php
+		}
+	?>
+	</div>
+</form>
 </div>
 
 <script>
@@ -83,3 +120,4 @@ function filterFunction() {
   }
 }
 </script>
+

@@ -27,7 +27,7 @@
 	require_once("./db.php");
     session_start();
 
-// Check transaction status
+
     if(!isset($_SESSION['username'])){
 ?>
     	<script >
@@ -36,29 +36,6 @@
 		</script>
 <?php
 	}else{
-		if($_GET['transtt'] == 0){
-?>
-    		<script >
-				alert ("Successful transaction!");
-				window.location.replace("./profile.php");
-			</script>
-<?php
-		}else if($_GET['transtt'] == 1){
-?>
-    		<script >
-				alert ("Transaction failed. Please try again!");
-				window.location.replace("./profile.php");
-			</script>
-<?php			
-		}else{
-?>
-    		<script >
-				alert ("Transaction has been canceled!");
-				window.location.replace("./profile.php");
-			</script>
-<?php			
-		}
-
 		$sql = "SELECT * FROM member WHERE username = '" .$_SESSION['username'] . "'";
 			//echo($sql);
 			$row = query($sql);
@@ -102,7 +79,7 @@
 
 			<div class="row wrapper">
 				<?php 
-					require_once("./lefts/common_left.php");
+					require_once("./lefts/member_left.php");
 				?>
 				<div class="span10">
 
@@ -364,41 +341,56 @@
 										
 		</div>
 		<div class="modal-body" style="text-align: center; margin-top:-10px">
-			<h2>Choose one Image to be new your avatar! </h2>
+			<h2>Choose the amount of Coins you want to exchange, at least 50 coins!  </h2>
 			
 			<div style="width: 100%; text-align: center;">
-				<label for="amount">Amount (1$ ~ 1coin) </label>
-                <input class="form-control" id="amount"
-                               name="amount" type="number" value="50000"/>
-			</div>
-
-			<div class="form-group">
-                <label for="bank_code">Bank</label>
-                <select name="bank_code" id="bank_code" class="form-control">
-                            <option value="">No bank choosen</option>
-                            <option value="NCB">NCB Bank</option>
-                            <option value="AGRIBANK">Agribank</option>
-                            <option value="SCB">SCB bank</option>
-                            <option value="SACOMBANK">SacomBank</option>
-                            <option value="EXIMBANK">EximBank</option>
-                            <option value="MSBANK"> MSBANK</option>
-                            <option value="NAMABANK">NamABank</option>
-                            <option value="VNMART"><b> VnMart e-wallet</b></option>
-                            <option value="VIETINBANK">Vietinbank</option>
-                            <option value="VIETCOMBANK">VCB</option>
-                            <option value="HDBANK">HDBank</option>
-                            <option value="DONGABANK">Dong A Bank</option>
-                            <option value="TPBANK">TPBank</option>
-                            <option value="OJB">OceanBank</option>
-                            <option value="BIDV">BIDV Bank</option>
-                            <option value="TECHCOMBANK">Techcombank</option>
-                            <option value="VPBANK">VPBank</option>
-                            <option value="MBBANK"> MBBank</option>
-                            <option value="ACB">ACB Bank</option>
-                            <option value="OCB">OCB Bank</option>
-                            <option value="IVB">IVB Bank</option>
-                            <option value="VISA"><b> Payment through  VISA/MASTER card</b></option>
-                        </select>
+				<table style="border: 1px solid black; width: 100%">
+					<tr>
+						<td style="width:30%;"></td>
+						<td style="width:70%;"><span style="width:80%;color: red; width: 80% ">(1 coin = 1000 VND)</span></td>
+					</tr>
+					<tr>
+						<td style="width:30%; text-align: right;">
+							<label for="amount">Amount<img src="img/coin.jpg" style="width: 20px; height: 20px;"></label>							
+						</td>
+						<td style="width:70%">
+							<input style="width:80%" class="form-control" id="amount"
+                               name="amount" type="number" value="50" min="50" />
+						</td>
+					</tr>
+					<tr>
+						<td style="width:30%; text-align: right;">
+							<label for="bank_code">Bank</label>
+						</td>
+						<td style="width:70%">
+							<select name="bank_code" id="bank_code" class="form-control" style="width:84%">
+                            	<option value="">No bank choosen</option>
+                            	<option value="NCB">NCB Bank</option>
+                            	<option value="AGRIBANK">Agribank</option>
+                            	<option value="SCB">SCB bank</option>
+                            	<option value="SACOMBANK">SacomBank</option>
+                            	<option value="EXIMBANK">EximBank</option>
+                            	<option value="MSBANK"> MSBANK</option>
+                            	<option value="NAMABANK">NamABank</option>
+                            	<option value="VNMART"><b> VnMart e-wallet</b></option>
+                            	<option value="VIETINBANK">Vietinbank</option>
+                            	<option value="VIETCOMBANK">VCB</option>
+                            	<option value="HDBANK">HDBank</option>
+                            	<option value="DONGABANK">Dong A Bank</option>
+                            	<option value="TPBANK">TPBank</option>
+                            	<option value="OJB">OceanBank</option>
+                            	<option value="BIDV">BIDV Bank</option>
+                            	<option value="TECHCOMBANK">Techcombank</option>
+                            	<option value="VPBANK">VPBank</option>
+                            	<option value="MBBANK"> MBBank</option>
+                            	<option value="ACB">ACB Bank</option>
+                            	<option value="OCB">OCB Bank</option>
+                            	<option value="IVB">IVB Bank</option>
+                            	<option value="VISA"><b> Payment through  VISA/MASTER card</b></option>
+                        	</select>
+						</td>
+					</tr>
+				</table>
             </div>
 
 			<input type="hidden" name="trans_type" id="trans_type" value="billpayment">

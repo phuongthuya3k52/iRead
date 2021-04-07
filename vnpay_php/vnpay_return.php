@@ -36,14 +36,19 @@
     //$secureHash = md5($vnp_HashSecret . $hashData);
 	$secureHash = hash('sha256',$vnp_HashSecret . $hashData);
     if ($secureHash == $vnp_SecureHash) {
-        if ($_GET['vnp_ResponseCode'] == '00') {
-            $trans_id = $_GET['vnp_TxnRef'];
-            $note = $_GET['vnp_OrderInfo'];
-            $vnp_response_code = $_GET['vnp_ResponseCode'];
-            $code_vnpay = $_GET['vnp_TransactionNo'];
-            $code_bank = $_GET['vnp_BankCode'];
-            $time = $_GET['vnp_PayDate'];
-            $date_time = substr($time, 0, 4) . '-' . substr($time, 4, 2) . '-' . substr($time, 6, 2) . ' ' . substr($time, 8, 2) . ' ' . substr($time, 10, 2) . ' ' . substr($time, 12, 2);
+        $trans_id = $_GET['vnp_TxnRef'];
+        $note = $_GET['vnp_OrderInfo'];
+        $vnp_response_code = $_GET['vnp_ResponseCode'];
+        $code_vnpay = $_GET['vnp_TransactionNo'];
+        $code_bank = $_GET['vnp_BankCode'];
+        $time = $_GET['vnp_PayDate'];
+        $date_time = substr($time, 0, 4) . '-' . substr($time, 4, 2) . '-' . substr($time, 6, 2) . ' ' . substr($time, 8, 2) . ' ' . substr($time, 10, 2) . ' ' . substr($time, 12, 2);
+        if ($_GET['vnp_ResponseCode'] == '24') {
+            $sql4 = "DELETE FROM transaction  WHERE transactionID = '$trans_id'";
+                $result4 = execsql($sql4);
+            header("Location: ../trans_history.php?transtt=3");
+        }else {           
+            
             $sql1 = "SELECT * FROM transaction WHERE transactionID = '$trans_id' AND memberID = '$memberID'";
             $row1 = query($sql1);
                                 
@@ -53,31 +58,28 @@
                 $result2 = execsql($sql2);
                 $check = true;
             }
-        } else {
-            $check = false;
-                            
+        }                    
     } else {
         $check = false;
         //echo "Chu ky khong hop le";
+        header("Location: ../trans_history.php?transtt=2");
     }
-
-    if ($_GET['vnp_ResponseCode'] == '') {
-        header("Location: ./profile.php?transtt=2");
-    }
+    echo("GET['vnp_ResponseCode'] = " .$_GET['vnp_ResponseCode']);
 
     if($check == true){
         $row1 = query($sql1);
-        $money = $row1[0][2];
+        $money = $row1[0][2]/1000;
         $sql3 = "UPDATE member SET wallet = $wallet + $money WHERE memberID = '$memberID'";
         //echo($sql3);
         $result3 = execsql($sql3);
         //echo("result3 = " .$result3);
+        if($result3 != null){
+            header("Location: ../trans_history.php?transtt=1");
+        }else{
+            header("Location: ../trans_history.php?transtt=2");
+        }
     }
-    if($result3 != null){
-        header("Location: ./profile.php?transtt=0");
-    }else{
-        header("Location: ./profile.php?transtt=1");
-    }
+
 ?>
 
       

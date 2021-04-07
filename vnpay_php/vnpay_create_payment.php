@@ -6,7 +6,7 @@ if(isset($_POST['memberID'])){
     $memberID = $_POST['memberID'];
     date_default_timezone_set('Asia/Ho_Chi_Minh');
     $timecreate = date('YmdHis');
-    $sql = "INSERT INTO transaction VALUES ('','" .$memberID ."',".$_POST['amount']/1000 .",'','','','','" .$timecreate ."')";
+    $sql = "INSERT INTO transaction VALUES ('','" .$memberID ."',".$_POST['amount']*1000 .",'','','','','" .$timecreate ."')";
     $row = execsql($sql);
     $sql1 = "SELECT * FROM transaction WHERE createAt='" .$timecreate . "' AND memberID='".$memberID ."'";
     echo($sql1);
@@ -25,7 +25,7 @@ require_once("./config.php");
 $vnp_TxnRef = $transactionID; //Mã đơn hàng. Trong thực tế Merchant cần insert đơn hàng vào DB và gửi mã này sang VNPAY
 $vnp_OrderInfo = $_POST['trans_desc'];
 $vnp_OrderType = $_POST['trans_type'];
-$vnp_Amount = str_replace(',', '', $_POST['amount']) * 100;
+$vnp_Amount = str_replace(',', '', $_POST['amount']) * 100000;
 $vnp_Locale = $_POST['language'];
 $vnp_BankCode = $_POST['bank_code'];
 $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];

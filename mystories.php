@@ -83,7 +83,7 @@
 			</ul>
 			<div class="row wrapper">
 				<?php 
-				require_once("./lefts/common_left.php");
+				require_once("./lefts/member_left.php");
 			?>
 				<div class="span10">
 						

@@ -140,27 +140,114 @@
 	require_once("./headers/readstory_header.php");
 ?>
 
-	<!-- Notice popup -->
+<!-- Notice popup -->
 <div class="tbpopup" id="tbpopup-1">
 	<div class="tboverlay"></div>
 	<div class="tbcontent">
+		<?php
+		if($readerwallet>1)
+		{
+		?>
 		<form method="get" action="chapterpayment.php">
-				<div class="modal-header">
-					<h4>You have <?=$readerwallet?> coins. Would you like to pay 1 coin for read this chapter?</h4>
-				<!--	<div class="tbclose-btn" onclick="thongbaopopup()">&times;</div> -->
-				</div>
-				<div class="modal-body">
-					<img src="img/coin.jpg" style="width: 80%; height: auto;">
-					<input type="hidden" name="story_id" value="<?=$storyID?>">
-					<input type="hidden" name="chapter_id" value="<?=$chapterID?>"> 
-					<input type="hidden" name="member_id" value="<?=$memberID?>">
-				</div>
-					<button type="submit" name="submit" class="btn btn-primary">Yes</button>
-					<a data-toggle="modal" href="#chap_jump" class="btn btn-warning"><i class="icon-move icon-white"></i></a>
-					<a href="storydetail.php?storyID=<?=$storyID?>" class="btn">No</a>
-				<!--	<a href="#" class="btn" onclick="activepopup()">Cancel</a>  -->
-				</div>
-			</form>
+			<div class="modal-header">
+				<h4>You have <?=$readerwallet?> coins. Would you like to pay 1 coin for read this chapter?</h4>
+			<!--	<div class="tbclose-btn" onclick="thongbaopopup()">&times;</div> -->
+			</div>
+			<div class="modal-body">
+				<img src="img/coin.jpg" style="width: 80%; height: auto;">
+				<input type="hidden" name="story_id" value="<?=$storyID?>">
+				<input type="hidden" name="chapter_id" value="<?=$chapterID?>"> 
+				<input type="hidden" name="member_id" value="<?=$memberID?>">
+			</div>
+				<button type="submit" name="submit" class="btn btn-primary">Yes</button>&emsp;
+				<a data-toggle="modal" href="#chap_jump" class="btn btn-warning"><i class="icon-move icon-white"></i></a>&emsp;
+				<a href="storydetail.php?storyID=<?=$storyID?>" class="btn">No</a>
+			<!--	<a href="#" class="btn" onclick="activepopup()">Cancel</a>  
+			</div>-->
+		</form>
+		<?php
+		}else{
+		?>
+	<!--Recharge form-->
+		<form  method="POST" role="form" action="./vnpay_php/vnpay_create_payment.php" >
+		<div class="modal-header">
+			<h4>You need to pay at least <span style="color: red">1 coin</span> to read this chapter.</h4>
+										
+		</div>
+		<div class="modal-body" style="text-align: center; margin-top:-10px">
+			<h2>Choose the amount of Coins you want to exchange (at least 50 coins)!  </h2>
+			
+			<div style="width: 100%; text-align: center;">
+				<table style="border: 1px solid black; width: 100%">
+					<tr>
+						<td style="width:30%;"></td>
+						<td style="width:70%;"><span style="width:80%;color: red; width: 80% ">(1 coin = 1000 VND)</span></td>
+					</tr>
+					<tr>
+						<td style="width:30%; text-align: right;">
+							<label for="amount">Amount<img src="img/coin.jpg" style="width: 20px; height: 20px;"></label>							
+						</td>
+						<td style="width:70%">
+							<input style="width:80%" class="form-control" id="amount"
+                               name="amount" type="number" value="50" min="50" />
+						</td>
+					</tr>
+					<tr>
+						<td style="width:30%; text-align: right;">
+							<label for="bank_code">Bank</label>
+						</td>
+						<td style="width:70%">
+							<select name="bank_code" id="bank_code" class="form-control" style="width:84%">
+                            	<option value="">No bank choosen</option>
+                            	<option value="NCB">NCB Bank</option>
+                            	<option value="AGRIBANK">Agribank</option>
+                            	<option value="SCB">SCB bank</option>
+                            	<option value="SACOMBANK">SacomBank</option>
+                            	<option value="EXIMBANK">EximBank</option>
+                            	<option value="MSBANK"> MSBANK</option>
+                            	<option value="NAMABANK">NamABank</option>
+                            	<option value="VNMART"><b> VnMart e-wallet</b></option>
+                            	<option value="VIETINBANK">Vietinbank</option>
+                            	<option value="VIETCOMBANK">VCB</option>
+                            	<option value="HDBANK">HDBank</option>
+                            	<option value="DONGABANK">Dong A Bank</option>
+                            	<option value="TPBANK">TPBank</option>
+                            	<option value="OJB">OceanBank</option>
+                            	<option value="BIDV">BIDV Bank</option>
+                            	<option value="TECHCOMBANK">Techcombank</option>
+                            	<option value="VPBANK">VPBank</option>
+                            	<option value="MBBANK"> MBBank</option>
+                            	<option value="ACB">ACB Bank</option>
+                            	<option value="OCB">OCB Bank</option>
+                            	<option value="IVB">IVB Bank</option>
+                            	<option value="VISA"><b> Payment through  VISA/MASTER card</b></option>
+                        	</select>
+						</td>
+					</tr>
+				</table>
+			</div>
+
+			<div class="form-group">
+
+                
+            </div>
+
+			<input type="hidden" name="trans_type" id="trans_type" value="billpayment">
+			<input type="hidden" name="trans_desc" id="trans_desc" value="Coin recharge into account">
+			<input type="hidden" name="language" id="language" value="en">
+			<input type="hidden" name="memberID" id="memberID" value="<?=$readerID?>">
+
+			<div style="margin-top: 20px">	
+				<button type="submit" name="cf_recharge" class="btn btn-primary" style="background-color: blue; ">Submit</button>&emsp;
+				<a data-toggle="modal" href="#chap_jump" class="btn btn-warning"><i class="icon-move icon-white"></i></a>&emsp;
+				<a href="storydetail.php?storyID=<?=$storyID?>" class="btn">No</a>
+			</div>
+		</div>
+
+		</form>
+		<?php
+		}
+		?>
 </div>
 <script>
 	function activepopup(){

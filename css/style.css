@@ -634,3 +634,6 @@ transform:translate(-50%,-50%) scale(1);
 }
 
 .thumbnails .thumbnail a{text-decoration: none;}
+.modal-backdrop #check_attendence{
+    background-color: white;
+}
