@@ -21,8 +21,9 @@
 <script type="text/javascript" src="js/csrf.js"></script>
 <style>
 	body{
-		padding-top:60px;padding-bottom:40px;height:auto;
+		padding-top:60px;padding-bottom:40px;height:auto;	
 	}
+
 </style>
 </head>
 
@@ -64,7 +65,12 @@
            
 	if (isset($_POST['username'])&& isset($_POST['password'])){
 		$us=$_POST['username'];
-		$pw=md5($_POST['password']);
+		$pw=$_POST['password'];
+
+		$us = stripslashes($us);
+		$pw = md5(stripslashes($pw));
+
+
 		$sql= "select * from account where Username='" .$us ."'and Password='".$pw ."'";
 		$row=query($sql);
 
@@ -106,56 +112,44 @@
 </div>
 
 <div class="container">
-	<div class="row">
+	<div class="bg-img1">
 	<!--	<div class="span12">
 			<div class="container">
 				<div class="row">   -->
-					<div class="span12 auth">   
+					<div class="container2">   
 						<h1 class="page-header" style="text-align: center;">LOGIN</h1>
-
-						<div class="row"  >
-							<table width="30%" align="center" cellspacing="40px">
-								<form action="login.php" method="post" role="form">
-								<tr>
-									<td>
+							
+						<form action="login.php" method="post" role="form">
+							<div class="row1"  >
+								<div class="col-25">
 										<label for="id_username" class="control-label requiredField">Username<span class="asteriskField">*</span></label>
-									</td>
-
-									<td>
-										<div class="controls">
-											<input name="username" require ="require"maxlength="254" type="text" autofocus="autofocus" required="required" placeholder="Username" class="textinput textInput" id="id_username"/>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
+								</div>
+								
+								<div class="col-75 controls">
+											<input style="width: 90%" name="username" require ="require"maxlength="254" type="text" autofocus="autofocus" required="required" placeholder="Username" class="textinput textInput" id="id_username"/>
+							</div>
+							<div class="row1"  >
+								<div class="col-25">
 										<label for="id_password" class="control-label requiredField">Password<span class="asteriskField">*</span></label>
-									</td>
-									<td>
-										<div class="controls">
-											<input name="password" require ="require"placeholder="Password" required="required" type="password" class="textinput textInput" id="id_password"/>
-										</div>
-									</td>
-								</tr>
-					 			<tr>
-					 				<td></td>
-									<td >
+								</div>
+								<div class="col-75 controls">
+											<input style="width: 90%" name="password" require ="require"placeholder="Password" required="required" type="password" class="textinput textInput" id="id_password"/>
+								</div>
+							</div>
+							<div class="row1"  >
+								<div class="col-25"></div>
+								<div class="col-75">
 										<button type="submit" class="btn btn-primary btn-lg" data-loading-text="Login">
 										 Login</button> 
 
 										<button type="reset" class="btn btn-default">Clear</button>
-									</td>
-
-								<tr>
-									
-									<td colspan="2" style="font-size: 17px; text-align: center">
+								</div>
+							</div>		
+							<div class="row1" style="font-size: 17px; text-align: center">
 										<br>
 										<i class="icon-arrow-right"></i> <a href="registration.php">Register new account</a>
 										
-								</tr>
-							</table>
-						
-						</div>
+							</div>						
 
 					</div>  
 			<!--	</div>

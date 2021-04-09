@@ -1,3 +1,41 @@
+<?php
+date_default_timezone_set("Asia/Ho_Chi_Minh"); 
+	
+$sql1 = "SELECT * FROM member WHERE username = '" .$_SESSION['username'] . "'";
+			//echo($sql);
+$row1 = query($sql1);
+$memberID1 = $row1[0][0];
+$wallet1 = $row1[0][5];
+
+$sql2 = "SELECT * FROM attendance WHERE memberID = '" .$memberID1 . "'";
+//echo($sql);
+$result2 = execsql($sql2);
+
+if(isset($_POST['time'])){
+	//echo("time=" .$_POST['time']);
+	if($result2 != null){
+		$sql3 = "UPDATE attendance SET createAt='" .$_POST['time'] ."' WHERE memberID = '" .$memberID1 . "'"; 
+		//echo("sql3=".$sql3);
+		$result3 = execsql($sql3);
+		if($result3 != null){
+			$sql5 = "UPDATE member SET wallet='" .$wallet1 + 1 ."' WHERE memberID = '" .$memberID1 . "'"; 
+			//echo("sql5=".$sql5);
+			$result5 = execsql($sql5);
+		}
+
+	}else{
+		$sql4 = "INSERT INTO attendance VALUES ('','" .$memberID1 ."','".$_POST['time'] ."')";
+		//echo("sql4=".$sql4);
+    	$result4 = execsql($sql4);
+    	//echo("result4=".$result4);
+		if($result4 != null){
+			$sql5 = "UPDATE member SET wallet='" .$wallet1 + 1 ."' WHERE memberID = '" .$memberID1 . "'"; 
+			//echo("sql5=".$sql5);
+			$result5 = execsql($sql5);
+		}
+	}
+}
+?>
 <div class="yamm navbar navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container">
@@ -40,7 +78,7 @@
 						</ul>					
 					</li>
 				
-					<li><a href=""><i class="fa fa-calendar-check-o" aria-hidden="true"></i> Attendence</a></li>
+					<li><a href="#check_attendance" data-toggle="modal"><i class=" fa fa-calendar-check-o" aria-hidden="true"></i> Attendence</a></li>
 				
 					
 					<li class="dropdown">
@@ -116,3 +154,63 @@
 		</div>
 	</div>
 </div>
+<!--Check attendance modal -->
+<script type="text/javascript" src="js/bootstrap-modalmanager.js"></script>
+<script type="text/javascript" src="js/bootstrap-modal.js"></script>
+
+<form method="POST" action="<?=getCurrentPageURL()?>" role="form" class="modal hide fade" id="check_attendance" style="display: none;width: 50%; height: auto; background-color: white">
+<?php
+
+	if($result2 != null)
+	{
+		$row2 = query($sql2);
+		$create_time = strtotime($row2[0][2]);
+		$current_date = getdate();
+		$begin_date = mktime(00,00,00,$current_date['mon'],$current_date['mday'],$current_date['year']);
+		if( ($create_time - $begin_date) >= 0)
+		{
+	?>
+			<div class="modal-header" style="text-align: center">
+				<span class="disable" data-dismiss="modal" aria-hidden="true" style="color: #ff4444; font-size: 44px; font-weight: bold; float: right;cursor:pointer;">&times;</span>
+				<h4>You have taken attendance. Come back tomorrow!</h4>
+				<!--	<div class="tbclose-btn" onclick="thongbaopopup()">&times;</div> -->
+			</div>
+			<div class="modal-body" style="text-align: center">
+				<img src="img/attendance_checked.png" style="width: 50%; height: 50%;">
+			</div>
+	<?php
+
+		}else{
+	?>
+			<div class="modal-header" style="text-align: center">
+				<h4>Attendance successful! You get 1 coin plus</h4>
+				<!--	<div class="tbclose-btn" onclick="thongbaopopup()">&times;</div> -->
+			</div>
+			<div class="modal-body" style="text-align: center">
+				<img src="img/one_coin.jpg" style="width: 50%; height: 50%;">
+				<div>
+					<input type="hidden" name="time" value="<?=date('Y-m-d H:i:s')?>">
+					<button type="submit" name="cf_attendance" class="btn btn-primary" style="background-color: blue; width:14%;height: 10%; font-size: 15px">OK</button>
+				</div>
+			</div>
+				
+<?php
+		}
+	}else{
+?>
+		<div class="modal-header" style="text-align: center">
+				<h4>Attendance successful! You get 1 coin plus</h4>
+				<!--	<div class="tbclose-btn" onclick="thongbaopopup()">&times;</div> -->
+			</div>
+			<div class="modal-body" style="text-align: center">
+				<img src="img/one_coin.jpg" style="width: 50%; height: 50%;">
+				<div>
+					<input type="hidden" name="time" value="<?=date('Y-m-d H:i:s')?>">
+					<button type="submit" name="cf_attendance" class="btn btn-primary" style="background-color: blue; width:14%;height: 10%; font-size: 18px">OK</button>
+				</div>
+			</div>
+			
+<?php
+	}
+?>
+</form>

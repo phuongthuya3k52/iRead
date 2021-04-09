@@ -101,12 +101,12 @@
 						<div class="container1">
 							<form action="./profile.php" method="POST">
     							<div class="row1">
-      								<div class="col-25 input-prepend">	
+      								<div class="col-50 input-prepend">	
     									<span class="add-on"><i class="icon-user"></i></span>
     									<input style="width: 70%" id="id_fullname" type="text" placeholder="Full name" name="fullname" maxlength="254" required="required" title="Max length of Full name is 254 characters" value="<?=$memberName?>"><span class="required">*</span>
   								
       								</div>
-      								<div class="col-75 input-prepend">
+      								<div class="col-50 input-prepend">
       									<?php
 												if(isset($_POST['email'])){
 													$new_email = $_POST['email'];
@@ -132,7 +132,7 @@
     							</div>
 
     							<div class="row1">
-      								<div class="col-25 input-prepend">
+      								<div class="col-50 input-prepend">
     									<span class="add-on"><img src="./img/icon-phone.jpg" style="width: 16px; height: 16px;"></span>
     									<input style="width: 70%" type="text" placeholder="Phone Number" name="phonenumber" id="id_phonenumber" pattern="^\+?\d{1,3}?[- .]?\(?(?:\d{2,3})\)?[- .]?\d\d\d[- .]?\d\d\d\d$" title="Please enter the correct format phone number" value="<?=$phoneNumber?>">
       								</div>
@@ -143,7 +143,7 @@
     							</div>
   								
     							<div class="row1">
-    								<div class="col-25" style="text-align: center; margin-top: 15px">
+    								<div class="col-50" style="text-align: center; margin-top: 15px">
       									<button type="submit" name="info_submit" class="btn btn-primary">Submit </button>
       								</div>
       								<div class="col-75" style="text-align: center; margin-top: 10px">
@@ -419,7 +419,7 @@
 		<div class="modal-body" style="text-align: left; margin-top:0px">
 			<div class="container1" style="padding: 10px">
 				<div class="row1">
-      				<div class="col-25">	
+      				<div class="col-50">	
     					<label><b>Current Password</b></label>
     					<div class="control"><input style="width: 70%" type="password" placeholder="Current Password" name="cur_password" required="required" id="cur_password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6 characters"></span></div>	
 
@@ -430,7 +430,7 @@
     					<div class="control"><input style="width: 70%" type="password" placeholder="Confirm New Password" name="cf_new_password" required="required" id="cf_new_password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6 characters"></span></div>
       				</div>
 
-      				<div  class="col-25">
+      				<div  class="col-50">
   						<div id="message">
   							<h6>Password must contain the following:</h6>
   							<p id="letter" class="invalid">A <b>lowercase</b> letter</p>

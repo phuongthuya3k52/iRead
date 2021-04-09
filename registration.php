@@ -70,6 +70,10 @@
 		$email=$_POST['email'];
 		$uname=$_POST['username'];
 		$pass=md5($_POST['password']);
+
+		$uname = stripslashes($uname);
+		$pass = md5(stripslashes($pass));
+
 		$errormsg= False;
 
 		$sql= "SELECT username FROM account WHERE username='".$uname ."'";
@@ -91,151 +95,139 @@
 </div>
 
 <div class="container">
-	<div class="row">
+	<div class="bg-img1">
 	<!--	<div class="span12">
 			<div class="container">
 				<div class="row"> -->
-					<div class="span12 auth">
+					<div class="container3">
 						<h1 h1 class="page-header" style="text-align: center">Register</h1>
 
-						<div class="row">
-								<table width="80%" align="center" border-spacing= "10px"  padding= "5px" >
-								<form action="registration.php" method="post" role="form">
-									<tr>
-										<td>
-											<label for="id_email" class="control-label requiredField">Email<span class="asteriskField">*</span></label>
-										</td>
+						<form action="registration.php" method="post" role="form">
+						<div class="row1">
+							<div class="col-25">
+								<label for="id_email" class="control-label requiredField">Email<span class="asteriskField">*</span></label>
+							</div>
 
-										<td>
-											<div class="controls">
-											<?php
-												if(isset($_POST['email'])){
-													if(!preg_match("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$^", $email))
-													{ 
-														$emailErr = "Email is invalid. Please try again";	
-													}else if(count($row1) > 0){
+							<div class="col-75 controls">
+							<?php
+								if(isset($_POST['email'])){
+									if(!preg_match("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$^", $email))
+									{ 
+										$emailErr = "Email is invalid. Please try again";	
+									}else if(count($row1) > 0){
 
-														$emailErr = "Email is already exit. Please choose another one";
-													}
-													if(isset($emailErr)){
-														echo("<label class='error' id = 'erEmail' style='display: block;'>".$emailErr ."</label>");
+										$emailErr = "Email is already exit. Please choose another one";
+									}
+									if(isset($emailErr)){
+										echo("<label class='error' id = 'erEmail' style='display: block;'>".$emailErr ."</label>");
 											
-														$errormsg = True;
-													}
-												}	
-											?>
-												<input name="email" type="text" maxlength="100" autofocus="autofocus" required="required" placeholder="Email address" class="textinput textInput" id="id_email"/>
-											</div>
-										</td>
+										$errormsg = True;
+									}
+								}	
+							?>
+								<input style="width: 90%"name="email" type="text" maxlength="100" autofocus="autofocus" required="required" placeholder="Email address" class="textinput textInput" id="id_email"/>
+							</div>
+						</div>
 									
-										<td></td>
+						<div class="row1">
+							<div class="col-25">
+								<label for="id_fullname" class="control-label requiredField">Fullname<span class="asteriskField">*</span>
+								</label>
+							</div>
+							<div class="col-75">
+								<input style="width: 90%" name="fullname" maxlength="254" type="text" required="required" placeholder="Full name" class="textinput textInput" id="id_fullname" title="Max length of Full name is 254 characters"/>
+							</div>
+						</div>
 
-										<td>
-											<label for="id_fullname" class="control-label requiredField">Fullname<span class="asteriskField">*</span>
-											</label>
-										</td>
-										<td>
-											<input name="fullname" maxlength="254" type="text" required="required" placeholder="Full name" class="textinput textInput" id="id_fullname" title="Max length of Full name is 254 characters"/>
-										</td>
-									</tr>
+						<div class="row1">
+							<div class="col-25">
+								<label for="id_phonenumber" class="control-label"><b>Phone number</b></label>
+							</div>
+							<div class="col-75">
+								<input style="width: 90%" name="phonenumber" maxlength="15" type="text"placeholder="Phone number" class="textinput textInput" id="id_phonenumber" pattern="^\+?\d{1,3}?[- .]?\(?(?:\d{2,3})\)?[- .]?\d\d\d[- .]?\d\d\d\d$" title="Please enter the correct format phone number " />
+							</div>
+						</div>
 
-									<tr>
-										<td>
-											<label for="id_username" class="control-label requiredField">Username<span class="asteriskField">*</span></label>
-										</td>
+						<div class="row1">
+							<div class="col-25">
+								<label for="id_dob" class="control-label"><b>Date of birth</b>
+								</label>
+							</div>
+							<div class="col-75">
+								<input style="width: 90%" name="dob" type="date" class="textinput textInput" id="id_dob"/>
+							</div>
+						</div>
 
-										<td>
-											<div class="controls">
-											<?php
-												if(isset($_POST['username']) && count($row) > 0){ 
+						<div class="row1">
+							<div class="col-25">
+								<label for="id_username" class="control-label requiredField">Username<span class="asteriskField">*</span></label>
+							</div>
 
-													echo("<label class='error' id = 'erEmail' style='display: block;'> Username already exists. Please choose another username </label>");
-													$errormsg = True;
-												}
-											?>
-												<input name="username" maxlength="254" type="text"  required="required" placeholder="Username" class="textinput textInput" id="id_username"/>
-											</div>
-										</td>
+							<div class="col-75 controls">
+							<?php
+								if(isset($_POST['username']) && count($row) > 0){ 
 
-										<td></td>
+									echo("<label class='error' id = 'erEmail' style='display: block;'> Username already exists. Please choose another username </label>");
+									$errormsg = True;
+								}
+							?>
+									<input style="width: 90%" name="username" maxlength="254" type="text"  required="required" placeholder="Username" class="textinput textInput" id="id_username"/>
+							</div>
+						</div>
 
-										<td>
-											<label for="id_dob" class="control-label"><b>Date of birth</b>
-											</label>
-										</td>
-										<td>
-											<input name="dob" type="date" class="textinput textInput" id="id_dob"/>
-										</td>
-									</tr>
+						<div class="row1">
+							<div class="col-25">
+								<label for="password" class="control-label requiredField">Password<span class="asteriskField">*</span></label>
+							</div>
+							<div class="col-75 controls">
+								<input style="width: 90%" name="password" placeholder="Password" type="password" class="textinput textInput" id="password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6" required = "required" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}">
+							</div>
+						</div>
 
-									<tr>
-										<td>
-											<label for="password" class="control-label requiredField">Password<span class="asteriskField">*</span></label>
-										</td>
-										<td>
-											<div class="controls">
-											<input name="password" placeholder="Password" type="password" class="textinput textInput" id="password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6" required = "required" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}">
+						<div class="row1">
+							<div class="col-25"></div>
+							
+							<div class="col-75" id="message">
+  								<h6>Password must contain the following:</h6>
+  								<p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+  								<p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+  								<p id="number" class="invalid">A <b>number</b></p>
+  								<p id="length" class="invalid">Minimum <b>6 characters</b></p>
+							</div>	
+						</div>
 
-										<!--	<label class='error' id = 'erPassword' style="display: none;"> This username already exists. Please choose another username </label>  -->
-										</td>
-									
-										<td></td>
-										<td>
-											<label for="id_phonenumber" class="control-label"><b>Phone number</b></label>
-										</td>
-										<td>
-											<input name="phonenumber" maxlength="15" type="text"placeholder="Phone number" class="textinput textInput" id="id_phonenumber" pattern="^\+?\d{1,3}?[- .]?\(?(?:\d{2,3})\)?[- .]?\d\d\d[- .]?\d\d\d\d$" title="Please enter the correct format phone number " />
-										</td>
-									
-									</tr>
-
-									<tr>
-										<td colspan="3">
-											<div id="message">
-  												<h6>Password must contain the following:</h6>
-  												<p id="letter" class="invalid">A <b>lowercase</b> letter</p>
-  												<p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
-  												<p id="number" class="invalid">A <b>number</b></p>
-  												<p id="length" class="invalid">Minimum <b>6 characters</b></p>
-											</div>	
-										</td>
-
-										<td></td>
-										<td></td>
-									
-									</tr>
-
-									<tr>
-										<td colspan="5" class="small" style="text-align: center;">
-											<i>Note: When registering an account, you agree with the Website Rules.</i>
+						<div class="row1" style="text-align: center;">
+							<i>Note: When registering an account, you agree with the Website Rules.</i>
 										
-											<br><br>
-										</td>
-									</tr>
+							<br><br>
+						</div>
 
-					 				<tr>
-					 					<td></td>
-										<td style="text-align: center;">
-											<button type="submit" name="submit" class="btn btn-primary" data-loading-text="Loading" id="submit"  >
-											Submit
-											</button>
-										<td></td>
-										<td></td>
-										<td style="text-align: left;">
-											<button type="reset" class="btn btn-default">Clear</button>
-										</td>
+					 	<div class="row1">
+							<div class="col-50">
+								<div class="col-25">
+								</div>
+
+								<div class="col-75" style="text-align: center;">
+									<button type="submit" name="submit" class="btn btn-primary" data-loading-text="Loading" id="submit"  >
+									Submit
+									</button>
+								</div>
+							</div>
+							<div class="col-50">
+								<div class="col-25" style="text-align: left;">
+									<button type="reset" class="btn btn-default">Clear</button>
+								</div>
+							</div>
+						</div>
 									
-									</tr>
-								
-									<tr>	
-										<td colspan="5" style="font-size: 17px; text-align: center">
-											<br>
-											<i class="icon-arrow-right"></i> <a href="./login.php">Back to Login</a>		
-									</tr>
-								</form>
-							</table>		
+							
+						<div class="row1" style="font-size: 17px; text-align: center">
+							<br>
+							<i class="icon-arrow-right"></i> <a href="./login.php">Back to Login</a>		
+						</div>
+					</form>		
 						
-					</div>
+				</div>
 		<!--		</div>
 			</div>
 			
@@ -327,6 +319,9 @@ myInput.onkeyup = function() {
 		$email=$_POST['email'];
 		$uname=$_POST['username'];
 		$pass=md5($_POST['password']);
+
+		$uname = stripslashes($uname);
+		$pass = md5(stripslashes($pass));
 
 		if($errormsg == False){
 			$sql= "Insert into account values ('" .$uname ."','" .$pass."','member','".$email ."')";
