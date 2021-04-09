@@ -268,8 +268,14 @@
 									}
 									for ($i=0; $i < count($row3);$i++){
 										if($i == $chap){
-											header("location: ./readstory.php?storyID=<?=$storyID?>&chapterID=<?=$row3[$i][0]?>");
-									}
+											$chapID=$row3[$i][0];
+										?>
+											<script >
+												window.location.replace("./readstory.php?storyID=<?=$storyID?>&chapterID=<?=$chapID?>");
+											</script>
+										<?php
+										}	
+											//header("location: ./readstory.php?storyID=$storyID&chapterID=$chapID");
 									}
 								}
 							?>
