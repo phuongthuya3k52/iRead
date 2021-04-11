@@ -7,7 +7,7 @@
 <meta name="description" content="Truyện Hot 24h hay nhất và mới nhất. Đọc truyện online nhiều thể loại tại TruyệnYY - Kho truyện được tuyển chọn và biên tập tốt nhất.">
 <meta name="keywords" content="Doc truyen online, truyen kiem hiep, truyen tien hiep, truyen sac hiep, truyen ngon tinh, truyen trinh tham, vong du, truyen convert full text">
 <link rel="alternate" type="application/atom+xml" title="Đọc Truyện Online - Truyện Kiếm Hiệp" href="http://feeds.feedburner.com/truyenyy">
-<title>Truyện Hot 24h - Đọc truyện online | TruyệnYY</title>
+<title>My Stories | iRead</title>
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/yamm.css" rel="stylesheet">
@@ -60,7 +60,7 @@
 
 		$sql1 = "SELECT * FROM story WHERE memberID='" .$memberID . "'";
 		$row1 = query($sql1);
-		
+		$total = count($row1);
 	}
 ?>
 
@@ -89,7 +89,7 @@
 						
 						<h1 style="text-align: center;margin-top: 10px;">My Stories</h1>
 						<ul class="nav" style="margin-top: 40px; margin-bottom: 40px">
-							<li class="disable" style="float:left;width: 50%; color: Orange;"><h2><i class="icon-book icon-large"></i>Total Stories: <?=count($row1)?></h2></li>
+							<li class="disable" style="float:left;width: 50%; color: Orange;"><h2><i class="icon-book icon-large"></i>Total Stories: <?=$total?></h2></li>
 
 							<li style="float: right;width: 50%"><a href="./newstory.php?" style="width: 30%; height: auto; min-height: 25px; float: right; font-size: 15px; background-color: blue"  class="btn btn-primary"><i class="icon-plus icon-large"></i> New Story</a></li>
 						</ul>

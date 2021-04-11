@@ -10,6 +10,9 @@ session_start();
         $email = '';
         //echo(filter_var($_POST['email'],FILTER_VALIDATE_EMAIL));
         // kiem tra email co ton tai va dung dinh dang
+        if(isset($_POST['forgotpw'])){
+            echo($_POST['forgotpw']);
+        }
         if(isset($_POST['email']) && filter_var($_POST['email'],FILTER_VALIDATE_EMAIL))
         {
             $email = $_POST['email'];
@@ -54,18 +57,18 @@ session_start();
             $title = 'Update Password';
             $content = "<h3> Dear ". $fullname. "</h3>";
             $content .= "<p>We have received a request to re-issue your password recently.</p>";
-            $content .= "<p>Please click <a href='http://iread.net/updatepw.php?email=".$email."&token=".$token."'> here </a> to update your new password.</p>";
+            $content .= "<p>Please click <a href='http://iread.net/resetpw.php?email=".$email."&token=".$token."'> here </a> to update your new password.</p>";
             $content .= "<p>This link is valid only within <b>20 minutes</b>.</p>";
             $sendMai = send($title, $content, $fullname, $email);
 
-           if ($sendMai) {
+           if ($sendMai) {  
     /*            $hash = password_hash($randPassword, PASSWORD_DEFAULT);
                 $sqlUpdate = "UPDATE `account` SET `Pass`= '". $hash ."' WHERE `IdAccount` = ". $account['IdAccount'];
                 $conn->query($sqlUpdate);  */
                $_SESSION['success'] = 'We sent you an email please check it';
                 header('Location: forgotpw.php');
             } else {
-                $_SESSION['errors'] = 'An error has occurred unable to retrieve the password';
+                $_SESSION['errors'] = 'An error has occurred, the password cannot be retrieved. Please try again! ';
                 header('Location: forgotpw.php');
                 exit();
             }  
@@ -73,5 +76,5 @@ session_start();
 
     }else{
         header('Location: forgotpw.php');
-    }
+    }  
 ?>

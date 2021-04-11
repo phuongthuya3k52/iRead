@@ -79,7 +79,7 @@ if(isset($_POST['time'])){
 				
 				<ul class="nav pull-right">
 					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i></a>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i><b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a href="./profile.php"><i class="icon-user" aria-hidden="true"></i>My Account</a></li>
 							<li><a href="./mystories.php"><i class="icon-folder-open"></i>My Stories</a></li>

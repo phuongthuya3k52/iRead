@@ -642,7 +642,7 @@ transform:translate(-50%,-50%) scale(1);
 /* login , signup */
 .bg-img1 {
   /* The image used */
-  background-image: url("../img/login_background.png");
+  background-image: url("../img/cai cay final.png");
 
   width: 100%;
   height: 830px;
@@ -661,6 +661,7 @@ transform:translate(-50%,-50%) scale(1);
   margin: 145px;
   margin-top: 300px;
   width: 45%;
+  min-width: 380px;
   padding: 16px;
   background-color: white;
   border: 1px solid black;
@@ -672,6 +673,7 @@ transform:translate(-50%,-50%) scale(1);
   margin: 20px;
   margin-top: 20px;
   width: 45%;
+  min-width: 380px;
   padding: 16px;
   background-color: white;
   border: 1px solid black;

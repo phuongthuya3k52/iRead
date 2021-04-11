@@ -75,9 +75,12 @@
 		$sql= "select * from account where Username='" .$us ."'and Password='".$pw ."'";
 		$row=query($sql);
 		$email = $row[0][3];
+		$status = $row[0][6];
+
+
 
 		if ($us != "" && $pw !=""){
-			if (count($row)>0){	
+			if (count($row)>0 && $status == 1){	
 				$_SESSION['username'] = $us;
 
 				if ($row[0][2] == 'member'){
@@ -92,8 +95,13 @@
 					die();
 				}
     										
-			}			
-			else{
+			}elseif (count($row)>0 && $status != 1) {
+?>				<script >
+					alert ("The account is not activated. Please check the registered email to activate your account  ");
+					window.location.replace("./login.php");
+				</script>
+			<?php 
+			}else{
 ?>				<script >
 					alert ("Username or Password is not correct");
 					window.location.replace("./login.php");

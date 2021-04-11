@@ -61,6 +61,8 @@
 
 <?php
 	require_once("./db.php");
+	require_once __DIR__."/send_mail/SendMail.php";
+	date_default_timezone_set("Asia/Ho_Chi_Minh");
 
 	if (isset($_POST['fullname']) && isset($_POST['email']) && isset($_POST['username']) && isset($_POST['password']))
 	{
@@ -119,7 +121,7 @@
 										$emailErr = "Email is already exit. Please choose another one";
 									}
 									if(isset($emailErr)){
-										echo("<label class='error' id = 'erEmail' style='display: block;'>".$emailErr ."</label>");
+										echo("<label class='error' id = 'erEmail' style='display: block; width:90%'>".$emailErr ."</label>");
 											
 										$errormsg = True;
 									}
@@ -167,7 +169,7 @@
 							<?php
 								if(isset($_POST['username']) && count($row) > 0){ 
 
-									echo("<label class='error' id = 'erEmail' style='display: block;'> Username already exists. Please choose another username </label>");
+									echo("<label class='error' id = 'erEmail' style='display: block; width:90%'> Username already exists. Please choose another username </label>");
 									$errormsg = True;
 								}
 							?>
@@ -189,7 +191,7 @@
 								<label for="password" class="control-label requiredField">Confirm Password<span class="asteriskField">*</span></label>
 							</div>
 							<div class="col-75 controls">
-								<input style="width: 90%" type="password" placeholder="Confirm Password" name="cf_password" required="required" id="cf_password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6 characters">
+								<input style="width: 90%" type="password" placeholder="Confirm Password" name="cf_password" required="required" id="cf_password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6 characters" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}">
 							</div>
 						</div>
 
@@ -271,31 +273,109 @@
 		$pass = md5(stripslashes($pass));
 
 		if($errormsg == False){
-			$sql= "Insert into account values ('" .$uname ."','" .$pass."','member','".$email ."','','')";
+			$token = substr(md5(rand(0,10000)),0,16);
+            $creattime = date('Y-m-d H:i:s');
 
-			$sql1 = "Insert into member values ('','" .$fullname ."','" .$dob ."','" .$phone ."','" .$uname ."','0','default avt.jpg')";  
-
-			$result = execsql($sql);
+			$sql2= "Insert into account values ('" .$uname ."','" .$pass."','member','".$email ."','" .$token ."','" .$creattime ."','0')";
+			$result2 = execsql($sql2);
 			//echo('result: =' .$result);
-			$result1 = execsql($sql1);  
-			//echo('result1: =' .$result1);			
-						
-			if ($result != null && $result1 != null){
-?>				
+			$sql5 = "Insert into member values ('','" .$fullname ."','" .$dob ."','" .$phone ."','" .$uname ."','0','default avt.jpg')"; 
+
+			$result5 = execsql($sql5);  
+			echo('result5: =' .$result5);
+
+		//Send verification email  
+			$title = 'Create Account';
+            $content = "<h3> Dear ". $fullname. "</h3>";
+            $content .= "<p>We have received a request to create your account recently.</p>";
+            $content .= "<p>Please click <a href='http://iread.net/registration.php?email=".$email."&token=".$token."'> here </a> to activate your account .</p>";
+            $content .= "<p>This link is valid only within <b>20 minutes</b>.</p>";
+            $sendMai = send($title, $content, $fullname, $email);
+
+            if ($sendMai) {  
+    ?>				
 				<script >
-					alert ("Sign up successfully");
+					alert ("We sent you an email please check it to activate your account!");
 					window.location.replace("./login.php");
 				</script>
-<?php 		
-			}else{
-?>				
+	<?php 
+            } else {
+    ?>				
 				<script >
-					alert ("Sign up is not successfully. Try again");
+					alert ("An error has occurred, the account cannot be created. Please try again!");
 					window.location.replace("./registration.php");
 				</script>
-<?php
-			}   
+	<?php 
+            }
+									  
 		}
+	}
+
+// Check token from email
+    if (isset($_GET['email']) && isset($_GET['token']))
+	{
+		$cf_email=$_GET['email'];
+		$cf_token=$_GET['token'];
+		$sql3= "SELECT * FROM account WHERE email='".$cf_email ."'";
+		$row3= query($sql3);
+		$status = $row3[0][6];
+		$token = $row[0][4];
+
+		if($token != $cf_token){
+?>
+			<script>
+				alert ("This token does not exist. Please try again!");	
+					window.location.replace("./forgotpw.php");
+			</script>	
+	<?php					
+		}else{
+
+			$create_time = strtotime($row3[0][5]);
+			$currenttime = strtotime(date('Y-m-d H:i:s'));
+			if(($currenttime - $create_time) > 60*20 && $status == 0)
+			{
+				$sql7= "SELECT * FROM account WHERE email='" .$cf_email ."'";
+        		$row7 =query($sql7);
+        		$user_name = $row7[0][0];
+
+        		$sql8= "DELETE FROM member WHERE username='" .$user_name ."'";
+        		$result8 =execsql($sql8);
+
+				$sql4= "DELETE FROM account WHERE email='" .$cf_email ."'";
+        		$result4 =execsql($sql4);
+        			
+        		if($result4 != null){
+	?>
+					<script>
+						alert ("This token is out of date. Please try again!");	
+						window.location.replace("./registration.php");
+					</script>	
+	<?php			
+				} 
+			}else{
+	
+				$sql6= "UPDATE account SET token='', createAt='', status =1 WHERE email='" .$cf_email ."'";
+				//echo("sql6 = ".$sql6);
+        		$result6 = execsql($sql6);
+        		//echo('result6: =' .$result6);
+
+        		if($result6 != null){
+		?>				
+					<script >
+						alert ("Sign up successfully");
+						window.location.replace("./login.php");
+					</script>
+		<?php 		
+				}else{
+	?>				
+					<script >
+						alert ("Sign up is not successfully. Please Try again");
+						window.location.replace("./registration.php");
+					</script>
+	<?php
+				} 
+			}
+		}	
 	}
 	
 ?>  

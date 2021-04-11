@@ -52,11 +52,59 @@
 					window.location.replace("./forgotpw.php");
 				</script>	
 	<?php			
-			}
+			} 
 		}		
-	}
+	}else{
+		header("Location:./forgotpw.php");
+}
 
+// Reset password	
 
+	if(isset($_POST['password']) && isset($_POST['cf_password']) && isset($_POST['email']) && isset($_POST['token'])) 
+		{
+		
+			$error_change_pass = array();
+			$pass = $_POST['password'];
+			$cf_password = $_POST['cf_password'];
+			$email = $_POST['email'];
+			$token = $_POST['token'];
+
+			if($pass != $cf_password){
+				$error_change_pass[] = "The Confirm Password and Password are not the same.";
+			}
+
+			if(!empty($error_change_pass))
+			{ 
+				//print_r($error_change_pass);
+	?>
+			<script>
+				alert ("<?php for($i=0; $i<sizeof($error_change_pass); $i++){echo $error_change_pass[$i] . " ";echo(" Please try again!");} ?>");	
+			</script>	
+	<?php		
+			}else{  
+
+				$sql2 = "UPDATE account SET password='" .md5($pass) ."' WHERE email='" .$email ."'"; 
+
+				$result2 = execsql($sql2);
+			//	echo("result2 = ".$result2);
+				if($result2 != null)
+				{
+	?>				
+					<script >
+						alert ("Reset password successfully!");
+						window.location.replace("./login.php");
+					</script>
+	<?php 		
+				}else{
+	?>				
+					<script >
+						alert ("Reset password is not successfully. Please try again");
+					//	window.location.replace("./resetpw.php?email=<?=$email?>&token=<?=$token?>");
+					</script>
+	<?php							
+				}  
+			}  
+		}
 
 ?>
 
@@ -76,7 +124,7 @@
 		<div class="container3">
 			<h1 h1 class="page-header" style="text-align: center">Reset Password</h1>
 
-			<form action="resetpw.php" method="post" role="form">
+			<form action="resetpw.php?email=<?=$email?>&token=<?=$token?>" method="post" role="form">
 				<div class="row1">
 					<div class="col-25">
 						<label for="password" class="control-label requiredField">Password<span class="asteriskField">*</span></label>
@@ -91,7 +139,7 @@
 						<label for="password" class="control-label requiredField">Confirm Password<span class="asteriskField">*</span></label>
 					</div>
 					<div class="col-75 controls">
-						<input style="width: 90%" type="password" placeholder="Confirm Password" name="cf_password" required="required" id="cf_password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6 characters">
+						<input style="width: 90%" type="password" placeholder="Confirm Password" name="cf_password" required="required" id="cf_password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6 characters" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}">
 					</div>
 				</div>
 

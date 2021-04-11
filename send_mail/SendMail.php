@@ -29,7 +29,7 @@ use PHPMailer\PHPMailer\Exception;
             );
 
             //Recipients
-            $mail->setFrom('iread.net.vn@gmail.com', 'Forgot Password');
+            $mail->setFrom('iread.net.vn@gmail.com', 'iread.net.vn@gmail.com');
             $mail->addAddress($mTo, $nTo);     // Add a recipient
             //$mail->addAddress('ellen@example.com');               // Name is optional
             //$mail->addReplyTo('duocnguyenit1994@gmail.com', 'Information');

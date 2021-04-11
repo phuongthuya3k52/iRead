@@ -8,7 +8,7 @@
 <meta property="og:type" content="website"/>
 <meta property="og:image" content="//truyenyy.com/media/book_covers/DaiChuaTe.jpg"/>
 <link rel="alternate" type="application/atom+xml" title="Đọc Truyện Online - Truyện Kiếm Hiệp" href="http://feeds.feedburner.com/">
-<title>iRead</title>
+<title>Story | iRead</title>
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/yamm.css" rel="stylesheet">
@@ -26,20 +26,6 @@
 	}
 </style>
 
-<!-- <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-37191528-1']);
-        _gaq.push(['_trackPageview']);
-
-        (function () {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-    </script> -->
 </head>
 
 <?php
@@ -168,7 +154,7 @@
 						</div>
 
 						<div id="desc_story" style=" font-size: 14px">
-							<p><?=$row[0][3]?></p>
+							<p><?=decryptString($row[0][3])?></p>
 						</div>
 						
 			<!--			<div class="showmore">
@@ -190,7 +176,7 @@
 					<div class="clearfix"></div>
 					<hr style="margin: 0; border-bottom: 1px solid #eee;">
 					<div class="chaplist" style="width: 100%;" id="dschuong">
-						<h2>List Chapter of "<?=$row[0][1]?>"</h2>
+						<h2>List Chapter of <?=decryptString($row[0][1])?></h2>
 						<ul class="thumbnails" style="width: 100%; margin-left: 0px; margin-right: -30px">
 						<?php
 							// Pagination
@@ -267,7 +253,7 @@
 									<?php
 									}
 									for ($i=0; $i < count($row3);$i++){
-										if($i == $chap){
+										if($i == $chap-1){
 											$chapID=$row3[$i][0];
 										?>
 											<script >

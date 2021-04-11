@@ -62,29 +62,27 @@
 						<form action="sendmail.php" method="post" role="form">
 							<div class="row1"  >
 								<div class="col-25">
-										<label for="email" class="control-label requiredField">Email</label>
+										<label for="email" class="control-label requiredField" style="margin-left: 10%">Email</label>
 								</div>
 								
 								<div class="col-75 controls">
 											<input style="width: 90%"name="email" type="text" maxlength="100" autofocus="autofocus" required="required" placeholder="Email address" class="textinput textInput" id="id_email"/>
-							</div>
-							<div class="row1">
-								<?php
+									<?php
                         			if (!empty($error)) {
-                            			echo "<div class='alert alert-danger'>$error</div>";
+                            			echo "<div class='alert alert-danger' style='width: 80%'>$error</div>";
                         			}
                    				 ?>
 
                     			<?php
                         			if (!empty($success)) {
-                        				echo "<div class='alert alert-success'>$success</div>";
+                        				echo "<div class='alert alert-success' style='width: 80%'>$success</div>";
                     				}
                     			?>
 							</div>
 							<div class="row1"  >
 								<div class="col-25"></div>
 								<div class="col-75">
-										<button type="submit" class="btn btn-primary btn-lg" data-loading-text="Login">
+										<button type="submit" class="btn btn-primary btn-lg" name="forgotpw" value = "forgotpw"data-loading-text="Login">
 										 Send Email</button>
 								</div>
 							</div>		
