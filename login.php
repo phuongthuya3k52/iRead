@@ -61,6 +61,7 @@
 <?php
 	require_once("./db.php");
     session_start();
+    unset($_SESSION['success']);
 
            
 	if (isset($_POST['username'])&& isset($_POST['password'])){
@@ -73,6 +74,7 @@
 
 		$sql= "select * from account where Username='" .$us ."'and Password='".$pw ."'";
 		$row=query($sql);
+		$email = $row[0][3];
 
 		if ($us != "" && $pw !=""){
 			if (count($row)>0){	
@@ -111,6 +113,7 @@
 	</div>
 </div>
 
+
 <div class="container">
 	<div class="bg-img1">
 	<!--	<div class="span12">
@@ -140,15 +143,19 @@
 								<div class="col-25"></div>
 								<div class="col-75">
 										<button type="submit" class="btn btn-primary btn-lg" data-loading-text="Login">
-										 Login</button> 
+										 Login</button>&emsp;&emsp; 
 
 										<button type="reset" class="btn btn-default">Clear</button>
 								</div>
 							</div>		
-							<div class="row1" style="font-size: 17px; text-align: center">
+							<div class="row1">
+								<div class="col-25"></div>
+								<div class="col-75" style="font-size: 16px; text-align: left">
 										<br>
-										<i class="icon-arrow-right"></i> <a href="registration.php">Register new account</a>
-										
+										<i class="icon-arrow-right"></i> <a href="registration.php">  Register new account</a> <br>
+
+										<i class="icon-arrow-right"></i> <a href="forgotpw.php">Forgot password</a>
+								</div>
 							</div>						
 
 					</div>  
@@ -159,25 +166,4 @@
 </div>
 
 </body>
-		    
-
-<!--
-<script>
-	(function(d,s,a,i,j,r,l,m,t){
-		try{
-			l=d.getElementsByTagName('a');t=d.createElement('textarea');
-			for(i=0;l.length-i;i++){
-				try{a=l[i].href;s=a.indexOf('/cdn-cgi/l/email-protection');
-				m=a.length;if(a&&s>-1&&m>28){j=28+s;s='';
-
-				if(j<m){
-					r='0x'+a.substr(j,2)|0;for(j+=2;
-					j<m&&a.charAt(j)!='X';
-					j+=2)s+='%'+('0'+('0x'+a.substr(j,2)^r).toString(16)).slice(-2);j++;
-					s=decodeURIComponent(s)+a.substr(j,m-j)}t.innerHTML=s.replace(/</g,'&lt;').replace(/\>/g,'&gt;');
-					l[i].href='mailto:'+t.value}}catch(e){}}}catch(e){}
-
-	})(document);/* ]]> */
-</script>
--->
 </html>

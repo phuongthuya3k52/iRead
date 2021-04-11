@@ -25,7 +25,7 @@
 	}
 </style>
 </head>
-
+<!--
 <script>
 	$(document).ready(function(){
 		$('input.form-control').keyup(function() {
@@ -55,7 +55,7 @@
 			form.find('button[type=submit]').button('loading');
 		});
 	});
-</script>
+</script>  -->
 
 
 
@@ -185,14 +185,28 @@
 						</div>
 
 						<div class="row1">
+							<div class="col-25">
+								<label for="password" class="control-label requiredField">Confirm Password<span class="asteriskField">*</span></label>
+							</div>
+							<div class="col-75 controls">
+								<input style="width: 90%" type="password" placeholder="Confirm Password" name="cf_password" required="required" id="cf_password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6 characters">
+							</div>
+						</div>
+
+						<div class="row1">
 							<div class="col-25"></div>
 							
-							<div class="col-75" id="message">
-  								<h6>Password must contain the following:</h6>
-  								<p id="letter" class="invalid">A <b>lowercase</b> letter</p>
-  								<p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
-  								<p id="number" class="invalid">A <b>number</b></p>
-  								<p id="length" class="invalid">Minimum <b>6 characters</b></p>
+							<div class="col-75" >
+								<div id="message">
+  									<h6>Password must contain the following:</h6>
+  									<p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+  									<p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+  									<p id="number" class="invalid">A <b>number</b></p>
+  									<p id="length" class="invalid">Minimum <b>6 characters</b></p>
+  								</div>
+  								<div id="message1" style="display: none">
+  									<p id="the_same" class="invalid">Confirm Password and Password <b> are the same</b></p>
+  								</div>
 							</div>	
 						</div>
 
@@ -240,73 +254,6 @@
 		</div>
 	</div>
 </div>
-
-<!-- validate password -->
-<script>
-var myInput = document.getElementById("password");
-var letter = document.getElementById("letter");
-var capital = document.getElementById("capital");
-var number = document.getElementById("number");
-var length = document.getElementById("length");
-
-var submit_btn = document.getElementById("submit");
-
-// When the user clicks on the password field, show the message box
-myInput.onfocus = function() {
-  document.getElementById("message").style.display = "block";
-
-}
-
-// When the user clicks outside of the password field, hide the message box
-myInput.onblur = function() {
-  document.getElementById("message").style.display = "none";
-}
-
-// When the user starts to type something inside the password field
-myInput.onkeyup = function() {
-  // Validate lowercase letters
-  var lowerCaseLetters = /[a-z]/g;
-  if(myInput.value.match(lowerCaseLetters)) {
-    letter.classList.remove("invalid");
-    letter.classList.add("valid");
-  } else {
-    letter.classList.remove("valid");
-    letter.classList.add("invalid");
-	}
-
-  // Validate capital letters
-  var upperCaseLetters = /[A-Z]/g;
-  if(myInput.value.match(upperCaseLetters)) {
-    capital.classList.remove("invalid");
-    capital.classList.add("valid");
-  } else {
-    capital.classList.remove("valid");
-    capital.classList.add("invalid");
-  }
-
-  // Validate numbers
-  var numbers = /[0-9]/g;
-  if(myInput.value.match(numbers)) {
-    number.classList.remove("invalid");
-    number.classList.add("valid");
-  } else {
-    number.classList.remove("valid");
-    number.classList.add("invalid");
-  }
-
-  // Validate length
-  if(myInput.value.length >= 8) {
-    length.classList.remove("invalid");
-    length.classList.add("valid");
-  } else {
-    length.classList.remove("valid");
-    length.classList.add("invalid");
-  } 
-}
-
-
-</script>
-
 </body>
 </html>
 <?php 
@@ -352,3 +299,83 @@ myInput.onkeyup = function() {
 	}
 	
 ?>  
+<!-- validate password -->
+<script>
+var myInput = document.getElementById("password");
+var myInput1 = document.getElementById("cf_password");
+var letter = document.getElementById("letter");
+var capital = document.getElementById("capital");
+var number = document.getElementById("number");
+var length = document.getElementById("length");
+
+// When the user clicks on the password field, show the message box
+myInput.onfocus = function() {
+  document.getElementById("message").style.display = "block";
+  document.getElementById("message1").style.display = "none";
+}
+myInput1.onfocus = function() {
+  document.getElementById("message").style.display = "none";
+  document.getElementById("message1").style.display = "block";
+}
+
+// When the user clicks outside of the password field, hide the message box
+myInput.onblur = function() {
+  document.getElementById("message").style.display = "none";
+}
+myInput1.onblur = function() {
+  document.getElementById("message1").style.display = "none";
+}
+
+// When the user starts to type something inside the password field
+myInput.onkeyup = function() {
+  // Validate lowercase letters
+  var lowerCaseLetters = /[a-z]/g;
+  if(myInput.value.match(lowerCaseLetters)) {
+    letter.classList.remove("invalid");
+    letter.classList.add("valid");
+  } else {
+    letter.classList.remove("valid");
+    letter.classList.add("invalid");
+	}
+
+  // Validate capital letters
+  var upperCaseLetters = /[A-Z]/g;
+  if(myInput.value.match(upperCaseLetters)) {
+    capital.classList.remove("invalid");
+    capital.classList.add("valid");
+  } else {
+    capital.classList.remove("valid");
+    capital.classList.add("invalid");
+  }
+
+  // Validate numbers
+  var numbers = /[0-9]/g;
+  if(myInput.value.match(numbers)) {
+    number.classList.remove("invalid");
+    number.classList.add("valid");
+  } else {
+    number.classList.remove("valid");
+    number.classList.add("invalid");
+  }
+
+  // Validate length
+  if(myInput.value.length >= 8) {
+    length.classList.remove("invalid");
+    length.classList.add("valid");
+  } else {
+    length.classList.remove("valid");
+    length.classList.add("invalid");
+  }
+}
+
+myInput1.onkeyup = function() {
+  // Validate lowercase letters
+  if(myInput1.value == myInput.value) {
+    the_same.classList.remove("invalid");
+    the_same.classList.add("valid");
+  } else {
+    the_same.classList.remove("valid");
+    the_same.classList.add("invalid");
+	}
+}
+</script>

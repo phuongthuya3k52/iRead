@@ -136,7 +136,7 @@
     									<span class="add-on"><img src="./img/icon-phone.jpg" style="width: 16px; height: 16px;"></span>
     									<input style="width: 70%" type="text" placeholder="Phone Number" name="phonenumber" id="id_phonenumber" pattern="^\+?\d{1,3}?[- .]?\(?(?:\d{2,3})\)?[- .]?\d\d\d[- .]?\d\d\d\d$" title="Please enter the correct format phone number" value="<?=$phoneNumber?>">
       								</div>
-      								<div class="col-75 input-prepend">
+      								<div class="col-50 input-prepend">
       									<span class="add-on"><i class="icon-calendar"></i></span>
     									<input style="width: 70%" name="dob" type="date" value="<?=$dob?>">
       								</div>
@@ -146,7 +146,7 @@
     								<div class="col-50" style="text-align: center; margin-top: 15px">
       									<button type="submit" name="info_submit" class="btn btn-primary">Submit </button>
       								</div>
-      								<div class="col-75" style="text-align: center; margin-top: 10px">
+      								<div class="col-50" style="text-align: center; margin-top: 10px">
       									<button type="button" name="change_pw" id="change_pw" class="btn btn-warning" data-toggle="modal" data-target="#change_pw_confirm"><i class="icon-edit icon-4x"></i> Password </button>
       								</div>
     							</div>
@@ -424,10 +424,10 @@
     					<div class="control"><input style="width: 70%" type="password" placeholder="Current Password" name="cur_password" required="required" id="cur_password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6 characters"></span></div>	
 
     					<label><b>New Password</b></label>
-    					<div class="control"><input style="width: 70%" type="password" placeholder="New Password" name="new_password" required="required" id="new_password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6 characters" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"></span></div>	
+    					<div class="control"><input style="width: 70%" type="password" placeholder="New Password" name="new_password" required="required" id="new_password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6 characters" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"></div>	
 
     					<label><b>Confirm New Password</b></label>
-    					<div class="control"><input style="width: 70%" type="password" placeholder="Confirm New Password" name="cf_new_password" required="required" id="cf_new_password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6 characters"></span></div>
+    					<div class="control"><input style="width: 70%" type="password" placeholder="Confirm New Password" name="cf_new_password" required="required" id="cf_new_password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6 characters"></div>
       				</div>
 
       				<div  class="col-50">
@@ -525,12 +525,12 @@
 				$error_change_pass[] = "The Current Password is not correct.";
 			}
 			if($new_password != $cf_new_password){
-				$error_change_pass[] = "The Confirm New Password and New Password are not correct.";
+				$error_change_pass[] = "The Confirm New Password and New Password are not the same.";
 			}
 
 			if(!empty($error_change_pass))
 			{ 
-				print_r($error_change_pass);
+				//print_r($error_change_pass);
 	?>
 			<script>
 				alert ("<?php for($i=0; $i<sizeof($error_change_pass); $i++){echo $error_change_pass[$i] . " ";echo(" Please try again!");} ?>");	
@@ -729,7 +729,5 @@ myInput1.onkeyup = function() {
     the_same.classList.add("invalid");
 	}
 }
-
-
 </script>
 
