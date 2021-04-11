@@ -271,7 +271,7 @@
 		$pass = md5(stripslashes($pass));
 
 		if($errormsg == False){
-			$sql= "Insert into account values ('" .$uname ."','" .$pass."','member','".$email ."')";
+			$sql= "Insert into account values ('" .$uname ."','" .$pass."','member','".$email ."','','')";
 
 			$sql1 = "Insert into member values ('','" .$fullname ."','" .$dob ."','" .$phone ."','" .$uname ."','0','default avt.jpg')";  
 
