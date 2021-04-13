@@ -70,15 +70,15 @@
 						<span class="divider">/</span>
 					</div>
 				</li>
-				<li class="active"><strong>Transaction Histories</strong></li>
+				<li class="active"><strong>Transaction List</strong></li>
 			</ul>
 	</div>
 	<div class="row wrapper ">
 				
-		<h1 style="text-align: center;margin-top: 10px;">List Stories</h1>
+		<h1 style="text-align: center;margin-top: 10px;">Transactions List</h1>
 		<ul class="nav" style="margin-top: 40px; margin-bottom: 40px">
 			<li class="disable" style="float:left;width: 100%; color: #E86C19;">
-				<h2><i class="icon-book icon-large"></i>Total Stories: <?=$total?></h2>
+				<h2><i class="icon-book icon-large"></i>Total Transactions: <?=$total?></h2>
 				<p style="font-size: 13px; width: 100%;"> The information sheet below shows the list of transactions in order from the latest story to older one.</p>
 			</li>
 
@@ -143,11 +143,11 @@
 						$time = $row2[$i][7];
 				?>	
 					<tr>
-						<td style="padding-top: 20px; width: 5%; text-align: center;"><?=$i+1?></td>
+						<td style="width: 5%; text-align: center;"><?=$i+1+($currentpage-1)*10?></td>
 						<td class="nav-list name_list" style="width: 20%">
 							<div class="media truyen-item">
 								<a class="pull-left" href="chapterlist.php?storyID=<?=$row2[$i][0]?>">
-									<h2 class="media-heading" style="font-size: 15px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#333333;">
+									<h2 class="media-heading" style="font-size: 15px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#333333; text-align: center;">
 										<?php
                               				$sql4 = "SELECT * FROM member WHERE memberID='" .$memberID . "'";
                               				$row4 = query($sql4);

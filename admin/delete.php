@@ -1,13 +1,13 @@
-<?php	
+<?php
+// For Admin	
 	require_once("../db.php");
-    session_start();
-
-    echo("cf_del_chapter = ".isset($_POST['cf_del_chapter']));
-    echo("chapter_id = ".isset($_POST['chapter_id']));
-    echo("story_id = ".isset($_POST['story_id']));  
+    session_start(); 
 
 
 // Delete chapter
+    echo("cf_del_chapter = ".isset($_POST['cf_del_chapter']));
+    echo("chapter_id = ".isset($_POST['chapter_id']));
+    echo("story_id = ".isset($_POST['story_id'])); 
 	if(isset($_POST['cf_del_chapter']) && isset($_POST['chapter_id']) && isset($_POST['story_id']))
 	{
 		$chapterID = $_POST['chapter_id'];
@@ -155,4 +155,41 @@
 		<?php	
 		}
 	} 
+
+// Delete account and member infnomation
+	echo("cf_del_member = ".isset($_POST['cf_del_member']));
+    echo("member_id = ".isset($_POST['member_id']));
+    echo("usname = ".isset($_POST['usname']));
+
+	if(isset($_POST['cf_del_member']) && isset($_POST['member_id']) && isset($_POST['usname']))
+	{
+		
+		$memberID = $_POST['member_id'];
+		$usname = $_POST['usname']);
+		$is_chapter_del = false;
+
+		//Delete Account
+		$sql = "DELETE FROM account WHERE username='" .$usname ."'";
+		$result = execsql($sql);
+		echo ("result = " .$result);
+
+		$sql1 = "UPDATE member SET fullName='', dob='null', phoneNumber='', username ='', walet ='', image= '' WHERE memberID='" .$memberID ."'";
+		$result1 = execsql($sql1);
+		echo ("result1 = " .$result1);
+		if($result1 != null){
+?>				
+			<script >
+					alert ("Account information has been updated successfully!");
+					window.location.replace("./profile.php");
+			</script>
+<?php 		
+		}else{
+?>				
+			<script >
+					alert ("Failure to update account information. Try again!");
+					window.location.replace("./profile.php");
+			</script>
+<?php
+		}
+	}
 ?>

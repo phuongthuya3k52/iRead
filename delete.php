@@ -1,5 +1,5 @@
 <?php	
-	require_once("../db.php");
+	require_once("./db.php");
     session_start();
 
     echo("cf_del_chapter = ".isset($_POST['cf_del_chapter']));
@@ -126,14 +126,14 @@
 			?>
 				<script>
 					alert ("The story has been deleted successfully!");
-					window.location.replace("./storylist.php?");
+					window.location.replace("./mystories.php?");
 				</script> 
 			<?php
 				}else{	
 			?>	
 				<script>
 					alert ("Failed to delete the story. Please try again!");
-					window.location.replace("./storylist.php?");
+					window.location.replace("./mystories.php?");
 				</script> 	
 	<?php
 				}
@@ -141,7 +141,7 @@
 		?>
 				<script>
 					alert ("Failed to delete the story. Please try again!");
-					window.location.replace("./storylist.php?");
+					window.location.replace("./mystories.php?");
 				</script> 
 		<?php	
 			}
@@ -150,7 +150,7 @@
 	?>
 			<script>
 					alert ("Failed to delete the story. Please try again!");
-					window.location.replace("./storylist.php?");
+					window.location.replace("./mystories.php?");
 				</script>  
 		<?php	
 		}

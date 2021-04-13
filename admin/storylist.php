@@ -70,12 +70,12 @@
 						<span class="divider">/</span>
 					</div>
 				</li>
-				<li class="active"><strong>List Stories</strong></li>
+				<li class="active"><strong>Stories List</strong></li>
 			</ul>
 	</div>
 	<div class="row wrapper ">
 				
-		<h1 style="text-align: center;margin-top: 10px;">List Stories</h1>
+		<h1 style="text-align: center;margin-top: 10px;">Stories List</h1>
 		<ul class="nav" style="margin-top: 40px; margin-bottom: 40px">
 			<li class="disable" style="float:left;width: 100%; color: #E86C19;">
 				<h2><i class="icon-book icon-large"></i>Total Stories: <?=$total?></h2>
@@ -145,11 +145,11 @@
 						$memberID = $row2[$i][2];
 				?>	
 					<tr>
-						<td style=" width: 5%; text-align: center;"><?=$i+1?></td>
+						<td style=" width: 5%; text-align: center;"><?=$i+1+($currentpage-1)*10?></td>
 						<td class="nav-list name_list" style="width: 25%">
 							<div class="media truyen-item">
 								<a class="pull-left" href="chapterlist.php?storyID=<?=$row2[$i][0]?>">
-									<h2 class="media-heading" style="font-size: 15px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#333333;"><?=decryptString($storyName)?></h2>
+									<h2 class="media-heading" style="font-size: 15px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#333333; text-align: center;"><?=decryptString($storyName)?></h2>
 								</a>
 							</div>
 										
