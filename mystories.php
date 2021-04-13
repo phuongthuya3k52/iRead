@@ -174,7 +174,7 @@
 													{
 												?>	
 														<span class="list-category" style="font-size: 14px; text-align: justify;">
-															<span><a href="./storybycat.php?categoryID=<?=$row3[$i][0]?>"><?=$row3[$j][1]?></a></span>,
+															<span><a href="./storybycat.php?categoryID=<?=$row3[$j][0]?>"><?=$row3[$j][1]?></a></span>,
 														</span>
 												<?php
 													}

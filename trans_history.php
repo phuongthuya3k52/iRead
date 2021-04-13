@@ -102,7 +102,7 @@
 						
 						<h1 style="text-align: center;margin-top: 10px;"><?=$walet?><img src="./img/coin.jpg" style="border-radius: 50%; width: 45px;height: 45px;"></h1>
 						<ul class="nav" style="margin-top: 40px; margin-bottom: 40px">
-							<li class="disable" style="float:left;width: 50%; color: Orange;"><h2><i class="icon-book icon-large"></i>Total Transactions: <?=count($row1)?></h2></li>
+							<li class="disable" style="float:left;width: 50%; color: Orange;"><h2><i class="icon-book icon-large"></i>Total Recharges: <?=count($row1)?></h2></li>
 
 							<li style="float: right;width: 50%"><a href="#recharge_form" data-toggle="modal" style="width: 20%; height: auto; min-height: 25px; float: right; font-size: 15px; background-color: blue"  class="btn btn-primary"><i class="icon-plus icon-large"></i> New</a></li>  
 						</ul>
@@ -162,7 +162,7 @@
 									$time = $row2[$i][7];
 							?>
 								<tr>
-									<td style="padding-top: 10px; width: 5%;"><?=$i+1?></td>
+									<td style="padding-top: 10px; width: 5%;text-align: center;"><?=$i+1?></td>
 									
 									<td style="width: 20%">
 										<div  style="text-align: center; width: 100%">

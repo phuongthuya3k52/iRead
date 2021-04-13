@@ -74,6 +74,7 @@
 
 		$sql= "select * from account where Username='" .$us ."'and Password='".$pw ."'";
 		$row=query($sql);
+		$role = $row[0][2];
 		$email = $row[0][3];
 		$status = $row[0][6];
 
@@ -82,8 +83,9 @@
 		if ($us != "" && $pw !=""){
 			if (count($row)>0 && $status == 1){	
 				$_SESSION['username'] = $us;
+				$_SESSION['role'] = $role;
 
-				if ($row[0][2] == 'member'){
+				if ($role == 'member'){
 
 					$_SESSION['username'] = $us;
 					header("Location: ./home.php");
@@ -91,7 +93,7 @@
 				}
 				else{
 					$_SESSION['username'] = $us;
-					header("Location: ./admin.php");
+					header("Location: ./admin/storylist.php");
 					die();
 				}
     										
