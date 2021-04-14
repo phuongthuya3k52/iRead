@@ -48,28 +48,35 @@
 <?php    
   }else{
   	// Fillter
-  	if(!isset($_POST['type_acc']) || $_POST['type_acc'] == "all"){
+
+  	if(!isset($_SESSION['page']) && !isset($_POST['type_acc'])){
   		$_SESSION['page'] = "all";
-  		$account_type = "all";
-  		$sql = "SELECT * FROM account";
-    	$row = query($sql);
-    	$total = count($row);
-  	}else{
-  		if($_POST['type_acc'] == "admin"){
-  			$_SESSION['page'] = "admin";
-  			$account_type = "admin";
-  			$sql = "SELECT * FROM account WHERE role ='admin' ";
-    		$row = query($sql);
-    		$total = count($row);
-  		}
-  		else{
-  			$_SESSION['page'] = "member";
-  			$account_type = "member";
-  			$sql = "SELECT * FROM account WHERE role ='member' ";
-    		$row = query($sql);
-    		$total = count($row);
-  		}
   	}
+  	if(!isset($_SESSION['page']) && isset($_POST['type_acc'])){
+  		$_SESSION['page'] = $_POST['type_acc'];
+  	}
+  	if(isset($_SESSION['page']) && !isset($_POST['type_acc'])){
+  		$_SESSION['page'] = $_SESSION['page'];
+  	}
+  	if(isset($_SESSION['page']) && isset($_POST['type_acc'])){
+  		$_SESSION['page'] = $_POST['type_acc'];
+  	}
+
+  		if($_SESSION['page'] == "all"){
+	  		$sql = "SELECT * FROM account";
+		    $row = query($sql);
+		    $total = count($row);
+	  	}elseif($_SESSION['page'] == "admin"){
+	  		$sql = "SELECT * FROM account WHERE role ='admin' ";
+	    	$row = query($sql);
+	    	$total = count($row);
+	  	}else{
+	  		$sql = "SELECT * FROM account WHERE role ='member' ";
+	    	$row = query($sql);
+	    	$total = count($row);
+	  	}
+  	
+  	
   	// Update role
   	 if(isset($_POST['mem_role']) && isset($_POST['user_name']) && isset($_POST['memberID'])){
   	 	$role = $_POST['mem_role'];
@@ -89,10 +96,10 @@
 	<?php
 		}else{	
 	?>
-		<script>
-			alert ("Failed to update the account role. Please try again!");
-			window.location.replace("./accountlist.php");
-		</script> 
+			<script>
+				alert ("Failed to update the account role. Please try again!");
+				window.location.replace("./accountlist.php");
+			</script> 
 	<?php
 		}		
     }
@@ -166,7 +173,7 @@
 				</form>
 			</li>
 
-			<li style="float: right;width: 30%; margin-top: 10px"><a href="./newaccount.php?" style="width: 30%; height: auto; min-height: 25px; float: right; font-size: 15px; background-color: blue"  class="btn btn-primary"><i class="icon-plus icon-large"></i> New</a></li>
+			<li style="float: right;width: 30%; margin-top: 10px"><a href="./newaccount.php" style="width: 30%; height: auto; min-height: 25px; float: right; font-size: 15px; background-color: blue"  class="btn btn-primary"><i class="icon-plus icon-large"></i> New</a></li>
 		</ul>
 	
 		<div class="table-responsive" style="margin-top: 120px; width:100%"> 
@@ -331,7 +338,7 @@
 									<h5>Full name: <?=$memname?></h5>
 									<h5>User name: <?=$usname?></h5>
 									<input type="hidden" name="member_id" value="<?=$memberID?>">
-									<input type="hidden" name="user_name" value="<?=$usname?>">
+									<input type="hidden" name="usname" value="<?=$usname?>">
 									
 
 									<button type="submit" name="cf_del_member" class="btn btn-primary" style="background-color: blue; width:14% ">Yes</button>&emsp;&emsp;

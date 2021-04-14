@@ -2,14 +2,23 @@
 // For Admin	
 	require_once("../db.php");
     session_start(); 
-
+if($_SERVER['REQUEST_METHOD'] != 'POST'){
+?>				
+	<script >
+		alert ("You don't have permission to access this page");
+		window.location.replace("./accountlist.php");
+	</script>
+<?php
+	}
 
 // Delete chapter
-    echo("cf_del_chapter = ".isset($_POST['cf_del_chapter']));
-    echo("chapter_id = ".isset($_POST['chapter_id']));
-    echo("story_id = ".isset($_POST['story_id'])); 
+    
 	if(isset($_POST['cf_del_chapter']) && isset($_POST['chapter_id']) && isset($_POST['story_id']))
 	{
+		echo("cf_del_chapter = ".isset($_POST['cf_del_chapter']));
+    	echo("chapter_id = ".isset($_POST['chapter_id']));
+    	echo("story_id = ".isset($_POST['story_id'])); 
+
 		$chapterID = $_POST['chapter_id'];
 		$storyID = $_POST['story_id'];
 
@@ -66,12 +75,14 @@
 		}
 	}
 
+
+//////////////////////////////////////////////////////////////////
 // Delete story
-	echo("cf_del_story = ".isset($_POST['cf_del_story']));
-    echo("story_id = ".isset($_POST['story_id']));
 
 	if(isset($_POST['cf_del_story']) && isset($_POST['story_id']))
 	{
+		//echo("cf_del_story = ".isset($_POST['cf_del_story']));
+    	//echo("story_id = ".isset($_POST['story_id']));
 		$storyID = $_POST['story_id'];
 
 		$sql1 = "SELECT * FROM chapter WHERE storyID='" .$storyID . "'";
@@ -85,16 +96,16 @@
 
 				$sql2 = "DELETE FROM vote WHERE chapterID='" .$chapterID ."'";
 				$result2 = execsql($sql2);
-				echo ("result2 = " .$result2);
+				//echo ("result2 = " .$result2);
 
 				$sql3 = "DELETE FROM chapter_payment WHERE chapterID='" .$chapterID ."'";
 				$result3 = execsql($sql3);
-				echo ("result3 = " .$result3);
+				//echo ("result3 = " .$result3);
 
 				if($result2 != null && $result3 != null){
 					$sql4 = "DELETE FROM chapter WHERE chapterID='" .$chapterID ."'";
 					$result4 = execsql($sql4);
-					echo ("result4 = " .$result4);
+					//echo ("result4 = " .$result4);
 					$is_chapter_del = true;
 				}else{
 					exit;
@@ -105,13 +116,13 @@
 		}
 
 		
-		echo("is_chapter_del = " .$is_chapter_del);
+		//echo("is_chapter_del = " .$is_chapter_del);
 
 		if($is_chapter_del == true)
 		{
 			$sql5 = "DELETE FROM story_category WHERE storyID='" .$storyID ."'";
 			$result5 = execsql($sql5);
-			echo ("result5 = " .$result5);
+			//echo ("result5 = " .$result5);
 
 
 			if($result5 != null) 
@@ -119,7 +130,7 @@
 
 				$sql6 = "DELETE FROM story WHERE storyID='" .$storyID ."'";
 				$result6 = execsql($sql6);
-				echo ("result6 = " .$result6);
+				//echo ("result6 = " .$result6);
 
 				if($result6 != null) 
 				{
@@ -156,40 +167,45 @@
 		}
 	} 
 
+////////////////////////////////////////////////////////////////////////////	
+
 // Delete account and member infnomation
-	echo("cf_del_member = ".isset($_POST['cf_del_member']));
-    echo("member_id = ".isset($_POST['member_id']));
-    echo("usname = ".isset($_POST['usname']));
 
 	if(isset($_POST['cf_del_member']) && isset($_POST['member_id']) && isset($_POST['usname']))
 	{
-		
+		//echo("post cf_del_member = ".isset($_POST['cf_del_member'])."<br>");
+    	//echo("member_id = ".isset($_POST['member_id']));
+    	//echo("post usname = ".isset($_POST['usname'])."<br>");
+
 		$memberID = $_POST['member_id'];
-		$usname = $_POST['usname']);
+		$usname = $_POST['usname'];
 		$is_chapter_del = false;
 
 		//Delete Account
 		$sql = "DELETE FROM account WHERE username='" .$usname ."'";
+		//echo("sql=".$sql."<br>");
 		$result = execsql($sql);
-		echo ("result = " .$result);
+		//echo ("result = " .$result."<br>");
 
-		$sql1 = "UPDATE member SET fullName='', dob='null', phoneNumber='', username ='', walet ='', image= '' WHERE memberID='" .$memberID ."'";
+		$sql1 = "UPDATE member SET fullName='', dob='NULL', phoneNumber='', wallet ='0', image= 'default avt.jpg' WHERE memberID='" .$memberID ."'";
+		//echo("sql=".$sql1."<br>");
 		$result1 = execsql($sql1);
-		echo ("result1 = " .$result1);
-		if($result1 != null){
+		//echo ("result1 = " .$result1."<br>");
+
+		if($result != null){
 ?>				
 			<script >
-					alert ("Account information has been updated successfully!");
-					window.location.replace("./profile.php");
+				alert ("Account information has been delete successfully!");
+				window.location.replace("./accountlist.php");
 			</script>
 <?php 		
 		}else{
 ?>				
 			<script >
-					alert ("Failure to update account information. Try again!");
-					window.location.replace("./profile.php");
+				alert ("Failure to delete account information. Try again!");
+				window.location.replace("./accountlist.php");
 			</script>
-<?php
-		}
+	<?php
+		} 
 	}
 ?>

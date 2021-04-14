@@ -88,7 +88,8 @@ if(isset($_POST['time'])){
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i><b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a href="./profile.php"><i class="icon-user" aria-hidden="true"></i>My Account</a></li>
-							<li><a href="./mystories.php"><i class="icon-folder-open"></i>My Stories</a></li>
+							<li><a href="./accountlist.php"><i class="icon-folder-open"></i>Account List</a></li>
+							<li><a href="./storylist.php"><i class="icon-folder-open"></i>Story List</a></li>
 							<li><a href="./logout.php"><i class="icon-arrow-right"></i> Logout</a></li>
 							
 						</ul>

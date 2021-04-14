@@ -7,7 +7,7 @@
 <meta name="description" content="">
 <meta name="keywords" content="Doc truyen online, truyen kiem hiep, truyen tien hiep, truyen sac hiep, truyen ngon tinh, truyen trinh tham, vong du, truyen convert full text">
 <meta name="robots" content="noindex">
-<title>Sign Up</title>
+<title>Registration | iRead</title>
 <link href="./css/bootstrap.min.css" rel="stylesheet">
 <link href="./css/bootstrap-responsive.css" rel="stylesheet">
 <link href="./css/yamm.css" rel="stylesheet">
@@ -25,39 +25,6 @@
 	}
 </style>
 </head>
-<!--
-<script>
-	$(document).ready(function(){
-		$('input.form-control').keyup(function() {
-			var e = $(this);
-			var label = e.closest('.form-group').find('label');
-			label.removeClass('animated fadeInLeft fadeOutLeft');
-						if (e.val()) {
-							label.css('visibility', 'visible').addClass('animated fadeInLeft');
-						} else{
-							label.addClass('animated fadeOutLeft');
-							setTimeout(function(){
-								label.css('visibility', 'hidden');
-							}, 500);
-						}
-					});
-
-		$('button[type=reset]').click(function(){
-			var label = $('label');
-			label.removeClass('animated fadeInLeft fadeOutLeft').addClass('animated fadeOutLeft');
-			return true;
-		});
-
-		$('button[type=submit]').button('reset').removeAttr('disabled');
-		$('form').submit(function(){
-			var form = $(this);
-			form.find('button[type=reset]').attr('disabled', 'disabled');
-			form.find('button[type=submit]').button('loading');
-		});
-	});
-</script>  -->
-
-
 
 <?php
 	require_once("./db.php");
@@ -82,7 +49,18 @@
 		$row= query($sql);
 
 		$sql1= "SELECT email FROM account WHERE email='".$email ."'";
-		$row1= query($sql1); 
+		$result1= execsql($sql1); 
+		if($result1 != "null"){
+			$row1= query($sql1);
+			if(count($row1) > 0)
+			{
+				$is_exit = 1;
+			}else{
+				$is_exit = 0;
+			}
+		}else{
+			$is_exit = 0;
+		}
 	}
 ?>
 
@@ -115,10 +93,13 @@
 								if(isset($_POST['email'])){
 									if(!preg_match("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$^", $email))
 									{ 
-										$emailErr = "Email is invalid. Please try again";	
-									}else if(count($row1) > 0){
+										$emailErr = "Email <b>$email</b> is invalid. Please try again";	
+									}else if($is_exit == 1){
 
-										$emailErr = "Email is already exit. Please choose another one";
+										$emailErr = "Email <b>$email</b> is already exit. Please choose another one";
+									}
+									else{
+										$emailErr = "";
 									}
 									if(isset($emailErr)){
 										echo("<label class='error' id = 'erEmail' style='display: block; width:90%'>".$emailErr ."</label>");
@@ -169,7 +150,7 @@
 							<?php
 								if(isset($_POST['username']) && count($row) > 0){ 
 
-									echo("<label class='error' id = 'erEmail' style='display: block; width:90%'> Username already exists. Please choose another username </label>");
+									echo("<label class='error' id = 'erEmail' style='display: block; width:90%'> Username " .$_POST['username'] ." already exists. Please choose another username </label>");
 									$errormsg = True;
 								}
 							?>
@@ -362,14 +343,14 @@
         		if($result6 != null){
 		?>				
 					<script >
-						alert ("Sign up successfully");
+						alert ("Account registration is successful!");
 						window.location.replace("./login.php");
 					</script>
 		<?php 		
 				}else{
 	?>				
 					<script >
-						alert ("Sign up is not successfully. Please Try again");
+						alert ("Account registration failed. Please Try again!");
 						window.location.replace("./registration.php");
 					</script>
 	<?php
