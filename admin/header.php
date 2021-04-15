@@ -2,36 +2,43 @@
 date_default_timezone_set("Asia/Ho_Chi_Minh"); 
 	
 $sql1 = "SELECT * FROM member WHERE username = '" .$_SESSION['username'] . "'";
-			//echo($sql);
+//echo($sql1);
 $row1 = query($sql1);
-$memberID1 = $row1[0][0];
-$wallet1 = $row1[0][5];
+//Check for case admin delete his account
+if(count($row1)!= 0){	
+	$memberID1 = $row1[0][0];
+	$wallet1 = $row1[0][5];
+}else{
+	header("Location: ../login.php");
+}
 
-$sql2 = "SELECT * FROM attendance WHERE memberID = '" .$memberID1 . "'";
-//echo($sql);
-$result2 = execsql($sql2);
+if(isset($memberID1)){
+	$sql2 = "SELECT * FROM attendance WHERE memberID = '" .$memberID1 . "'";
+	//echo($sql);
+	$result2 = execsql($sql2);
 
-if(isset($_POST['time'])){
-	//echo("time=" .$_POST['time']);
-	if($result2 != null){
-		$sql3 = "UPDATE attendance SET createAt='" .$_POST['time'] ."' WHERE memberID = '" .$memberID1 . "'"; 
-		//echo("sql3=".$sql3);
-		$result3 = execsql($sql3);
-		if($result3 != null){
-			$sql5 = "UPDATE member SET wallet='" .$wallet1 + 1 ."' WHERE memberID = '" .$memberID1 . "'"; 
-			//echo("sql5=".$sql5);
-			$result5 = execsql($sql5);
-		}
+	if(isset($_POST['time'])){
+		//echo("time=" .$_POST['time']);
+		if($result2 != null){
+			$sql3 = "UPDATE attendance SET createAt='" .$_POST['time'] ."' WHERE memberID = '" .$memberID1 . "'"; 
+			//echo("sql3=".$sql3);
+			$result3 = execsql($sql3);
+			if($result3 != null){
+				$sql5 = "UPDATE member SET wallet='" .$wallet1 + 1 ."' WHERE memberID = '" .$memberID1 . "'"; 
+				//echo("sql5=".$sql5);
+				$result5 = execsql($sql5);
+			}
 
-	}else{
-		$sql4 = "INSERT INTO attendance VALUES ('','" .$memberID1 ."','".$_POST['time'] ."')";
-		//echo("sql4=".$sql4);
-    	$result4 = execsql($sql4);
-    	//echo("result4=".$result4);
-		if($result4 != null){
-			$sql5 = "UPDATE member SET wallet='" .$wallet1 + 1 ."' WHERE memberID = '" .$memberID1 . "'"; 
-			//echo("sql5=".$sql5);
-			$result5 = execsql($sql5);
+		}else{
+			$sql4 = "INSERT INTO attendance VALUES ('','" .$memberID1 ."','".$_POST['time'] ."')";
+			//echo("sql4=".$sql4);
+	    	$result4 = execsql($sql4);
+	    	//echo("result4=".$result4);
+			if($result4 != null){
+				$sql5 = "UPDATE member SET wallet='" .$wallet1 + 1 ."' WHERE memberID = '" .$memberID1 . "'"; 
+				//echo("sql5=".$sql5);
+				$result5 = execsql($sql5);
+			}
 		}
 	}
 }

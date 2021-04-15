@@ -6,7 +6,7 @@ if($_SERVER['REQUEST_METHOD'] != 'POST'){
 ?>				
 	<script >
 		alert ("You don't have permission to access this page");
-		window.location.replace("./accountlist.php");
+		window.location.replace("./memberlist.php");
 	</script>
 <?php
 	}
@@ -196,14 +196,14 @@ if($_SERVER['REQUEST_METHOD'] != 'POST'){
 ?>				
 			<script >
 				alert ("Account information has been delete successfully!");
-				window.location.replace("./accountlist.php");
+				window.location.replace("./memberlist.php");
 			</script>
 <?php 		
 		}else{
 ?>				
 			<script >
 				alert ("Failure to delete account information. Try again!");
-				window.location.replace("./accountlist.php");
+				window.location.replace("./memberlist.php");
 			</script>
 	<?php
 		} 

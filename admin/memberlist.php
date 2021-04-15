@@ -62,51 +62,57 @@
   		$_SESSION['page'] = $_POST['type_acc'];
   	}
 
-  	if(!isset($_SESSION['status']) && !isset($_POST['status_acc'])){
-  		$_SESSION['status'] = "all";
-  	}
-  	if(!isset($_SESSION['status']) && isset($_POST['status_acc'])){
-  		$_SESSION['status'] = $_POST['status_acc'];
-  	}
-  	if(isset($_SESSION['status']) && !isset($_POST['status_acc'])){
-  		$_SESSION['status'] = $_SESSION['status'];
-  	}
-  	if(isset($_SESSION['status']) && isset($_POST['status_acc'])){
-  		$_SESSION['status'] = $_POST['status_acc'];
-  	}
+	$sql = "SELECT * FROM member";
+	$total = count(query($sql));  	
 
-  		if($_SESSION['page'] == "all" && ($_SESSION['status']) == "all"){
-	  		$sql = "SELECT memberID, fullName, dob, phoneNumber, member.username, wallet, image, role, email FROM member INNER JOIN account ON member.username = account.username";
-		    $row = query($sql);
-		    $total = count($row);
-	  	}
-	  	if($_SESSION['page'] == "all" && $_SESSION['status'] == "active"){
-	  		$sql = "SELECT memberID, fullName, dob, phoneNumber, member.username, wallet, image, role, email FROM member INNER JOIN account ON member.username = account.username WHERE member.username !='null' ";
-	    	$row = query($sql);
-	    	$total = count($row);
-	  	}
-	  	if($_SESSION['page'] == "all" && $_SESSION['status'] == "deleted"){
-	  		$sql = "SELECT memberID, fullName, dob, phoneNumber, member.username, wallet, image, role, email FROM member INNER JOIN account ON member.username = account.username WHERE member.username =='null' ";
-	    	$row = query($sql);
-	    	$total = count($row);
-	  	}
+  	if($_SESSION['page'] == "all"){
+	  	$sql = "SELECT memberID, fullName, dob, phoneNumber, member.username, wallet, image, role, email FROM member INNER JOIN account ON  member.username = account.username";
+		$row = query($sql);
+		$total_activate = count($row);
+	}elseif($_SESSION['page'] != "all"){
+	 	$sql = "SELECT memberID, fullName, dob, phoneNumber, member.username, wallet, image, role, email FROM member INNER JOIN account ON  member.username = account.username WHERE role = '".$_SESSION['page']."'";
+	    $row = query($sql);
+	    $total_activate = count($row);
+	}
 
+	//Search member name
+	if(isset($_GET['search_name']) &&  isset($_GET['search'])){
+		if($_GET['search'] == ""){
+		?>
+    		<script >
+				alert ("You must enter at least a keyword to search!");
+				window.location.replace("./memberlist.php");
+			</script>
+		<?php	
+		}else{
+			$search = $_GET['search'];
 
-	  	if($_SESSION['page'] != "all" && $_SESSION['status'] == "all"){
-	  		$sql = "SELECT memberID, fullName, dob, phoneNumber, member.username, wallet, image, role, email FROM member INNER JOIN account ON  member.username = account.username WHERE role = '".$_SESSION['page']."'";
-		    $row = query($sql);
-		    $total = count($row);
-	  	}
-	  	if($_SESSION['page'] != "all" && $_SESSION['status'] == "active"){
-	  		$sql = "SELECT memberID, fullName, dob, phoneNumber, member.username, wallet, image, role, email FROM member INNER JOIN account ON member.username = account.username WHERE role = '".$_SESSION['page']."' && member.username !='null' ";
-	    	$row = query($sql);
-	    	$total = count($row);
-	  	}
-	  	if($_SESSION['page'] != "all" && $_SESSION['status'] == "deleted"){
-	  		$sql = "SELECT memberID, fullName, dob, phoneNumber, member.username, wallet, image, role, email FROM member INNER JOIN account ON member.username = account.username WHERE role = '".$_SESSION['page']."' && member.username =='null' ";
-	    	$row = query($sql);
-	    	$total = count($row);
-	  	}
+			$sql = "SELECT * FROM member WHERE fullName LIKE '%" .$search . "%'";
+			//echo($sql);
+			$row = query($sql);	
+			$total_search = count($row);		
+		}
+	}
+
+	// Get memberID from other page
+	if(isset($_GET['memberID'])){
+		$sql = "SELECT memberID, fullName, dob, phoneNumber, member.username, wallet, image, role, email FROM member INNER JOIN account ON  member.username = account.username WHERE memberID = '".$_GET['memberID']."'";
+			//echo($sql);
+			
+		if(execsql($sql) != null){
+			$row = query($sql);	
+			$total = count($row);	
+		}else{
+	?>
+    		<script >
+				alert ("Cannot show information of the account ID = <?=$_GET['memberID']?>.Because it does not exist or has been removed from the system!");
+				window.location.replace("./storylist.php");
+			</script>
+	<?php		
+				
+		}
+	}
+	
   	
   	
   	// Update role
@@ -123,14 +129,14 @@
     ?>
 			<script>
 				alert ("The account role has been updated successfully!");
-				window.location.replace("./accountlist.php");
+				window.location.replace("./memberlist.php");
 			</script> 
 	<?php
 		}else{	
 	?>
 			<script>
 				alert ("Failed to update the account role. Please try again!");
-				window.location.replace("./accountlist.php");
+				window.location.replace("./memberlist.php");
 			</script> 
 	<?php
 		}		
@@ -153,132 +159,91 @@
 						<span class="divider">/</span>
 					</div>
 				</li>
-				<li class="active"><strong>Member List</strong></li>
+				<li class="active"><strong>Active Member List</strong></li>
 			</ul>
 	</div>
 	<div class="row wrapper ">
 				
-		<h1 style="text-align: center;margin-top: 10px;">Account List</h1>
-		<ul class="nav" style="margin-top: 40px;">
-			<form method="POST" action="accountlist.php">
-				<li class="disable" style="float:left;width: 25%; color: #E86C19; text-align: center;">
+		<h1 style="text-align: center;margin-top: 10px;">Active Member List</h1>
+		<div style =" width: 100%; text-align: center;" >
+
+			<form action="memberlist.php" method="GET">
+			<?php
+				if(!isset($_GET['search'])){
+			?>
 				
-					<?php
-						if($_SESSION['page'] == "all"){
-					?>
-							<select name="type_acc" id="type_acc" style="width: 100px;font-size: 17px; margin-top: 15px;" >
-		  						<option value="all" style="font-size: 17px;" selected="selected">All</option>
-		  						<option value="admin" style="font-size: 17px;">Admin</option>
-		  						<option value="member" style="font-size: 17px;">Member</option>
-							</select>
-							<button type="submit" class="btn" style="margin-top: 5px;"><i class="icon-filter icon-large"></i></button>
-					<?php	
-						}
-						if($_SESSION['page'] == "admin"){
-					?>
-							<select name="type_acc" id="type_acc" style="width: 100px;font-size: 17px; margin-top: 15px;" >
-		  						<option value="all" style="font-size: 17px;">All</option>
-		  						<option value="admin" style="font-size: 17px;" selected="selected">Admin</option>
-		  						<option value="member" style="font-size: 17px;">Member</option>
-							</select>
-							<button type="submit" class="btn" style="margin-top: 5px;"><i class="icon-filter icon-large"></i></button>
-					<?php
-						}
-						if($_SESSION['page'] == "member"){
-					?>
-							<select name="type_acc" id="type_acc" style="width: 100px;font-size: 17px; margin-top: 15px;" >
-		  						<option value="all" style="font-size: 17px;">All</option>
-		  						<option value="admin" style="font-size: 17px;">Admin</option>
-		  						<option value="member" style="font-size: 17px;" selected="selected">Member</option>
-							</select>
-							<button type="submit" class="btn" style="margin-top: 5px;"><i class="icon-filter icon-large"></i></button>
-					<?php
-						}
-					?>
-				</li>
-				<li class="disable" style="float:left;width: 25%; color: #E86C19; text-align: center;">
-				
-					<?php
-						if($_SESSION['status'] == "all"){
-					?>
-							<select name="status_acc" id="type_acc" style="width: 100px;font-size: 17px; margin-top: 15px;" >
-		  						<option value="all" style="font-size: 17px;" selected="selected">All</option>
-		  						<option value="active" style="font-size: 17px;">Active</option>
-		  						<option value="deleted" style="font-size: 17px;">Deleted</option>
-							</select>
-							<button type="submit" class="btn" style="margin-top: 5px;"><i class="icon-filter icon-large"></i></button>
-					<?php	
-						}
-						if($_SESSION['status'] == "active"){
-					?>
-							<select name="status_acc" id="type_acc" style="width: 100px;font-size: 17px; margin-top: 15px;" >
-		  						<option value="all" style="font-size: 17px;">All</option>
-		  						<option value="active" style="font-size: 17px;" selected="selected">Active</option>
-		  						<option value="deleted" style="font-size: 17px;">Deleted</option>
-							</select>
-							<button type="submit" class="btn" style="margin-top: 5px;"><i class="icon-filter icon-large"></i></button>
-					<?php
-						}
-						if($_SESSION['status'] == "deleted"){
-					?>
-							<select name="status_acc" id="type_acc" style="width: 100px;font-size: 17px; margin-top: 15px;" >
-		  						<option value="all" style="font-size: 17px;">All</option>
-		  						<option value="active" style="font-size: 17px;">Active</option>
-		  						<option value="deleted" style="font-size: 17px;" selected="selected">Deleted</option>
-							</select>
-							<button type="submit" class="btn" style="margin-top: 5px;"><i class="icon-filter icon-large"></i></button>
-					<?php
-						}
-					?>
-				</li>
+				<input type="text" name="search" class=" " placeholder="Enter member name..." style =" width: 60%; margin-top: 25px;margin-left: 25px;">
+			<?php
+			}else{
+			?>
+				<input type="text" name="search" class=" " placeholder="Enter member name..." value="<?=$search?>" style =" width: 60%; margin-top: 25px;margin-left: 25px;">
+			<?php
+			}
+			?>
+				<button class="btn" type="submit" name="search_name" style="float: right; margin-top: 25px; margin-right: 40px; width: 15%"><i class="icon-search"></i></button>
 			</form>
-		</ul><br>
+		</div>
+
 		<ul class="nav" style="margin-top: 40px;">
-			<li class="disable" style="float:left;width: 45%; color: #E86C19;">
-				<h2><i class="icon-book icon-large"></i>Total Member: <?=$total?></h2>
+			<li class="disable" style="float:left;width: 40%; color: #E86C19;">
+				<?php  
+				if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['search'])){
+			?>
+					<h2><i class="icon-book icon-large"></i>Search Results: <?=$total_search?></h2>
+			<?php	
+				}elseif($_GET['memberID']){
+			?>
+					<h2><i class="icon-book icon-large"></i>MemberID = <?=$_GET['memberID']?></h2>
+			<?php
+
+				}else{
+			?>
+					<h2><i class="icon-book icon-large"></i>Activate Member: <?=$total_activate?>/<?=$total?></h2>
+			<?php	
+				}
+			?>
+				
 			<!--	<p style="font-size: 13px; width: 100%;"> The information sheet below shows the list of transactions in order from the latest story to older one.</p>  -->
 			</li>
-
-		<!--	<li class="disable" style="float:left;width: 25%; color: #E86C19; text-align: center;">
-				<form method="POST" action="accountlist.php">
+			<li class="disable" style="float:left;width: 35%; color: #E86C19; text-align: center; font-size: 20px; font-weight: bold">
+				<form method="POST" action="memberlist.php">
 					<?php
 						if($_SESSION['page'] == "all"){
 					?>
-							<select name="type_acc" id="type_acc" style="width: 100px;font-size: 17px; margin-top: 15px;" >
-		  						<option value="all" style="font-size: 17px;" selected="selected">All</option>
-		  						<option value="admin" style="font-size: 17px;">Admin</option>
-		  						<option value="member" style="font-size: 17px;">Member</option>
+						Role:	<select name="type_acc" id="type_acc" style="width: 90px;font-size: 15px; margin-top: 15px;" >
+		  						<option value="all" style="font-size: 15px;" selected="selected">All</option>
+		  						<option value="admin" style="font-size: 15px;">Admin</option>
+		  						<option value="member" style="font-size: 15px;">Member</option>
 							</select>
 							<button type="submit" class="btn" style="margin-top: 5px;"><i class="icon-filter icon-large"></i></button>
 					<?php	
 						}
 						if($_SESSION['page'] == "admin"){
 					?>
-							<select name="type_acc" id="type_acc" style="width: 100px;font-size: 17px; margin-top: 15px;" >
-		  						<option value="all" style="font-size: 17px;">All</option>
-		  						<option value="admin" style="font-size: 17px;" selected="selected">Admin</option>
-		  						<option value="member" style="font-size: 17px;">Member</option>
+						Role:	<select name="type_acc" id="type_acc" style="width: 90px;font-size: 15px; margin-top: 15px;" >
+		  						<option value="all" style="font-size: 15px;">All</option>
+		  						<option value="admin" style="font-size: 15px;" selected="selected">Admin</option>
+		  						<option value="member" style="font-size: 15px;">Member</option>
 							</select>
 							<button type="submit" class="btn" style="margin-top: 5px;"><i class="icon-filter icon-large"></i></button>
 					<?php
 						}
 						if($_SESSION['page'] == "member"){
 					?>
-							<select name="type_acc" id="type_acc" style="width: 100px;font-size: 17px; margin-top: 15px;" >
-		  						<option value="all" style="font-size: 17px;">All</option>
-		  						<option value="admin" style="font-size: 17px;">Admin</option>
-		  						<option value="member" style="font-size: 17px;" selected="selected">Member</option>
+						Role:	<select name="type_acc" id="type_acc" style="width: 90px;font-size: 15px; margin-top: 15px;" >
+		  						<option value="all" style="font-size: 15px;">All</option>
+		  						<option value="admin" style="font-size: 15px;">Admin</option>
+		  						<option value="member" style="font-size: 15px;" selected="selected">Member</option>
 							</select>
 							<button type="submit" class="btn" style="margin-top: 5px;"><i class="icon-filter icon-large"></i></button>
 					<?php
 						}
 					?>
-						
 					
 				</form>
-			</li>  -->
+			</li>
 
-			<li style="float: right;width: 30%; margin-top: 10px"><a href="./newaccount.php" style="width: 30%; height: auto; min-height: 25px; float: right; font-size: 15px; background-color: blue"  class="btn btn-primary"><i class="icon-plus icon-large"></i> New</a></li>
+			<li style="float: right;width: 25%; margin-top: 10px"><a href="./newaccount.php" style="width: 30%; height: auto; min-height: 25px; float: right; font-size: 15px; background-color: blue"  class="btn btn-primary"><i class="icon-plus icon-large"></i> New</a></li>
 		</ul>
 		<ul class="nav" style="font-size: 13px; width: 100%; float:left; color: #E86C19;"> The information sheet below shows the list of transactions in order from the latest story to older one.</ul>
 	
@@ -327,52 +292,48 @@
 					$beginrow = ($_GET['currentpage'] - 1) * $pagesize;
 					$currentpage = $_GET['currentpage'];
 					}
+					
+					//Common select
+					if($_SESSION['page'] == "all"){
+						$sql2= "SELECT memberID, fullName, dob, phoneNumber, member.username, wallet, image, role, email FROM member INNER JOIN account ON  member.username = account.username ORDER BY memberID DESC LIMIT {$beginrow} , {$pagesize}";
 
-					if($_SESSION['page'] == "all" && $_SESSION['status'] == "all"){
-						$sql2= "SELECT memberID, fullName, dob, phoneNumber, member.username, wallet, image, role, email FROM member INNER JOIN account ON member.username = account.username ORDER BY memberID DESC LIMIT {$beginrow} , {$pagesize}";
-					}
-					if($_SESSION['page'] == "all" && $_SESSION['status'] == "active"){
-						$sql2= "SELECT memberID, fullName, dob, phoneNumber, member.username, wallet, image, role, email FROM member INNER JOIN account ON member.username = account.username WHERE member.username !='null' ORDER BY memberID DESC LIMIT {$beginrow} , {$pagesize}";
-					}
-					if($_SESSION['page'] == "all" && $_SESSION['status'] == "deleted"){
-						$sql2= "SELECT memberID, fullName, dob, phoneNumber, member.username, wallet, image, role, email FROM member INNER JOIN account ON member.username = account.username WHERE member.username =='null' ORDER BY memberID DESC LIMIT {$beginrow} , {$pagesize}";
+					}else{
+						$sql2= "SELECT memberID, fullName, dob, phoneNumber, member.username, wallet, image, role, email FROM member INNER JOIN account ON  member.username = account.username WHERE role ='".$_SESSION['page'] ."' ORDER BY memberID DESC LIMIT {$beginrow} , {$pagesize}";
 					}
 
-
-					if($_SESSION['page'] != "all" && $_SESSION['status'] == "all"){
-						$sql2= "SELECT memberID, fullName, dob, phoneNumber, member.username, wallet, image, role, email FROM member INNER JOIN account ON member.username = account.username WHERE role ='".$_SESSION['page'] ."' ORDER BY memberID DESC LIMIT {$beginrow} , {$pagesize}";
+					//Search
+					if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['search'])){
+						$sql2= "SELECT memberID, fullName, dob, phoneNumber, member.username, wallet, image, role, email FROM member INNER JOIN account ON  member.username = account.username WHERE fullName LIKE '%" .$search . "%' ORDER BY memberID DESC LIMIT {$beginrow} , {$pagesize}";
 					}
-					if($_SESSION['page'] != "all" && $_SESSION['status'] == "all"){
-						$sql2= "SELECT memberID, fullName, dob, phoneNumber, member.username, wallet, image, role, email FROM member INNER JOIN account ON member.username = account.username WHERE role ='".$_SESSION['page'] ."' && member.username !='null' ORDER BY memberID DESC LIMIT {$beginrow} , {$pagesize}";
+
+					//Get ID from other page
+					if(isset($_GET['memberID'])){
+						$sql2 = "SELECT memberID, fullName, dob, phoneNumber, member.username, wallet, image, role, email FROM member INNER JOIN account ON  member.username = account.username WHERE memberID = '".$_GET['memberID']."'";;
 					}
-					if($_SESSION['page'] != "all" && $_SESSION['status'] == "all"){
-						$sql2= "SELECT memberID, fullName, dob, phoneNumber, member.username, wallet, image, role, email FROM member INNER JOIN account ON member.username = account.username WHERE role ='".$_SESSION['page'] ."' && member.username =='null' ORDER BY memberID DESC LIMIT {$beginrow} , {$pagesize}";
-					}
-					$row2=query($sql2);
 
 
-					for($i=0; $i < count($row2); $i++)
-					{
-						$memberID = $row2[$i][0];
-						$memname = $row2[$i][1];
-						$dob = $row2[$i][2];
-						$phone = $row2[$i][3];
-						$usname = $row2[$i][4];
-						$wallet = $row2[$i][5];
-						$image = $row2[$i][6];
-						
-						$rolemember = $row2[$i][7];
-						$email = $row2[$i][8];
+					if(execsql($sql2) != null){
 
-												
-						
-						$sql3 = "SELECT * FROM story WHERE memberID='" .$memberID . "'";
-                        $result3 = execsql($sql3);
-                        if($result3 != "null"){
-                        	$total_story = count(query($sql3));
-                        }else{
-                        	$total_story = "";
-                        }
+						$row2 = query($sql2);
+						for($i=0; $i < count($row2); $i++)
+						{
+							$memberID = $row2[$i][0];
+							$usname = $row2[$i][4];
+							$memname = $row2[$i][1];
+							$dob = $row2[$i][2];
+							$phone = $row2[$i][3];
+							$wallet = $row2[$i][5];
+							$image = $row2[$i][6];
+							$rolemember = $row2[$i][7];
+							$email = $row2[$i][8];
+							
+							$sql3 = "SELECT * FROM story WHERE memberID='" .$memberID . "'";
+	                        $result3 = execsql($sql3);
+	                        if($result3 != "null"){
+	                        	$total_story = count(query($sql3));
+	                        }else{
+	                        	$total_story = "";
+	                        }
 				?>	
 					<tr>
 						<td style="width: 5%; text-align: center;"><?=$i+1+($currentpage-1)*10?></td>
@@ -443,9 +404,15 @@
 
 						<td style="width: 5%; text-align: center; ">
 						<!--	<a href="editstory.php?storyID=<?=$storyID?>" class="btn"><i class="icon-edit"></i></a> -->
-							<button type="button" name="btn_delete" id="btn_delete<?=$memberID?>" class="btn btn-warning" data-toggle="modal" data-target="#delete_confirm<?=$memberID?>"><i class="icon-remove-sign"></i>
-							</button>
-									
+							<?php
+								if($usname != ""){
+
+							?>
+									<button type="button" name="btn_delete" id="btn_delete<?=$memberID?>" class="btn btn-warning" data-toggle="modal" data-target="#delete_confirm<?=$memberID?>"><i class="icon-remove-sign"></i>
+									</button>
+							<?php
+								}
+							?>
 						</td>  
 					</tr>
 
@@ -478,6 +445,7 @@
 			
 				<?php
 					}
+				}
 				?>
 
 				</tbody>
@@ -498,7 +466,7 @@
 								<?php
 								}else{
 							?>
-									<li class="disable"><a href="accountlist.php?currentpage=<?=$i?>"><?php echo $i ." "; ?></a></li>
+									<li class="disable"><a href="memberlist.php?currentpage=<?=$i?>"><?php echo $i ." "; ?></a></li>
 							<?php
 								}
 							}

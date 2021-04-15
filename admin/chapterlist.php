@@ -47,44 +47,59 @@
     </script>
 <?php    
   }else{
-    
+    if(isset($_GET['$storyID'])){
+  		$storyID = $_GET['$storyID'];
+  		$sql1 = "SELECT * FROM story WHERE storyID ='".$storyID."'";
+		$row = query($sql);
+		$storyName = $row[0][1];
+  	}else{
+?>
+    	<script >
+			alert ("You must choose a story");
+			window.location.replace("./storylist.php");
+		</script>
+<?php	
+	}
+  	
   	// filter
-    if(!isset($_SESSION['category']) && !isset($_POST['type_cat'])){
-  		$_SESSION['category'] = "all";
+    if(!isset($_SESSION['require_coin']) && !isset($_POST['is_coin'])){
+  		$_SESSION['require_coin'] = "all";
   	}
-  	if(!isset($_SESSION['category']) && isset($_POST['type_cat'])){
-  		$_SESSION['category'] = $_POST['type_cat'];
+  	if(!isset($_SESSION['require_coin']) && isset($_POST['is_coin'])){
+  		$_SESSION['require_coin'] = $_POST['is_coin'];
   	}
-  	if(isset($_SESSION['category']) && !isset($_POST['type_cat'])){
-  		$_SESSION['category'] = $_SESSION['category'];
+  	if(isset($_SESSION['require_coin']) && !isset($_POST['is_coin'])){
+  		$_SESSION['require_coin'] = $_SESSION['require_coin'];
   	}
-  	if(isset($_SESSION['category']) && isset($_POST['type_cat'])){
-  		$_SESSION['category'] = $_POST['type_cat'];
+  	if(isset($_SESSION['require_coin']) && isset($_POST['is_coin'])){
+  		$_SESSION['require_coin'] = $_POST['is_coin'];
   	}
 
-    if($_SESSION['category'] == "all"){
-	  	$sql = "SELECT * FROM story";
+  	
+
+    if($_SESSION['require_coin'] == "all"){
+	  	$sql = "SELECT * FROM chapter WHERE storyID ='".$storyID."'";
 		$row = query($sql);
 		$total = count($row);
 	}else{
-	 	$sql = "SELECT * FROM story INNER JOIN story_category ON  story.storyID = story_category.storyID WHERE categoryID = '".$_SESSION['category']."'";
+	 	$sql = "SELECT * FROM story WHERE storyID ='".$storyID."' AND requireCoin = '".$_SESSION['require_coin']."'";
 	    $row = query($sql);
 	    $total= count($row);
 	}
 
-	//Search story name
-	if(isset($_GET['search_story']) &&  isset($_GET['search'])){
+	//Search chapter name
+	if(isset($_GET['search_chapter']) &&  isset($_GET['search'])){
 		if($_GET['search'] == ""){
 		?>
     		<script >
 				alert ("You must enter at least a keyword to search!");
-				window.location.replace("./storylist.php");
+				window.location.replace("./chapterlist.php");
 			</script>
 		<?php	
 		}else{
 			$search = encryptString($_GET['search']);
 
-			$sql = "SELECT * FROM story WHERE storyName LIKE '%" .$search . "%'";
+			$sql = "SELECT * FROM chapter WHERE chapterName LIKE '%" .$search . "%'";
 			//echo($sql);
 			$row = query($sql);	
 			$total_search = count($row);		
@@ -109,7 +124,13 @@
 						<span class="divider">/</span>
 					</div>
 				</li>
-				<li class="active"><strong>Stories List</strong></li>
+				<li>
+					<div itemscope>
+						<a href="storylist.php" itemprop="url"><span itemprop="title">storyName</span></a>
+						<span class="divider">/</span>
+					</div>
+				</li>
+				<li class="active"><strong>Chapter List</strong></li>
 			</ul>
 	</div>
 	<div class="row wrapper ">
@@ -122,15 +143,15 @@
 				if(!isset($_GET['search'])){
 			?>
 				
-				<input type="text" name="search" class=" " placeholder="Enter story name..." style =" width: 60%; margin-top: 25px;margin-left: 25px;">
+				<input type="text" name="search" class=" " placeholder="Enter chapter name..." style =" width: 60%; margin-top: 25px;margin-left: 25px;">
 			<?php
 			}else{
 			?>
-				<input type="text" name="search" class=" " placeholder="Enter story name..." value="<?=$search?>" style =" width: 60%; margin-top: 25px;margin-left: 25px;">
+				<input type="text" name="search" class=" " placeholder="Enter chapter name..." value="<?=$search?>" style =" width: 60%; margin-top: 25px;margin-left: 25px;">
 			<?php
 			}
 			?>
-				<button class="btn" type="submit" name="search_story" style="float: right; margin-top: 25px; margin-right: 40px; width: 15%"><i class="icon-search"></i></button>
+				<button class="btn" type="submit" name="search_chapter" style="float: right; margin-top: 25px; margin-right: 40px; width: 15%"><i class="icon-search"></i></button>
 			</form>
 		</div>
 		<ul class="nav" style="margin-top: 40px; margin-bottom: 40px">
@@ -142,7 +163,7 @@
 			<?php
 				}else{
 			?>
-				<h2><i class="icon-book icon-large"></i>Total Stories: <?=$total?></h2>
+				<h2><i class="icon-book icon-large"></i>Total Chapters: <?=$total?></h2>
 			<?php	
 				}
 			?>
@@ -151,63 +172,51 @@
 			<li class="disable" style="float:right;width: 45%; color: #E86C19; text-align: center; font-size: 20px; font-weight: bold">
 				<form method="POST" action="storylist.php">
 				<?php	
-					if($_SESSION['category'] == "all"){
+					if($_SESSION['require_coin'] == "all"){
 				?>
-			Category:	<select name="type_cat" id="type_cat" style="width: 130px;font-size: 15px; margin-top: 15px;" >
-			  				<option value="all" style="font-size: 15px;" selected="selected">All</option>
-							<?php
-								$sql5 = "Select * from category";
-								if(execsql($sql5) != "null"){
-									$row5 = query($sql5);
-									for ($i=0; $i < count($row5);$i++)
-									{
-									echo("<option value=".$row5[$i][0]." style='font-size: 15px;'>".$row5[$i][1]."</option>");
-									}
-								}
-							?>
-						</select>
-						<button type="submit" class="btn" style="margin-top: 5px;"><i class="icon-filter icon-large"></i></button>		
-				<?php
-					}else{
-				?>		
-						Category:	<select name="type_cat" id="type_cat" style="width: 130px;font-size: 15px; margin-top: 15px;" >
-			  				<option value="all" style="font-size: 15px;">All</option>
-							<?php
-								$sql5 = "Select * from category";
-								if(execsql($sql5) != "null"){
-									$row5 = query($sql5);
-									for ($i=0; $i < count($row5);$i++)
-									{
-										if($_SESSION['category'] == $row5[$i][0]){
-											echo("<option value=".$row5[$i][0]." style='font-size: 15px;' selected='selected'>".$row5[$i][1]."</option>");;
-										}else{
-											echo("<option value=".$row5[$i][0]." style='font-size: 15px;'>".$row5[$i][1]."</option>");
-										}
-									
-									}
-								}
-							?>
-						</select>
-						<button type="submit" class="btn" style="margin-top: 5px;"><i class="icon-filter icon-large"></i></button>
-				<?php
-					}
-				?>	
+						Require Coin:	<select name="is_coin" id="is_coin" style="width: 90px;font-size: 15px; margin-top: 15px;" >
+		  						<option value="all" style="font-size: 15px;" selected="selected">All</option>
+		  						<option value="1" style="font-size: 15px;">Yes</option>
+		  						<option value="0" style="font-size: 15px;">No</option>
+							</select>
+							<button type="submit" class="btn" style="margin-top: 5px;"><i class="icon-filter icon-large"></i></button>
+					<?php	
+						}
+						if($_SESSION['require_coin'] == "1"){
+					?>
+						Require Coin:	<select name="is_coin" id="is_coin" style="width: 90px;font-size: 15px; margin-top: 15px;" >
+		  						<option value="all" style="font-size: 15px;">All</option>
+		  						<option value="1" style="font-size: 15px;" selected="selected">Yes</option>
+		  						<option value="0" style="font-size: 15px;">Member</option>
+							</select>
+							<button type="submit" class="btn" style="margin-top: 5px;"><i class="icon-filter icon-large"></i></button>
+					<?php
+						}
+						if($_SESSION['require_coin'] == "0"){
+					?>
+						Require Coin:	<select name="is_coin" id="is_coin" style="width: 90px;font-size: 15px; margin-top: 15px;" >
+		  						<option value="all" style="font-size: 15px;">All</option>
+		  						<option value="1" style="font-size: 15px;">Yes</option>
+		  						<option value="0" style="font-size: 15px;" selected="selected">No</option>
+							</select>
+							<button type="submit" class="btn" style="margin-top: 5px;"><i class="icon-filter icon-large"></i></button>
+					<?php
+						}
+					?>
 				</form>
 			</li>
 		</ul>
-		<ul class="nav" style="font-size: 13px; width: 100%; float:left; color: #E86C19;"> <p style="font-size: 13px; width: 100%;"> The information sheet below shows the list of stories in order from the latest story to older one.</p></ul>
+		<ul class="nav" style="font-size: 13px; width: 100%; float:left; color: #E86C19;"> <p style="font-size: 13px; width: 100%;"> The information sheet below shows the list of chapter in order from the latest chapter to older one.</p></ul>
 	
 		<div class="table-responsive" style="margin-top: 120px; width:100%"> 
 			<table class="table" style="width: 100%">
 				<thead>
 					<tr>
 						<th style="text-align: center; font-size: 14px; width: 5%; background-color: #F5D7B9">No.</th>
-						<th style="text-align: center; font-size: 14px; width: 25%; background-color: #F5D7B9">Story Title</th>
-						<th style="text-align: center; font-size: 14px; width: 20%%;background-color: #F5D7B9">Category</th>
-						<th style="text-align: center; font-size: 14px; width: 5%;background-color: #F5D7B9">Chapters</th>
+						<th style="text-align: center; font-size: 14px; width: 25%; background-color: #F5D7B9">Chapter Title</th>
 						<th style="text-align: center; font-size: 14px; width: 10%;background-color: #F5D7B9">Votes</th>
 						<th style="text-align: center; font-size: 14px; width: 10%;background-color: #F5D7B9">Views</th>
-						<th style="text-align: center; font-size: 14px; width: 14%;background-color: #F5D7B9">MemberID</th>
+						<th style="text-align: center; font-size: 14px; width: 14%;background-color: #F5D7B9">RequireCoin</th>
 						<th style="text-align: center; font-size: 14px; width: 11%;background-color: #F5D7B9">Action</th>
 					</tr>
 				</thead>
@@ -243,11 +252,11 @@
 					}
 
 					//Common select
-					if($_SESSION['category'] == "all"){
+					if($_SESSION['require_coin'] == "all"){
 						$sql2= "SELECT * FROM story ORDER BY storyID DESC LIMIT {$beginrow} , {$pagesize}";
 
 					}else{
-						$sql2= "SELECT * FROM story INNER JOIN story_category ON  story.storyID = story_category.storyID WHERE categoryID ='".$_SESSION['category'] ."' ORDER BY story.storyID DESC LIMIT {$beginrow} , {$pagesize}";
+						$sql2= "SELECT * FROM story INNER JOIN story_category ON  story.storyID = story_category.storyID WHERE categoryID ='".$_SESSION['require_coin'] ."' ORDER BY story.storyID DESC LIMIT {$beginrow} , {$pagesize}";
 					}
 
 					//Search
@@ -271,7 +280,7 @@
 						<td style=" width: 5%; text-align: center;"><?=$i+1+($currentpage-1)*10?></td>
 						<td class="nav-list name_list" style="width: 25%">
 							<div class="media truyen-item">
-								<a class="pull-left" href="chapterlist.php?storyID=<?=$storyID?>">
+								<a class="pull-left" href="chapterlist.php?storyID=<?=$row2[$i][0]?>">
 									<h2 class="media-heading" style="font-size: 15px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#333333; text-align: left;"><?=decryptString($storyName)?></h2>
 								</a>
 							</div>

@@ -91,8 +91,8 @@
 	//function for string
 	function encryptString($string)
 	{
-		$string = str_replace('"', '!1$#5', $string);
-		$string = str_replace("'", "^-&~5", $string);
+		$string = str_replace('"', '!1$#1', $string);
+		$string = str_replace("'", "^-&~1", $string);
 		return($string);
 	}
 	function decryptString($string)
@@ -118,5 +118,25 @@
 			$pageURL .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
 		}
 		return $pageURL;
+	}
+
+	//fuction check 1 value is in array[][]?
+	function inMyArray($array, $search)
+	{
+	   foreach($array as $value)
+	{
+	if(is_array($value))
+	{
+	  if(inMyArray($value, $search))
+	  {
+	     return(TRUE);
+	   }
+	}
+	elseif($value == $search)
+	  {
+	     return(TRUE);
+	  }
+	}
+	return(FALSE);
 	}
 ?>
