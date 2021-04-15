@@ -47,11 +47,11 @@
     </script>
 <?php    
   }else{
-    if(isset($_GET['$storyID'])){
-  		$storyID = $_GET['$storyID'];
+    if(isset($_GET['storyID'])){
+  		$storyID = $_GET['storyID'];
   		$sql1 = "SELECT * FROM story WHERE storyID ='".$storyID."'";
-		$row = query($sql);
-		$storyName = $row[0][1];
+		$row1 = query($sql1);
+		$storyName = decryptString($row1[0][1]);
   	}else{
 ?>
     	<script >
@@ -93,7 +93,7 @@
 		?>
     		<script >
 				alert ("You must enter at least a keyword to search!");
-				window.location.replace("./chapterlist.php");
+				window.location.replace("./chapterlist.php?storyID=<?=$storyID?>");
 			</script>
 		<?php	
 		}else{
@@ -109,12 +109,14 @@
 ?>
 
 <body>
-<?php 
-	require_once("./header.php");
-?>
+
 
 <div class="container">
+
 <div class="container-fluid">
+	<?php 
+	require_once("./header.php");
+?>
 	<div class="row col-md-12 wrapper">
 		
 			<ul class="breadcrumb">
@@ -135,10 +137,10 @@
 	</div>
 	<div class="row wrapper ">
 				
-		<h1 style="text-align: center;margin-top: 10px;">Stories List</h1>
+		<h1 style="text-align: center;margin-top: 10px;">Chapter List</h1>
 		<div style =" width: 100%; text-align: center;" >
 
-			<form action="storylist.php" method="GET">
+			<form action="chapterlist.php?" method="GET">
 			<?php
 				if(!isset($_GET['search'])){
 			?>
@@ -151,6 +153,7 @@
 			<?php
 			}
 			?>
+				<input type="hidden" name="storyID" value="<?=$storyID?>">
 				<button class="btn" type="submit" name="search_chapter" style="float: right; margin-top: 25px; margin-right: 40px; width: 15%"><i class="icon-search"></i></button>
 			</form>
 		</div>
@@ -174,17 +177,17 @@
 				<?php	
 					if($_SESSION['require_coin'] == "all"){
 				?>
-						Require Coin:	<select name="is_coin" id="is_coin" style="width: 90px;font-size: 15px; margin-top: 15px;" >
+						Require Coin:	<select name="is_coin" id="is_coin" style="width: 100px;font-size: 15px; margin-top: 15px;" >
 		  						<option value="all" style="font-size: 15px;" selected="selected">All</option>
-		  						<option value="1" style="font-size: 15px;">Yes</option>
-		  						<option value="0" style="font-size: 15px;">No</option>
+		  						<option value="1" style="font-size: 15px;">Required</option>
+		  						<option value="0" style="font-size: 15px;">Free</option>
 							</select>
 							<button type="submit" class="btn" style="margin-top: 5px;"><i class="icon-filter icon-large"></i></button>
 					<?php	
 						}
 						if($_SESSION['require_coin'] == "1"){
 					?>
-						Require Coin:	<select name="is_coin" id="is_coin" style="width: 90px;font-size: 15px; margin-top: 15px;" >
+						Require Coin:	<select name="is_coin" id="is_coin" style="width: 100px;font-size: 15px; margin-top: 15px;" >
 		  						<option value="all" style="font-size: 15px;">All</option>
 		  						<option value="1" style="font-size: 15px;" selected="selected">Yes</option>
 		  						<option value="0" style="font-size: 15px;">Member</option>
@@ -194,7 +197,7 @@
 						}
 						if($_SESSION['require_coin'] == "0"){
 					?>
-						Require Coin:	<select name="is_coin" id="is_coin" style="width: 90px;font-size: 15px; margin-top: 15px;" >
+						Require Coin:	<select name="is_coin" id="is_coin" style="width: 100px;font-size: 15px; margin-top: 15px;" >
 		  						<option value="all" style="font-size: 15px;">All</option>
 		  						<option value="1" style="font-size: 15px;">Yes</option>
 		  						<option value="0" style="font-size: 15px;" selected="selected">No</option>
@@ -208,16 +211,16 @@
 		</ul>
 		<ul class="nav" style="font-size: 13px; width: 100%; float:left; color: #E86C19;"> <p style="font-size: 13px; width: 100%;"> The information sheet below shows the list of chapter in order from the latest chapter to older one.</p></ul>
 	
-		<div class="table-responsive" style="margin-top: 120px; width:100%"> 
-			<table class="table" style="width: 100%">
+		<div class="table-responsive" style="margin-top: 120px; width:100%; " > 
+			<table class="table" style="width: 100%; text-align: center;">
 				<thead>
 					<tr>
-						<th style="text-align: center; font-size: 14px; width: 5%; background-color: #F5D7B9">No.</th>
-						<th style="text-align: center; font-size: 14px; width: 25%; background-color: #F5D7B9">Chapter Title</th>
-						<th style="text-align: center; font-size: 14px; width: 10%;background-color: #F5D7B9">Votes</th>
-						<th style="text-align: center; font-size: 14px; width: 10%;background-color: #F5D7B9">Views</th>
-						<th style="text-align: center; font-size: 14px; width: 14%;background-color: #F5D7B9">RequireCoin</th>
-						<th style="text-align: center; font-size: 14px; width: 11%;background-color: #F5D7B9">Action</th>
+						<th style="text-align: center; font-size: 14px; width: 8%; background-color: #F5D7B9">No.</th>
+						<th style="text-align: center; font-size: 14px; width: 35%; background-color: #F5D7B9">Chapter Title</th>
+						<th style="text-align: center; font-size: 14px; width: 15%;background-color: #F5D7B9">Votes</th>
+						<th style="text-align: center; font-size: 14px; width: 15%;background-color: #F5D7B9">Views</th>
+						<th style="text-align: center; font-size: 14px; width: 15%;background-color: #F5D7B9">RequireCoin</th>
+						<th style="text-align: center; font-size: 14px; width: 12%;background-color: #F5D7B9">Action</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -253,15 +256,15 @@
 
 					//Common select
 					if($_SESSION['require_coin'] == "all"){
-						$sql2= "SELECT * FROM story ORDER BY storyID DESC LIMIT {$beginrow} , {$pagesize}";
+						$sql2= "SELECT * FROM chapter ORDER BY chapterID DESC LIMIT {$beginrow} , {$pagesize}";
 
 					}else{
-						$sql2= "SELECT * FROM story INNER JOIN story_category ON  story.storyID = story_category.storyID WHERE categoryID ='".$_SESSION['require_coin'] ."' ORDER BY story.storyID DESC LIMIT {$beginrow} , {$pagesize}";
+						$sql2= "SELECT * FROM chapter WHERE requireCoin ='".$_SESSION['require_coin'] ."' ORDER BY storyID DESC LIMIT {$beginrow} , {$pagesize}";
 					}
 
 					//Search
 					if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['search'])){
-						$sql2= "SELECT * FROM story WHERE storyName LIKE '%" .$search . "%' ORDER BY storyID DESC LIMIT {$beginrow} , {$pagesize}";
+						$sql2= "SELECT * FROM chapter WHERE chapterName LIKE '%" .$search . "%' ORDER BY storyID DESC LIMIT {$beginrow} , {$pagesize}";
 					}
 
 					$row2=query($sql2);  
@@ -269,66 +272,48 @@
 
 					for($i=0; $i < count($row2); $i++)
 					{
-						$storyID = $row2[$i][0];
-						$storyName = $row2[$i][1];
-						$storyImage = $row2[$i][4];
+						$chapterID = $row2[$i][0];
+						$chapterName = $row2[$i][1];
 						$viewNumber = $row2[$i][5];
-						$voteNumber = $row2[$i][6];
-						$memberID = $row2[$i][2];
+						$is_coin = $row2[$i][4];
+
+						$sql3 = "SELECT * FROM vote WHERE chapterID='" .$chapterID . "'";
+						if(execsql($sql3)){
+							$voteNumber = count(query($sql3));
+						}else{
+							$voteNumber = 0;
+						}
+						
 				?>	
 					<tr>
-						<td style=" width: 5%; text-align: center;"><?=$i+1+($currentpage-1)*10?></td>
-						<td class="nav-list name_list" style="width: 25%">
-							<div class="media truyen-item">
-								<a class="pull-left" href="chapterlist.php?storyID=<?=$row2[$i][0]?>">
-									<h2 class="media-heading" style="font-size: 15px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#333333; text-align: left;"><?=decryptString($storyName)?></h2>
-								</a>
+						<td style=" width: 8%; text-align: center;"><?=$i+1+($currentpage-1)*10?></td>
+						<td class="nav-list name_list" style="width: 35%">
+							<div class="media truyen-item"
+								<h2 class="media-heading" style="font-size: 15px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#333333; text-align: left;"><?=decryptString($chapterName)?></h2>
 							</div>
 										
 						</td>
-						<td style="width: 20%">
-							<div  style="text-align: center; width: 100%">
-								<div class="media-body">
-												
-								<?php
-									$sql3 = "Select * from category INNER JOIN story_category ON category.categoryID = story_category.categoryID WHERE storyID='" .$storyID . "'";
-									$row3 = query($sql3);
+						<td style="width: 15%; text-align: center;">
+							<span itemprop="votes"><b> <?=$voteNumber?></b>
+							</span>
+						</td>
+						<td style="width: 15%; text-align: center;">
+							<span itemprop="rating"><b> <?=$viewNumber?></b>
+							</span>
+						</td>
 
-									for ($j=0; $j < count($row3);$j++)
-									{
-								?>	
-										<span class="list-category" style="font-size: 12px; text-align: justify;">
-											<span><a href="./storybycat.php?categoryID=<?=$row3[$j][0]?>"><?=$row3[$j][1]?></a></span>,
-										</span>
-								<?php
-									}
-								?>
-								</div>
-
-								</td>
-								<td style="width: 5%; text-align: center;">
-								<?php
-									$sql4 = "SELECT * FROM chapter WHERE storyID='" .$storyID . "'";
-									$row4 = query($sql4);
-
-									echo('<a href="./chapterlist.php?storyID='.$storyID.'" style= "color: black;">'.count($row4).'</a>');
-								?>
-								</td>
-								<td style="width: 5%; text-align: center;">
-									<span itemprop="votes"><b> <?=$voteNumber?></b>
-									</span>
-								</td>
-								<td style="width: 5%; text-align: center;">
-									<span itemprop="rating"><b> <?=$viewNumber?></b>
-									</span>
-								</td>
-
-								<td style="width: 14%; text-align: center;">
-									<a href="memberlist.php?memberID=<?=$memberID?>"><?=$memberID?></a>	
-								</td>
-								<td style="width: 11%; text-align: center; ">
+						<td style="width: 15%; text-align: center;">
+							<?php
+								if($is_coin == "0"){
+									echo("<span style='font-size: 15px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#2D9123;'>Free</span>");
+								}else{
+									echo("<span style='font-size: 15px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#D40C0C;'>Required</span>");
+								}
+							?>		
+						</td>
+						<td style="width: 12%; text-align: center; ">
 								<!--	<a href="editstory.php?storyID=<?=$storyID?>" class="btn"><i class="icon-edit"></i></a> -->
-									<button type="button" name="btn_delete" id="btn_delete<?=$storyID?>" class="btn btn-warning" data-toggle="modal" data-target="#delete_confirm<?=$storyID?>"><i class="icon-remove-sign"></i>
+									<button type="button" name="btn_delete" id="btn_delete<?=$chapterID?>" class="btn btn-warning" data-toggle="modal" data-target="#delete_confirm<?=$chapterID?>"><i class="icon-remove-sign"></i>
 									</button>
 									
 								</td>
@@ -338,21 +323,21 @@
 								<script type="text/javascript" src="js/bootstrap-modalmanager.js"></script>
 								<script type="text/javascript" src="js/bootstrap-modal.js"></script>
 
-								<div class="modal hide fade" id="delete_confirm<?=$storyID?>" style="display: none;">
+								<div class="modal hide fade" id="delete_confirm<?=$chapterID?>" style="display: none;">
 									<form  method="POST" action="delete.php" >
 									<div class="modal-header">
 										<span class="disable" data-dismiss="modal" aria-hidden="true" style="color: #ff4444; font-size: 44px; font-weight: bold; float: right;cursor:pointer;">&times;</span>
-										<h3>Delete Story</h3>
+										<h3>Delete Chapter</h3>
 										
 									</div>
 									<div class="modal-body" style="text-align: center; margin-top:0px">
-										<h2>Are you sure to Delete this story?</h2>
-										<img style="width: 150px; height: 200px;" src="../img/<?=$storyImage?>">
-										<h5><?=decryptString($storyName)?></h5>
+										<h2>Are you sure to Delete this chapter of story: "<?=$storyName?>"?</h2>
+										<img style="width: 230px; height: 230px;" src="../img/remove-chapter.jpg">
+										<h5><?=$storyName?></h5>
+										<input type="hidden" name="chapter_id" value="<?=$chapterID?>">
 										<input type="hidden" name="story_id" value="<?=$storyID?>">
-									
 
-										<button type="submit" name="cf_del_story" class="btn btn-primary" style="background-color: blue; width:14% ">Yes</button>&emsp;&emsp;
+										<button type="submit" name="cf_del_chapter" class="btn btn-primary" style="background-color: blue; width:14% ">Yes</button>&emsp;&emsp;
 									
 										<button type="button" class="btn" data-dismiss="modal" aria-hidden="true">Cancle</button>
 									</div>
@@ -382,7 +367,7 @@
 								<?php
 								}else{
 							?>
-									<li class="disable"><a href="mystories.php?currentpage=<?=$i?>"><?php echo $i ." "; ?></a></li>
+									<li class="disable"><a href="chapterlist.php?currentpage=<?=$i?>"><?php echo $i ." "; ?></a></li>
 							<?php
 								}
 							}

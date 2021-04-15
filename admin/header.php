@@ -45,7 +45,8 @@ if(isset($memberID1)){
 ?>
 <div class="yamm navbar navbar-fixed-top">
 	<div class="navbar-inner">
-		
+
+			<div class="container-fluid">
 			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
 				<?php
 					for($i=0; $i<7; $i++)
@@ -94,7 +95,7 @@ if(isset($memberID1)){
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i><b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="./profile.php"><i class="icon-user" aria-hidden="true"></i>My Account</a></li>
+							<li><a href="../profile.php"><i class="icon-user" aria-hidden="true"></i>My Account</a></li>
 							<li><a href="./accountlist.php"><i class="icon-folder-open"></i>Account List</a></li>
 							<li><a href="./storylist.php"><i class="icon-folder-open"></i>Story List</a></li>
 							<li><a href="./logout.php"><i class="icon-arrow-right"></i> Logout</a></li>
@@ -112,7 +113,6 @@ if(isset($memberID1)){
 			</div>
 
 		</div>
-		
 	</div>
 </div>
 

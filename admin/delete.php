@@ -15,20 +15,20 @@ if($_SERVER['REQUEST_METHOD'] != 'POST'){
     
 	if(isset($_POST['cf_del_chapter']) && isset($_POST['chapter_id']) && isset($_POST['story_id']))
 	{
-		echo("cf_del_chapter = ".isset($_POST['cf_del_chapter']));
-    	echo("chapter_id = ".isset($_POST['chapter_id']));
-    	echo("story_id = ".isset($_POST['story_id'])); 
+		//echo("cf_del_chapter = ".isset($_POST['cf_del_chapter']));
+    	//echo("chapter_id = ".isset($_POST['chapter_id']));
+    	//echo("story_id = ".isset($_POST['story_id'])); 
 
 		$chapterID = $_POST['chapter_id'];
 		$storyID = $_POST['story_id'];
 
 		$sql = "DELETE FROM vote WHERE chapterID='" .$chapterID ."'";
 		$result = execsql($sql);
-		echo ("result = " .$result);
+		//echo ("result = " .$result);
 
 		$sql1 = "DELETE FROM chapter_payment WHERE chapterID='" .$chapterID ."'";
 		$result1 = execsql($sql1);
-		echo ("result1 = " .$result1);
+		//echo ("result1 = " .$result1);
 
 	// Get view of chapter
 		$sql2 = "SELECT * FROM chapter WHERE chapterID='" .$chapterID . "'";
@@ -44,7 +44,7 @@ if($_SERVER['REQUEST_METHOD'] != 'POST'){
 		if($result != null && $result1 != null){
 			$sql4 = "DELETE FROM chapter WHERE chapterID='" .$chapterID ."'";
 			$result4 = execsql($sql4);
-			echo ("result4 = " .$result4);
+			//echo ("result4 = " .$result4);
 
 			if($result4 != null){
 
