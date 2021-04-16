@@ -52,6 +52,59 @@
   		$sql1 = "SELECT * FROM story WHERE storyID ='".$storyID."'";
 		$row1 = query($sql1);
 		$storyName = decryptString($row1[0][1]);
+
+		$sql = "SELECT * FROM chapter WHERE storyID ='".$storyID."'";
+		$result = execsql($sql);
+				
+		if($result != null)
+		{
+			$row = query($sql);
+			$total = count($row);
+			// filter
+		    if(!isset($_SESSION['require_coin']) && !isset($_POST['is_coin'])){
+		  		$_SESSION['require_coin'] = "all";
+		  	}
+		  	if(!isset($_SESSION['require_coin']) && isset($_POST['is_coin'])){
+		  		$_SESSION['require_coin'] = $_GET['is_coin'];
+		  	}
+		  	if(isset($_SESSION['require_coin']) && !isset($_POST['is_coin'])){
+		  		$_SESSION['require_coin'] = $_SESSION['require_coin'];
+		  	}
+		  	if(isset($_SESSION['require_coin']) && isset($_POST['is_coin'])){
+		  		$_SESSION['require_coin'] = $_POST['is_coin'];
+		  	}
+
+
+		    if($_SESSION['require_coin'] == "all"){
+			  	$sql = "SELECT * FROM chapter WHERE storyID ='".$storyID."'";
+				$row = query($sql);
+				$total = count($row);
+			}else{
+			 	$sql = "SELECT * FROM chapter WHERE storyID ='".$storyID."' AND requireCoin = '".$_SESSION['require_coin']."'";
+			    $row = query($sql);
+			    $total= count($row);
+			}
+
+			//Search chapter name
+			if(isset($_POST['search_chapter']) &&  isset($_POST['search'])){
+				if($_POST['search'] == ""){
+				?>
+		    		<script >
+						alert ("You must enter at least a keyword to search!");
+						window.location.replace("./chapterlist.php?storyID=<?=$storyID?>");
+					</script>
+				<?php	
+				}else{
+					$search = encryptString($_POST['search']);
+
+					$sql = "SELECT * FROM chapter WHERE chapterName LIKE '%" .$search . "%'";
+					//echo($sql);
+					$row = query($sql);	
+					$total_search = count($row);		
+				}
+			}
+		}
+
   	}else{
 ?>
     	<script >
@@ -59,51 +112,6 @@
 			window.location.replace("./storylist.php");
 		</script>
 <?php	
-	}
-  	
-  	// filter
-    if(!isset($_SESSION['require_coin']) && !isset($_POST['is_coin'])){
-  		$_SESSION['require_coin'] = "all";
-  	}
-  	if(!isset($_SESSION['require_coin']) && isset($_POST['is_coin'])){
-  		$_SESSION['require_coin'] = $_POST['is_coin'];
-  	}
-  	if(isset($_SESSION['require_coin']) && !isset($_POST['is_coin'])){
-  		$_SESSION['require_coin'] = $_SESSION['require_coin'];
-  	}
-  	if(isset($_SESSION['require_coin']) && isset($_POST['is_coin'])){
-  		$_SESSION['require_coin'] = $_POST['is_coin'];
-  	}
-
-  	
-
-    if($_SESSION['require_coin'] == "all"){
-	  	$sql = "SELECT * FROM chapter WHERE storyID ='".$storyID."'";
-		$row = query($sql);
-		$total = count($row);
-	}else{
-	 	$sql = "SELECT * FROM story WHERE storyID ='".$storyID."' AND requireCoin = '".$_SESSION['require_coin']."'";
-	    $row = query($sql);
-	    $total= count($row);
-	}
-
-	//Search chapter name
-	if(isset($_GET['search_chapter']) &&  isset($_GET['search'])){
-		if($_GET['search'] == ""){
-		?>
-    		<script >
-				alert ("You must enter at least a keyword to search!");
-				window.location.replace("./chapterlist.php?storyID=<?=$storyID?>");
-			</script>
-		<?php	
-		}else{
-			$search = encryptString($_GET['search']);
-
-			$sql = "SELECT * FROM chapter WHERE chapterName LIKE '%" .$search . "%'";
-			//echo($sql);
-			$row = query($sql);	
-			$total_search = count($row);		
-		}
 	}
   }
 ?>
@@ -128,7 +136,7 @@
 				</li>
 				<li>
 					<div itemscope>
-						<a href="storylist.php" itemprop="url"><span itemprop="title">storyName</span></a>
+						<a href="storylist.php" itemprop="url"><span itemprop="title"><?=$storyName?></span></a>
 						<span class="divider">/</span>
 					</div>
 				</li>
@@ -140,9 +148,9 @@
 		<h1 style="text-align: center;margin-top: 10px;">Chapter List</h1>
 		<div style =" width: 100%; text-align: center;" >
 
-			<form action="chapterlist.php?" method="GET">
+			<form action="./chapterlist.php?storyID=<?=$storyID?>" method="POST">
 			<?php
-				if(!isset($_GET['search'])){
+				if(!isset($_POST['search'])){
 			?>
 				
 				<input type="text" name="search" class=" " placeholder="Enter chapter name..." style =" width: 60%; margin-top: 25px;margin-left: 25px;">
@@ -153,14 +161,14 @@
 			<?php
 			}
 			?>
-				<input type="hidden" name="storyID" value="<?=$storyID?>">
+				
 				<button class="btn" type="submit" name="search_chapter" style="float: right; margin-top: 25px; margin-right: 40px; width: 15%"><i class="icon-search"></i></button>
 			</form>
 		</div>
 		<ul class="nav" style="margin-top: 40px; margin-bottom: 40px">
 			<li class="disable" style="float:left;width: 45%; color: #E86C19;">
 			<?php  
-				if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['search'])){
+				if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])){
 			?>	
 					<h2><i class="icon-book icon-large"></i>Search Results: <?=$total_search?></h2>
 			<?php
@@ -173,7 +181,7 @@
 			</li>
 
 			<li class="disable" style="float:right;width: 45%; color: #E86C19; text-align: center; font-size: 20px; font-weight: bold">
-				<form method="POST" action="storylist.php">
+				<form method="POST" action="chapterlist.php?storyID=<?=$storyID?>">
 				<?php	
 					if($_SESSION['require_coin'] == "all"){
 				?>
@@ -189,9 +197,10 @@
 					?>
 						Require Coin:	<select name="is_coin" id="is_coin" style="width: 100px;font-size: 15px; margin-top: 15px;" >
 		  						<option value="all" style="font-size: 15px;">All</option>
-		  						<option value="1" style="font-size: 15px;" selected="selected">Yes</option>
-		  						<option value="0" style="font-size: 15px;">Member</option>
+		  						<option value="1" style="font-size: 15px;" selected="selected">Required</option>
+		  						<option value="0" style="font-size: 15px;">Free</option>
 							</select>
+
 							<button type="submit" class="btn" style="margin-top: 5px;"><i class="icon-filter icon-large"></i></button>
 					<?php
 						}
@@ -202,6 +211,7 @@
 		  						<option value="1" style="font-size: 15px;">Yes</option>
 		  						<option value="0" style="font-size: 15px;" selected="selected">No</option>
 							</select>
+
 							<button type="submit" class="btn" style="margin-top: 5px;"><i class="icon-filter icon-large"></i></button>
 					<?php
 						}
@@ -256,15 +266,15 @@
 
 					//Common select
 					if($_SESSION['require_coin'] == "all"){
-						$sql2= "SELECT * FROM chapter ORDER BY chapterID DESC LIMIT {$beginrow} , {$pagesize}";
+						$sql2= "SELECT * FROM chapter WHERE storyID='".$storyID."' ORDER BY chapterID DESC LIMIT {$beginrow} , {$pagesize}";
 
 					}else{
-						$sql2= "SELECT * FROM chapter WHERE requireCoin ='".$_SESSION['require_coin'] ."' ORDER BY storyID DESC LIMIT {$beginrow} , {$pagesize}";
+						$sql2= "SELECT * FROM chapter WHERE storyID='".$storyID."' AND requireCoin ='".$_SESSION['require_coin'] ."' ORDER BY storyID DESC LIMIT {$beginrow} , {$pagesize}";
 					}
 
 					//Search
-					if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['search'])){
-						$sql2= "SELECT * FROM chapter WHERE chapterName LIKE '%" .$search . "%' ORDER BY storyID DESC LIMIT {$beginrow} , {$pagesize}";
+					if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])){
+						$sql2= "SELECT * FROM chapter WHERE storyID='".$storyID."' AND chapterName LIKE '%" .$search . "%' ORDER BY storyID DESC LIMIT {$beginrow} , {$pagesize}";
 					}
 
 					$row2=query($sql2);  

@@ -270,8 +270,8 @@
 					<tr>
 						<td style=" width: 5%; text-align: center;"><?=$i+1+($currentpage-1)*10?></td>
 						<td class="nav-list name_list" style="width: 25%">
-							<div class="media truyen-item">
-								<a class="pull-left" href="chapterlist.php?storyID=<?=$storyID?>">
+							<div class="media-body">
+								<a href="chapterlist.php?storyID=<?=$storyID?>">
 									<h2 class="media-heading" style="font-size: 15px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#333333; text-align: left;"><?=decryptString($storyName)?></h2>
 								</a>
 							</div>
@@ -302,7 +302,7 @@
 									$sql4 = "SELECT * FROM chapter WHERE storyID='" .$storyID . "'";
 									$row4 = query($sql4);
 
-									echo('<a href="./chapterlist.php?storyID='.$storyID.'" style= "color: black;">'.count($row4).'</a>');
+									echo('<a href="./chapterlist.php?storyID='.$storyID.'">'.count($row4).'</a>');
 								?>
 								</td>
 								<td style="width: 5%; text-align: center;">
