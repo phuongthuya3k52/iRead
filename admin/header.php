@@ -192,7 +192,6 @@ if(isset($memberID1)){
 	}
 ?>
 </form>
--->
 
 
 <script>

@@ -139,4 +139,12 @@
 	}
 	return(FALSE);
 	}
+
+	//fuction tran array[][] -> array[]?
+/*	function transArray($array)
+	{
+	   for ($i=0;i<sizeof($array);$i++)
+            for ($j=0;$j<m;$j++)
+                temp[index++]=mang[i][j];
+	{  */
 ?>

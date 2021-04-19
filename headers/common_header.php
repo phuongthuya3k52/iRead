@@ -164,8 +164,7 @@ if(isset($_POST['time'])){
 					<input type="hidden" name="time" value="<?=date('Y-m-d H:i:s')?>">
 					<button type="submit" name="cf_attendance" class="btn btn-primary" style="background-color: blue; width:14%;height: 10%; font-size: 18px">OK</button>
 				</div>
-			</div>
-			
+			</div>	
 <?php
 		}
 	}else{
