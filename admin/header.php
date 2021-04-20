@@ -4,6 +4,7 @@ date_default_timezone_set("Asia/Ho_Chi_Minh");
 $sql1 = "SELECT * FROM member WHERE username = '" .$_SESSION['username'] . "'";
 //echo($sql1);
 $row1 = query($sql1);
+$fullname = $row1[0][1];
 //Check for case admin delete his account
 if(count($row1)!= 0){	
 	$memberID1 = $row1[0][0];
@@ -63,41 +64,52 @@ if(isset($memberID1)){
 				<ul class="nav">
 					<li class="disable"><a href="home.php"><i class="icon-home"></i> Home</a></li>
 					<li class="dropdown">
-						<a href="javascript:" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-book"></i> Category<b class="caret"></b></a>
+						<a href="javascript:" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-book"></i> Management<b class="caret"></b></a>
 
-						<ul class="dropdown-menu">
+						<ul class="dropdown-menu" style="width:550px ">
 							<li class="yamm-content">
-								<?php
-									$check=null;
-									$sql = "select * from category";
-									$category = query($sql);
-
-									for ($i=0; $i<count($category);$i++)
-									{
-								?>	
-									<ul class="span2 unstyled" style="width:158px;">
-										<li>
-											<input type="hidden" value="<?=$i?>"><a href="./storybycat.php?categoryID=<?=$category[$i][0]?>"><?=$category[$i][1]?></a>
-										</li>
-									</ul>
-								<?php 
-									}
-								?>							
+									
+								<ul class="span2 unstyled" style="width:150px;">
+									<li>
+										<a href="./memberlist.php">Member</a>
+									</li>
+								</ul>
+								<ul class="span2 unstyled" style="width:150px;">
+									<li>
+										<a href="./storylist.php">Story</a>
+									</li>
+								</ul>
+								<ul class="span2 unstyled" style="width:150px;">
+									<li>
+										<a href="./chapterlist.php">Chapter</a>
+									</li>
+								</ul>
+								<ul class="span2 unstyled" style="width:150px;">
+									<li>
+										<a href="./categorylist.php">Category</a>
+									</li>
+								</ul>
+								<ul class="span2 unstyled" style="width:150px;">
+									<li>
+										<a href="./trans_history.php">Transaction History</a>
+									</li>
+								</ul>
 							</li>
+
 						</ul>					
 					</li>
 				
 					<li><a href="#check_attendance" data-toggle="modal"><i class=" fa fa-calendar-check-o" aria-hidden="true"></i> Attendence</a></li>
-					<li><a href="./newstory.php"><i class="icon-book"></i>New story</a></li>
+					<li><a href="../newstory.php"><i class="icon-book"></i>New story</a></li>
 				</ul>
 				
 				<ul class="nav pull-right">
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i><b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="../profile.php"><i class="icon-user" aria-hidden="true"></i>My Account</a></li>
-							<li><a href="./accountlist.php"><i class="icon-folder-open"></i>Account List</a></li>
-							<li><a href="./storylist.php"><i class="icon-folder-open"></i>Story List</a></li>
+							<li style="text-align: center; margin:10px">Welcome <b><?=$fullname?></b></li>
+							<hr>
+							<li><a href="./profile.php"><i class="icon-user" aria-hidden="true"></i>My Account</a></li>
 							<li><a href="../logout.php"><i class="icon-arrow-right"></i> Logout</a></li>
 							
 						</ul>

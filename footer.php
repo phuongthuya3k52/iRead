@@ -3,7 +3,17 @@
 			
 			<div class="row footer">
 				<div class="inner span3" style="text-align: center">
-					<img src="./img/Logo_index.png" style="width: 60%"><h3>iRead.net</h3>
+				<?php
+					if($_SESSION['role'] == "admin"){
+				?>
+						<img src="../img/Logo_index.png" style="width: 60%"><h3>iRead.net</h3>
+				<?php
+					}else{
+				?>
+						<img src="./img/Logo_index.png" style="width: 60%"><h3>iRead.net</h3>
+				<?php
+					}
+				?>	
 					
 				</div>
 				<div class="inner span3" ><h3>Something</h3>

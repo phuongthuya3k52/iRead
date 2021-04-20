@@ -208,4 +208,38 @@ if($_SERVER['REQUEST_METHOD'] != 'POST'){
 	<?php
 		} 
 	}
+
+////////////////////////////////////////////////////////////////////////////	
+
+// Delete category infnomation
+
+	if(isset($_POST['cf_del_category']) && isset($_POST['cat_id']))
+	{
+		//echo("post cf_del_member = ".isset($_POST['cf_del_member'])."<br>");
+    	//echo("member_id = ".isset($_POST['member_id']));
+    	//echo("post usname = ".isset($_POST['usname'])."<br>");
+
+		$categoryID = $_POST['cat_id'];
+
+		$sql1 = "UPDATE category SET categoryName='No name' WHERE categoryID='" .$categoryID ."'";
+		//echo("sql=".$sql1."<br>");
+		$result1 = execsql($sql1);
+		echo ("result1 = " .$result1."<br>");
+
+		if($result != null){
+?>				
+			<script >
+				alert ("Category information has been delete successfully!");
+				window.location.replace("./categorylist.php");
+			</script>
+<?php 		
+		}else{
+?>				
+			<script >
+				alert ("Failure to delete category information. Try again!");
+				window.location.replace("./categorylist.php");
+			</script>
+	<?php
+		} 
+	}  
 ?>

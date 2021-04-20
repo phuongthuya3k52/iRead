@@ -77,18 +77,18 @@
 				
 		<h1 style="text-align: center;margin-top: 10px;">Dash Board</h1>
 		
-		<ul class="nav" style="margin-top: 40px; margin-bottom: 40px">
-			<li class="disable" style="float:left;width: 45%; color: #E86C19;">
+		<ul class="nav" style="margin-top: 40px; margin-bottom: 40px;">
+			<li class="disable" style="float:left;width: 100%; color: #E86C19;">
 				<h2><i class="icon-book icon-large"></i>Total Stories: <?=$total?></h2>
 			</li>
 		</ul>
-		<ul class="nav" style="font-size: 13px; width: 100%; float:left; color: #E86C19;"> <p style="font-size: 13px; width: 100%;"> The information sheet below shows the list of stories in order from the latest story to older one.</p></ul>
+	<!--	<ul class="nav" style="font-size: 13px; width: 100%; float:left; color: #E86C19;"> <p style="font-size: 13px; width: 100%;"> The information sheet below shows the list of stories in order from the latest story to older one.</p></ul>  -->
 
-		<ul class="table-responsive" style="width: 100%; text-align: center;">
-			<li style="width: 50%; border: 1px solid black; text-align: center;">
-				<canvas id="bar_chart" style=" text-align: center;"  ></canvas>
+		<ul class="nav" style="width: 100%; text-align: center;">
+			<li style="width: 50%; min-width: 320px;">
+				<canvas id="bar_chart"></canvas>
 			</li>			
-		</ul>
+		</ul><br>
 		<?php  
 			$sql = "SELECT * FROM category";
 		    $row = query($sql);
@@ -134,6 +134,7 @@
 					data: barData,
 				});
 		</script>
+
 		
 		<ul class="nav" style="margin-top: 40px; margin-bottom: 40px">
 			<li class="disable" style="float:left;width: 100%; color: #E86C19;">
@@ -291,7 +292,7 @@
 
 					</tbody>
 				</table>
-			</div>
+			</div> 
 					
 			<div class="paging">
 				<div class="pagination pagination-centered">
@@ -315,7 +316,7 @@
 						<li class="disable"><a href="">Pages</a></li>
 					</ul>
 				</div>
-			</div>
+			</div> <br>
 
 
 <!------Top votes ------------------------------------------------------------------------------ -->

@@ -93,7 +93,7 @@
 				}
 				else{
 					$_SESSION['username'] = $us;
-					header("Location: ./admin/storylist.php");
+					header("Location: ./admin/admin.php");
 					die();
 				}
     										

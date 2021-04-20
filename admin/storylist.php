@@ -49,7 +49,7 @@
   }else{
     
   	// filter
-    if(!isset($_SESSION['category']) && !isset($_POST['type_cat'])){
+    if(!isset($_SESSION['category']) && !isset($_POST['type_cat']) ){
   		$_SESSION['category'] = "all";
   	}
   	if(!isset($_SESSION['category']) && isset($_POST['type_cat'])){
@@ -60,6 +60,10 @@
   	}
   	if(isset($_SESSION['category']) && isset($_POST['type_cat'])){
   		$_SESSION['category'] = $_POST['type_cat'];
+  	}
+
+  	if(isset($_GET['categoryID'])){
+  		$_SESSION['category'] = $_GET['categoryID']; 
   	}
 
     if($_SESSION['category'] == "all"){

@@ -5,6 +5,7 @@ $sql1 = "SELECT * FROM member WHERE username = '" .$_SESSION['username'] . "'";
 			//echo($sql);
 $row1 = query($sql1);
 $memberID1 = $row1[0][0];
+$fullname = $row1[0][1];
 $wallet1 = $row1[0][5];
 
 $sql2 = "SELECT * FROM attendance WHERE memberID = '" .$memberID1 . "'";
@@ -87,7 +88,20 @@ if(isset($_POST['time'])){
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-user"></i><b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="./profile.php"><i class="icon-user" aria-hidden="true"></i>My Account</a></li>
+							<li style="text-align: center; margin:8px">Welcome <b><?=$fullname?></b></li>
+							<hr>
+							<?php
+								if($_SESSION['role'] == "admin"){
+							?>
+									<li><a href="./admin/admin.php">Dash Board</a></li>
+									<li><a href="./admin/profile.php"><i class="icon-user" aria-hidden="true"></i>My Account</a></li>
+							<?php
+								}else{
+							?>
+									<li><a href="./profile.php"><i class="icon-user" aria-hidden="true"></i>My Account</a></li>
+							<?php
+								}
+							?>
 							<li><a href="./mystories.php"><i class="icon-folder-open"></i>My Stories</a></li>
 							<li><a href="./logout.php"><i class="icon-arrow-right"></i> Logout</a></li>
 							
