@@ -75,7 +75,7 @@
 			<ul class="breadcrumb">
 				<li>
 					<div itemscope>
-						<a href="home.php" itemprop="url"><span itemprop="title">Home</span></a>
+						<a href="./home.php" itemprop="url"><i class="icon-home"></i></a>
 						<span class="divider">/</span>
 					</div>
 				</li>
@@ -155,7 +155,7 @@
 									<td class="nav-list name_list" style="width: 20%">
 										<div class="media truyen-item">
 											<a class="pull-left" href="chapterlist.php?storyID=<?=$row2[$i][0]?>">
-												<img class="media-object" alt="<?=$row2[$i][1]?>" style="width: 100%; height: auto;" src="img/<?=$storyImage?>">
+												<img class="media-object" alt="<?=$row2[$i][1]?>" style="width: 150px; height: 170px;" src="img/<?=$storyImage?>">
 											</a>
 										</div>
 										

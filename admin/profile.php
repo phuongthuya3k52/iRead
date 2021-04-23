@@ -71,7 +71,7 @@
 			<ul class="breadcrumb">
 				<li>
 					<div itemscope>
-						<a href="home.php" itemprop="url"><span itemprop="title">Home</span></a>
+						<a href="admin.php" itemprop="url"><span itemprop="title">Dash board</span></a>
 						<span class="divider">/</span>
 					</div>
 				</li>
@@ -215,11 +215,11 @@
 						?>
 							
 								<li class="span2" style="float: left; height: 270px; width: 180px">
-									<a href="storydetail.php?storyID=<?=$row3[$i][0]?>" class="thumbnail" >
+									<a href="../storydetail.php?storyID=<?=$row3[$i][0]?>" class="thumbnail" >
 										<img style="width: 170px; height: 220px;" alt="<?=$row3[$i][1]?>" src="../img/<?=$row3[$i][4]?>">
 									</a>
 									<div class="caption">
-										<a href="storydetail.php?storyID=<?=$row3[$i][0]?>" >
+										<a href="../storydetail.php?storyID=<?=$row3[$i][0]?>" >
 											<h2 style="width: 100%; height: auto;"><?=decryptString($row3[$i][1])?></h2>
 
 											<?php 
@@ -227,7 +227,7 @@
 												$row4=query($sql4);
 											?>
 											<i class="icon-star-empty star"></i>
-											<a href="readstory.php?storyID=<?=$row4[$i][0]?>&chapterID=<?=$row4[0][0]?>"><span class="label label-warning">
+											<a href="../readstory.php?storyID=<?=$row4[$i][2]?>&chapterID=<?=$row4[0][0]?>"><span class="label label-warning">
 											<?php
 
 												if(count($row4) > 0){

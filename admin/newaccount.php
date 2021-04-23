@@ -102,13 +102,13 @@
 			<ul class="breadcrumb">
 				<li>
 					<div itemscope>
-						<a href="home.php" itemprop="url"><span itemprop="title">Home</span></a>
+						<a href="admin.php" itemprop="url"><span itemprop="title">Dash board</span></a>
 						<span class="divider">/</span>
 					</div>
 				</li>
 				<li>
 					<div itemscope>
-						<a href="./accountlist.php" itemprop="url"><span itemprop="title">Account List</span></a>
+						<a href="./memberlist.php" itemprop="url"><span itemprop="title">Activate Member List</span></a>
 						<span class="divider">/</span>
 					</div>
 				</li>
@@ -279,7 +279,7 @@
 					<div class="col-25"></div>
 
 					<div class="col-75" style="text-align: left;">
-						<i class="icon-arrow-right"></i> <a href="./accountlist.php">Back to Account List</a>
+						<i class="icon-arrow-right"></i> <a href="./memberlist.php">Back to Account List</a>
 					</div>
 							
 				</div>
@@ -328,14 +328,14 @@
 			?>				
 					<script >
 						alert ("Create a new <?=$role?> account successfully");
-						window.location.replace("./accountlist.php");
+						window.location.replace("./memberlist.php");
 					</script>
 			<?php
 				}else{
 			?>				
 					<script >
 						alert ("Create a new <?=$role?> account failed. Please Try again");
-						window.location.replace("./accountlist.php");
+						window.location.replace("./memberlist.php");
 					</script>
 		<?php
 				}
@@ -343,7 +343,7 @@
 		?>
 				<script >
 						alert ("Create a new <?=$role?> account failed. Please Try again");
-						window.location.replace("./accountlist.php");
+						window.location.replace("./memberlist.php");
 					</script>
 		<?php
 			}

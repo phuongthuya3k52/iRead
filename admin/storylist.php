@@ -109,7 +109,7 @@
 			<ul class="breadcrumb">
 				<li>
 					<div itemscope>
-						<a href="home.php" itemprop="url"><span itemprop="title">Home</span></a>
+						<a href="admin.php" itemprop="url"><span itemprop="title">Dash board</span></a>
 						<span class="divider">/</span>
 					</div>
 				</li>
@@ -293,7 +293,7 @@
 									{
 								?>	
 										<span class="list-category" style="font-size: 12px; text-align: justify;">
-											<span><a href="./storybycat.php?categoryID=<?=$row3[$j][0]?>"><?=$row3[$j][1]?></a></span>,
+											<span><a href="./categorylist.php?categoryID=<?=$row3[$j][0]?>"><?=$row3[$j][1]?></a></span>,
 										</span>
 								<?php
 									}

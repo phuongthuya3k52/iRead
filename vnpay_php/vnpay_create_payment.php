@@ -9,7 +9,7 @@ if(isset($_POST['memberID'])){
     $sql = "INSERT INTO transaction VALUES ('','" .$memberID ."',".$_POST['amount']*1000 .",'','','','','" .$timecreate ."')";
     $row = execsql($sql);
     $sql1 = "SELECT * FROM transaction WHERE createAt='" .$timecreate . "' AND memberID='".$memberID ."'";
-    echo($sql1);
+    //echo($sql1);
     $row1 = query($sql1);
     $transactionID = $row1[0][0]; 
 }

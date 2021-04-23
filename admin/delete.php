@@ -195,14 +195,14 @@ if($_SERVER['REQUEST_METHOD'] != 'POST'){
 		if($result != null){
 ?>				
 			<script >
-				alert ("Account information has been delete successfully!");
+				alert ("Member information has been delete successfully!");
 				window.location.replace("./memberlist.php");
 			</script>
 <?php 		
 		}else{
 ?>				
 			<script >
-				alert ("Failure to delete account information. Try again!");
+				alert ("Failure to delete member information. Try again!");
 				window.location.replace("./memberlist.php");
 			</script>
 	<?php

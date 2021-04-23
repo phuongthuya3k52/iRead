@@ -59,10 +59,10 @@ if(isset($memberID1)){
 					}			
 				?>
 			</a>
-			<a class="brand iread-logo" href="home.php"></a>
+			<a class="brand iread-logo" href="admin.php"></a>
 			<div class="nav-collapse">
 				<ul class="nav">
-					<li class="disable"><a href="home.php"><i class="icon-home"></i> Home</a></li>
+					<li class="disable"><a href="../home.php"><i class="icon-home"></i> Home</a></li>
 					<li class="dropdown">
 						<a href="javascript:" class="dropdown-toggle" data-toggle="dropdown"><i class="icon-book"></i> Management<b class="caret"></b></a>
 
@@ -77,11 +77,6 @@ if(isset($memberID1)){
 								<ul class="span2 unstyled" style="width:150px;">
 									<li>
 										<a href="./storylist.php">Story</a>
-									</li>
-								</ul>
-								<ul class="span2 unstyled" style="width:150px;">
-									<li>
-										<a href="./chapterlist.php">Chapter</a>
 									</li>
 								</ul>
 								<ul class="span2 unstyled" style="width:150px;">

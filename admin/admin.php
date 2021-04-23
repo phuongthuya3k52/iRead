@@ -68,7 +68,7 @@
 			<ul class="breadcrumb">
 				<li>
 					<div itemscope>
-						<a href="admin.php" itemprop="url"><strong itemprop="title">Home</strong></a>
+						<a href="admin.php" itemprop="url"><strong itemprop="title">Dash board</strong></a>
 					</div>
 				</li>
 			</ul>

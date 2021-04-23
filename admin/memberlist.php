@@ -155,7 +155,7 @@
 			<ul class="breadcrumb">
 				<li>
 					<div itemscope>
-						<a href="home.php" itemprop="url"><span itemprop="title">Home</span></a>
+						<a href="admin.php" itemprop="url"><span itemprop="title">Dash board</span></a>
 						<span class="divider">/</span>
 					</div>
 				</li>
@@ -191,7 +191,7 @@
 			?>
 					<h2><i class="icon-book icon-large"></i>Search Results: <?=$total_search?></h2>
 			<?php	
-				}elseif($_GET['memberID']){
+				}elseif(isset($_GET['memberID']) && $_GET['memberID']){
 			?>
 					<h2><i class="icon-book icon-large"></i>MemberID = <?=$_GET['memberID']?></h2>
 			<?php
@@ -210,7 +210,7 @@
 					<?php
 						if($_SESSION['page'] == "all"){
 					?>
-						Role:	<select name="type_acc" id="type_acc" style="width: 90px;font-size: 15px; margin-top: 15px;" >
+						Role:	<select name="type_acc" id="type_acc" style="width: 100px;font-size: 15px; margin-top: 15px;" >
 		  						<option value="all" style="font-size: 15px;" selected="selected">All</option>
 		  						<option value="admin" style="font-size: 15px;">Admin</option>
 		  						<option value="member" style="font-size: 15px;">Member</option>
@@ -220,7 +220,7 @@
 						}
 						if($_SESSION['page'] == "admin"){
 					?>
-						Role:	<select name="type_acc" id="type_acc" style="width: 90px;font-size: 15px; margin-top: 15px;" >
+						Role:	<select name="type_acc" id="type_acc" style="width: 100px;font-size: 15px; margin-top: 15px;" >
 		  						<option value="all" style="font-size: 15px;">All</option>
 		  						<option value="admin" style="font-size: 15px;" selected="selected">Admin</option>
 		  						<option value="member" style="font-size: 15px;">Member</option>
@@ -230,7 +230,7 @@
 						}
 						if($_SESSION['page'] == "member"){
 					?>
-						Role:	<select name="type_acc" id="type_acc" style="width: 90px;font-size: 15px; margin-top: 15px;" >
+						Role:	<select name="type_acc" id="type_acc" style="width: 100px;font-size: 15px; margin-top: 15px;" >
 		  						<option value="all" style="font-size: 15px;">All</option>
 		  						<option value="admin" style="font-size: 15px;">Admin</option>
 		  						<option value="member" style="font-size: 15px;" selected="selected">Member</option>
@@ -320,7 +320,11 @@
 							$memberID = $row2[$i][0];
 							$usname = $row2[$i][4];
 							$memname = $row2[$i][1];
-							$dob = $row2[$i][2];
+							if($row2[$i][2] == null || $row2[$i][2] == "0000-00-00"){
+								$dob =  "";
+							}else{
+								$dob = $row2[$i][2];
+							}
 							$phone = $row2[$i][3];
 							$wallet = $row2[$i][5];
 							$image = $row2[$i][6];
@@ -329,7 +333,7 @@
 							
 							$sql3 = "SELECT * FROM story WHERE memberID='" .$memberID . "'";
 	                        $result3 = execsql($sql3);
-	                        if($result3 != "null"){
+	                        if($result3 != null){
 	                        	$total_story = count(query($sql3));
 	                        }else{
 	                        	$total_story = "";
@@ -340,7 +344,7 @@
 						<td class="nav-list name_list" style="width: 13%">
 							<div class="media truyen-item">
 								<a class="pull-left" href="chapterlist.php?storyID=<?=$row2[$i][0]?>">
-									<h2 class="media-heading" style="font-size: 15px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#333333; text-align: center;">
+									<h2 class="media-heading" style="font-size: 15px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#333333; text-align: left;">
 										<?=$memname?>	
                             		</h2>
 								</a>
@@ -372,24 +376,12 @@
 							<?php
 								if($rolemember == "admin"){
 							?>
-									<select name="mem_role" id="mem_role" style="width: 80px;font-size: 12px; margin-top:0px;">
-				  						<option value="admin" style="font-size: 12px;" selected="selected">Admin</option>
-				  						<option value="member" style="font-size: 12px;">Member</option>
-									</select>
-									<input type="hidden" name="user_name" value="<?=$usname?>">
-									<input type="hidden" name="memberID" value="<?=$memberID?>">
-									<button type="submit" class="btn" style="margin-top: 0px; width: 40px;"><i class="icon-ok icon-large"></i></button>
+				  					<div value="admin" style="font-size: 13px; color: #F17938">Admin</div>
 							<?php
 								}
 								if($rolemember == "member") {
 							?>
-									<select name="mem_role" id="mem_role" style="width: 80px;font-size: 12px; margin-top:0px;">
-				  						<option value="admin" style="font-size: 12px;">Admin</option>
-				  						<option value="member" style="font-size: 12px;" selected="selected">Member</option>
-									</select>
-									<input type="hidden" name="user_name" value="<?=$usname?>">
-									<input type="hidden" name="memberID" value="<?=$memberID?>">
-									<button type="submit" class="btn" style="margin-top: 0px; width: 40px;"><i class="icon-ok icon-large"></i></button>
+				  					<div value="member" style="font-size: 13px; color: #31ACF2">Member</div>
 							<?php
 								}
 							?>								
@@ -403,7 +395,7 @@
 						</td>
 
 						<td style="width: 5%; text-align: center; ">
-						<!--	<a href="editstory.php?storyID=<?=$storyID?>" class="btn"><i class="icon-edit"></i></a> -->
+							<a href="updateprofile.php?memberID=<?=$memberID?>" class="btn"><i class="icon-edit"></i></a> 
 							<?php
 								if($usname != ""){
 

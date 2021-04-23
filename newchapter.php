@@ -107,7 +107,7 @@
 
 				<li class="ds-theloai">
 					<div itemscope>
-						<a href="home.php" itemprop="url"><span itemprop="title">Home</span></a>
+						<a href="./home.php" itemprop="url"><i class="icon-home"></i></a>
 						<span class="divider">/</span>
 					</div>
 				</li>
