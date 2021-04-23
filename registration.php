@@ -343,14 +343,14 @@
         		if($result6 != null){
 		?>				
 					<script >
-						alert ("Account registration is successful!");
+						alert ("Account activation is successful!");
 						window.location.replace("./login.php");
 					</script>
 		<?php 		
 				}else{
 	?>				
 					<script >
-						alert ("Account registration failed. Please Try again!");
+						alert ("Account activation failed . Please Try again!");
 						window.location.replace("./registration.php");
 					</script>
 	<?php
