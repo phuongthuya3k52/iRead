@@ -80,7 +80,7 @@
 				require_once("./lefts/common_left.php");
 			?>	
 				<div class="span10">
-					<div class="xfor">
+					<div class="xfor" style="font-size: 14px">
 						<div class="thumbnail">
 						<img src="img/<?=$row[0][4]?>" alt="<?=$row[0][1]?>" style="width: 100%;height: 300px;"/>
 						</div>
@@ -110,7 +110,15 @@
 
 						<p>
 						<span class="xleft">Status:</span>
-						<span>&nbsp;<?=$row[0][7]?></span>
+						<span style=" color: #FA8424; font-weight: bold;">&nbsp;<?=$row[0][7]?></span>
+						</p>
+						<p>
+						<span class="xleft">Votes:</span>
+						<span>&nbsp;<?=$voteNumber?></span>
+						</p>
+						<p>
+						<span class="xleft">Views:</span>
+						<span>&nbsp;<?=$viewNumber?></span>
 						</p>
 
 				<!--		<p>
@@ -122,9 +130,9 @@
 					</div>
 					
 					<div class="rofx">
-						<h1><?=decryptString($row[0][1])?></h1>
-						<div class="foo2" style="text-align: center;">
-								<span itemprop="votes">Votes: <?=$voteNumber?></span> votes
+						<h1 style="font-size: 18px;"><?=decryptString($row[0][1])?></h1>
+						<div class="foo2" style="text-align: center; font-size: 16px; font-weight: bold; color: #FA8424">
+								<span itemprop="votes">Votes: <?=$voteNumber?></span>
 								</span> - 
 								<span itemprop="rating">Views: <?=$viewNumber?>
 								</span>

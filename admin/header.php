@@ -104,7 +104,7 @@ if(isset($memberID1)){
 						<ul class="dropdown-menu">
 							<li style="text-align: center; margin:10px">Welcome <b><?=$fullname?></b></li>
 							<hr>
-							<li><a href="./profile.php"><i class="icon-user" aria-hidden="true"></i>My Account</a></li>
+							<li><a href="./profile.php"><i class="icon-user" aria-hidden="true"></i>My Profile</a></li>
 							<li><a href="../logout.php"><i class="icon-arrow-right"></i> Logout</a></li>
 							
 						</ul>

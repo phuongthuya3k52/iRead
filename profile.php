@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta property="fb:app_id" content="376408899112473"/>
 <link rel="canonical" href=" "/>
-<title>iRead | Profile</title>
+<title>My Profile | iRead</title>
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/yamm.css" rel="stylesheet">

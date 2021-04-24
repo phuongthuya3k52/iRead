@@ -94,11 +94,11 @@ if(isset($_POST['time'])){
 								if($_SESSION['role'] == "admin"){
 							?>
 									<li><a href="./admin/admin.php">Dash Board</a></li>
-									<li><a href="./admin/profile.php"><i class="icon-user" aria-hidden="true"></i>My Account</a></li>
+									<li><a href="./admin/profile.php"><i class="icon-user" aria-hidden="true"></i>My Profile</a></li>
 							<?php
 								}else{
 							?>
-									<li><a href="./profile.php"><i class="icon-user" aria-hidden="true"></i>My Account</a></li>
+									<li><a href="./profile.php"><i class="icon-user" aria-hidden="true"></i>My Profile</a></li>
 							<?php
 								}
 							?>
