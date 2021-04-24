@@ -163,7 +163,7 @@
 								<label for="password" class="control-label requiredField">Password<span class="asteriskField">*</span></label>
 							</div>
 							<div class="col-75 controls">
-								<input style="width: 90%" name="password" placeholder="Password" type="password" class="textinput textInput" id="password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6" required = "required" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}">
+								<input style="width: 90%" name="password" max="20" min="6" placeholder="Password" type="password" class="textinput textInput" id="password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6 characters" required = "required" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}">
 							</div>
 						</div>
 

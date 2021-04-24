@@ -94,7 +94,7 @@ if(isset($memberID1)){
 						</ul>					
 					</li>
 				
-					<li><a href="#check_attendance" data-toggle="modal"><i class=" fa fa-calendar-check-o" aria-hidden="true"></i> Attendence</a></li>
+			<!--		<li><a href="#check_attendance" data-toggle="modal"><i class=" fa fa-calendar-check-o" aria-hidden="true"></i> Attendence</a></li>  -->
 					<li><a href="../newstory.php"><i class="icon-book"></i>New story</a></li>
 				</ul>
 				
@@ -104,7 +104,9 @@ if(isset($memberID1)){
 						<ul class="dropdown-menu">
 							<li style="text-align: center; margin:10px">Welcome <b><?=$fullname?></b></li>
 							<hr>
-							<li><a href="./profile.php"><i class="icon-user" aria-hidden="true"></i>My Profile</a></li>
+							<li><a href="./profile.php"><i class="icon-user" aria-hidden="true"></i>My Profile</a>
+							</li>
+							<li><a href="../mystories.php"><i class="icon-folder-open"></i>My Stories</a></li>
 							<li><a href="../logout.php"><i class="icon-arrow-right"></i> Logout</a></li>
 							
 						</ul>
@@ -123,82 +125,6 @@ if(isset($memberID1)){
 	</div>
 </div>
 
-<!--Check attendance modal -->
-<script type="text/javascript" src="js/bootstrap-modalmanager.js"></script>
-<script type="text/javascript" src="js/bootstrap-modal.js"></script>
-
-<form method="POST" action="<?=getCurrentPageURL()?>" role="form" class="modal hide fade" id="check_attendance" style="display: none;width: 50%; height: auto; background-color: white">
-<?php
-
-	if($result2 != null)
-	{
-		$row2 = query($sql2);
-		//echo("count = ".count($row2));
-		if(count($row2) > 0){
-			$create_time = strtotime($row2[0][2]);		
-			$current_date = getdate();
-			$begin_date = mktime(00,00,00,$current_date['mon'],$current_date['mday'],$current_date['year']);
-			if( ($create_time - $begin_date) >= 0)
-			{
-		?>
-				<div class="modal-header" style="text-align: center">
-					<span class="disable" data-dismiss="modal" aria-hidden="true" style="color: #ff4444; font-size: 44px; font-weight: bold; float: right;cursor:pointer;">&times;</span>
-					<h4>You have taken attendance. Come back tomorrow!</h4>
-					<!--	<div class="tbclose-btn" onclick="thongbaopopup()">&times;</div> -->
-				</div>
-				<div class="modal-body" style="text-align: center">
-					<img src="../img/attendance_checked.png" style="width: 50%; height: 50%;">
-				</div>
-		<?php
-
-			}else{
-		?>
-				<div class="modal-header" style="text-align: center">
-					<h4>Attendance successful! You get 1 coin plus</h4>
-					<!--	<div class="tbclose-btn" onclick="thongbaopopup()">&times;</div> -->
-				</div>
-				<div class="modal-body" style="text-align: center">
-					<img src="../img/one_coin.jpg" style="width: 50%; height: 50%;">
-					<div>
-						<input type="hidden" name="time" value="<?=date('Y-m-d H:i:s')?>">
-						<button type="submit" name="cf_attendance" class="btn btn-primary" style="background-color: blue; width:14%;height: 10%; font-size: 15px">OK</button>
-					</div>
-				</div>					
-<?php
-			}
-		}else{
-?>
-			<div class="modal-header" style="text-align: center">
-					<h4>Attendance successful! You get 1 coin plus</h4>
-					<!--	<div class="tbclose-btn" onclick="thongbaopopup()">&times;</div> -->
-				</div>
-				<div class="modal-body" style="text-align: center">
-					<img src="../img/one_coin.jpg" style="width: 50%; height: 50%;">
-					<div>
-						<input type="hidden" name="time" value="<?=date('Y-m-d H:i:s')?>">
-						<button type="submit" name="cf_attendance" class="btn btn-primary" style="background-color: blue; width:14%;height: 10%; font-size: 15px">OK</button>
-					</div>
-				</div>	
-<?php
-		}
-	}else{
-?>
-		<div class="modal-header" style="text-align: center">
-				<h4>Attendance successful! You get 1 coin plus</h4>
-				<!--	<div class="tbclose-btn" onclick="thongbaopopup()">&times;</div> -->
-			</div>
-			<div class="modal-body" style="text-align: center">
-				<img src="../img/one_coin.jpg" style="width: 50%; height: 50%;">
-				<div>
-					<input type="hidden" name="time" value="<?=date('Y-m-d H:i:s')?>">
-					<button type="submit" name="cf_attendance" class="btn btn-primary" style="background-color: blue; width:14%;height: 10%; font-size: 18px">OK</button>
-				</div>
-			</div>
-			
-<?php
-	}
-?>
-</form>
 
 
 <script>

@@ -99,7 +99,7 @@
 							<thead>
 								<tr >
 								<th style="text-align: center; font-size: 14px; width: 5%;">No.</th>
-								<th style="text-align: center; font-size: 14px; width: 20%;">Story Title</th>
+								<th style="text-align: center; font-size: 14px; width: 20%;">Image</th>
 								<th style="text-align: center; font-size: 14px; width: 47%;">Information</th>
 								<th style="text-align: center; font-size: 14px; width: 7%;">Chapters</th>
 								<th style="text-align: center; font-size: 14px; width: 10%;">Status</th>
@@ -163,7 +163,7 @@
 									<td style="width: 47%">
 										<div  style="text-align: center; width: 100%">
 											<div class="media-body">
-												<a href="chapterlist.php?storyID=<?=$storyID?>"><h2 class="media-heading" style="font-size: 15px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#333333;"><?=decryptString($storyName)?></h2></a>
+												<a href="chapterlist.php?storyID=<?=$storyID?>"><h2 class="media-heading" style="font-size: 18px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#333333;"><?=decryptString($storyName)?></h2></a>
 												
 												<?php
 													$sql3 = "Select * from category INNER JOIN story_category ON category.categoryID = story_category.categoryID WHERE storyID='" .$storyID . "'";
@@ -181,9 +181,9 @@
 												?>
 											</div>
 
-											<span itemprop="votes"><b> <?=$voteNumber?> Votes</b>
+											<span itemprop="votes" style="color: #FA8424; font-size: 14px"><b> <?=$voteNumber?> Votes</b>
 											</span> - 
-											<span itemprop="rating"><b> <?=$viewNumber?> Views</b>
+											<span itemprop="rating" style="color: #FA8424;font-size: 14px"><b> <?=$viewNumber?> Views</b>
 											</span>
 
 
