@@ -60,8 +60,8 @@
 		$check = false;
 
 		if(isset($_POST['submit'])) {
-		if(isset($_FILES['inpImage'])){
-	/*		echo "<pre> ";
+		if($_FILES['inpImage'] != null && $_FILES['inpImage']['name'] != ""){
+		/*	echo "<pre> ";
 				print_r($_FILES);
 			echo "</pre>";  */
 
@@ -235,7 +235,7 @@
 						<td style="width: 40%">
 							<img style="background-color: white; width:230px; height: 300px;  margin-top: 0px" id="image" src="./img/default cover book.png" />
 						
-							<input style = "width:100%;" id="inpImage" type='file' name="inpImage">
+							<input style = "width:100%;" id="inpImage" type='file' name="inpImage" value="default cover book.png">
 
 							<script type="text/javascript">
 								// Change URL of image to base64
@@ -268,14 +268,26 @@
 									$category = query($sql);
 
 									for ($i=0; $i < count($category);$i++)
-									{
+									{ 
+										if($i == 0){
 								?>	
-									<ul class="span2 unstyled">
-										<li style="width:100%; font-size: 14px; float: left;">
-											<input id="checkbox" type="checkbox" id="checkbox" name="checkbox[]" value="<?=$category[$i][0]?>"><?=$category[$i][1]?>
-										</li>
-									</ul>
-                				<?php 
+											<ul class="span2 unstyled">
+
+												<li style="width:100%; font-size: 14px; float: left;">
+													<input id="checkbox" type="checkbox" id="checkbox" name="checkbox[]" value="<?=$category[$i][0]?>" checked="checked"><?=$category[$i][1]?>
+												</li>
+											</ul>
+                				<?php 	
+                						}else{
+                				?>
+                							<ul class="span2 unstyled">
+
+												<li style="width:100%; font-size: 14px; float: left;">
+													<input id="checkbox" type="checkbox" id="checkbox" name="checkbox[]" value="<?=$category[$i][0]?>"><?=$category[$i][1]?>
+												</li>
+											</ul>
+                				<?php
+                						}	
 									}
 								?>
 							

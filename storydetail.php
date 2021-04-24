@@ -130,8 +130,8 @@
 					</div>
 					
 					<div class="rofx">
-						<h1 style="font-size: 18px;"><?=decryptString($row[0][1])?></h1>
-						<div class="foo2" style="text-align: center; font-size: 16px; font-weight: bold; color: #FA8424">
+						<h1 style="font-size: 22px;"><?=decryptString($row[0][1])?></h1>
+						<div class="foo2" style="text-align: center; font-size: 18px; font-weight: bold; color: #FA8424">
 								<span itemprop="votes">Votes: <?=$voteNumber?></span>
 								</span> - 
 								<span itemprop="rating">Views: <?=$viewNumber?>
