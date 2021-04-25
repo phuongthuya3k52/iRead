@@ -277,7 +277,7 @@
 			
 			<div id="fb-root"></div>
 		<?php 
-			require_once("./footer.php");
+			require_once("./footers/footer.php");
 		?>
 	</div>
 </div>

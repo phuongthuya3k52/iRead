@@ -228,6 +228,9 @@
 			</div>
 			
 		</div>
+		<?php 
+			require_once("./footers/footer.php");
+		?>
 	</div>
 </div>
 </body>

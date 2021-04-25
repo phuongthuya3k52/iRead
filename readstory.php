@@ -81,10 +81,10 @@
 			$readerwallet = $row5[0][5];
 
 		//check coin payment 
-			if($row[0][4] == 1 && $readerID != $memberID){
+			if($row[0][4] == 1 && $readerID != $memberID && $_SESSION['role'] != "admin"){
 				$sql4 = "SELECT * FROM chapter_payment WHERE chapterID='" .$chapterID . "'";
-
-				if(querynull($sql4)!=null){
+				// Check unlock chapter
+				if(execsql($sql4)!=null){
 					$row4 = query($sql4); 
 
 					for($i=0; $i < count($row4); $i++){
@@ -306,7 +306,7 @@
 							$is_vote = 0;
 							$sql7 = "SELECT * FROM vote WHERE chapterID='" .$chapterID . "'";
 
-							if(querynull($sql7)!=null){
+							if(execsql($sql7)!=null){
 								$row7 = query($sql7);
 								$vote = count($row7);
 
@@ -363,7 +363,7 @@
 							$is_vote = 0;
 							$sql7 = "SELECT * FROM vote WHERE chapterID='" .$chapterID . "'";
 
-							if(querynull($sql7)!=null){
+							if(execsql($sql7)!=null){
 								$row7 = query($sql7);
 								$vote = count($row7);
 
@@ -471,7 +471,7 @@
 				<div class="clearfix"></div>
 			</div>
 		<?php 
-			require_once("./footer.php");
+			require_once("./footers/footer.php");
 		?>
 			
 			<script type="text/javascript" src="js/bootstrap-modalmanager.js"></script>

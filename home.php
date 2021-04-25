@@ -195,7 +195,7 @@
 					 var __p = "56ed68bae1873f5e001c2f66"; 
 				</script>   -->
 		<?php 
-			require_once("./footer.php");
+			require_once("./footers/footer.php");
 		?>
 	</div>
 </div>

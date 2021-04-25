@@ -39,6 +39,29 @@
 
 		return $rows;
 	}
+	
+	function execsql($sql)
+	{
+		global $hostname;
+		global $username;
+		global $password;
+		global $dbname;
+		global $port;
+
+		$conn = new mysqli($hostname, $username, $password, $dbname, $port);
+		
+		// If the connection is not successful, stop the program 
+		if($conn->connect_error)
+		{
+			echo "Connection fail <br>";
+			//Stop the program
+			die($conn->connect_error);
+		}
+
+		// Run the query to get the results 
+		$result = $conn->query($sql);
+		return $result;
+	}
 
 	function querynull($sql)
 	{
@@ -64,29 +87,6 @@
 		return $result;
 	}
 
-	
-	function execsql($sql)
-	{
-		global $hostname;
-		global $username;
-		global $password;
-		global $dbname;
-		global $port;
-
-		$conn = new mysqli($hostname, $username, $password, $dbname, $port);
-		
-		// If the connection is not successful, stop the program 
-		if($conn->connect_error)
-		{
-			echo "Connection fail <br>";
-			//Stop the program
-			die($conn->connect_error);
-		}
-
-		// Run the query to get the results 
-		$result = $conn->query($sql);
-		return $result;
-	}
 
 	//function for string
 	function encryptString($string)

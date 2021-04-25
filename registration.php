@@ -253,17 +253,16 @@
 		$uname = stripslashes($uname);
 		$pass = md5(stripslashes($pass));
 
-		if($errormsg == False){
+		if($errormsg == False){ // User name and Email is not exit
+			//Create token string and creation time
 			$token = substr(md5(rand(0,10000)),0,16);
             $creattime = date('Y-m-d H:i:s');
 
+            //Save to database
 			$sql2= "Insert into account values ('" .$uname ."','" .$pass."','member','".$email ."','" .$token ."','" .$creattime ."','0')";
-			$result2 = execsql($sql2);
-			//echo('result: =' .$result);
+
 			$sql5 = "Insert into member values ('','" .$fullname ."','" .$dob ."','" .$phone ."','" .$uname ."','0','default avt.jpg')"; 
 
-			$result5 = execsql($sql5);  
-			echo('result5: =' .$result5);
 
 		//Send verification email  
 			$title = 'Create Account';
@@ -295,24 +294,44 @@
 // Check token from email
     if (isset($_GET['email']) && isset($_GET['token']))
 	{
+		
 		$cf_email=$_GET['email'];
 		$cf_token=$_GET['token'];
 		$sql3= "SELECT * FROM account WHERE email='".$cf_email ."'";
-		$row3= query($sql3);
-		$status = $row3[0][6];
-		$token = $row[0][4];
+		if(execsql($sql3) != null){
+			$check_valid = true;
+			$row3= query($sql3);
+			$status = $row3[0][6];
+			$token = $row[0][4];			
+		}else{
+			$check_valid = false;
+?>
+			<script>
+				alert ("This email does not exist. Please try again!");	
+					window.location.replace("./registration.php");
+			</script>	
+	<?php	
+		}
 
 		if($token != $cf_token){
+			$check_valid = false;
 ?>
 			<script>
 				alert ("This token does not exist. Please try again!");	
-					window.location.replace("./forgotpw.php");
+					window.location.replace("./registration.php");
 			</script>	
 	<?php					
 		}else{
+			$check_valid = true;
+		}
+
+		// token and email is valid
+		if($check_valid == true){
 
 			$create_time = strtotime($row3[0][5]);
 			$currenttime = strtotime(date('Y-m-d H:i:s'));
+
+			// time more than 20 minutes  
 			if(($currenttime - $create_time) > 60*20 && $status == 0)
 			{
 				$sql7= "SELECT * FROM account WHERE email='" .$cf_email ."'";
@@ -357,8 +376,7 @@
 				} 
 			}
 		}	
-	}
-	
+	}	
 ?>  
 <!-- validate password -->
 <script>

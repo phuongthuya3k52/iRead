@@ -34,20 +34,6 @@
 	body{padding-top:60px;padding-bottom:40px;height:auto;background-image:none;}
 </style>
 
-<!--<script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-37191528-1']);
-        _gaq.push(['_trackPageview']);
-
-        (function () {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-    </script>   -->
 </head>
 
 <?php
@@ -61,9 +47,6 @@
 
 		if(isset($_POST['submit'])) {
 		if($_FILES['inpImage'] != null && $_FILES['inpImage']['name'] != ""){
-		/*	echo "<pre> ";
-				print_r($_FILES);
-			echo "</pre>";  */
 
 			$error = array();
 
@@ -92,14 +75,6 @@
 				$error['inpImage'] = "Only upload image files";
 			}
 
-		//	echo($file_type);
-		
-	/*		//3. Check for file existence 
-			if(file_exists($target_file)){
-				$error['inpImage'] = "File already exists ";
-			}  */
-
-		//	print_r($error); 
 			// 3. Check and transfer files from clipboard to server
 
 			if(empty($error)){
@@ -328,6 +303,9 @@
 		<!--	</div> -->
 			</div>
 		</div>
+		<?php 
+			require_once("./footers/footer.php");
+		?>
 	</div>
 </div>
 </body>

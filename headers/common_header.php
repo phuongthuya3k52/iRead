@@ -9,18 +9,15 @@ $fullname = $row1[0][1];
 $wallet1 = $row1[0][5];
 
 $sql2 = "SELECT * FROM attendance WHERE memberID = '" .$memberID1 . "'";
-//echo($sql);
 $result2 = execsql($sql2);
 
 if(isset($_POST['time'])){
-	//echo("time=" .$_POST['time']);
 	if($result2 != null){
 		$sql3 = "UPDATE attendance SET createAt='" .$_POST['time'] ."' WHERE memberID = '" .$memberID1 . "'"; 
-		//echo("sql3=".$sql3);
 		$result3 = execsql($sql3);
+
 		if($result3 != null){
 			$sql5 = "UPDATE member SET wallet='" .$wallet1 + 1 ."' WHERE memberID = '" .$memberID1 . "'"; 
-			//echo("sql5=".$sql5);
 			$result5 = execsql($sql5);
 		}
 
@@ -129,6 +126,7 @@ if(isset($_POST['time'])){
 <form method="POST" action="<?=getCurrentPageURL()?>" role="form" class="modal hide fade" id="check_attendance" style="display: none;width: 50%; height: auto; background-color: white">
 <?php
 
+	// Member has ever attendance 
 	if($result2 != null)
 	{
 		$row2 = query($sql2);
@@ -143,7 +141,6 @@ if(isset($_POST['time'])){
 				<div class="modal-header" style="text-align: center">
 					<span class="disable" data-dismiss="modal" aria-hidden="true" style="color: #ff4444; font-size: 44px; font-weight: bold; float: right;cursor:pointer;">&times;</span>
 					<h4>You have taken attendance. Come back tomorrow!</h4>
-					<!--	<div class="tbclose-btn" onclick="thongbaopopup()">&times;</div> -->
 				</div>
 				<div class="modal-body" style="text-align: center">
 					<img src="img/attendance_checked.png" style="width: 50%; height: 50%;">
@@ -153,8 +150,7 @@ if(isset($_POST['time'])){
 			}else{
 		?>
 				<div class="modal-header" style="text-align: center">
-					<h4>Attendance successful! You get 1 coin plus</h4>
-					<!--	<div class="tbclose-btn" onclick="thongbaopopup()">&times;</div> -->
+					<h4>Attendance successful! Please click OK to get 1 coin plus</h4>
 				</div>
 				<div class="modal-body" style="text-align: center">
 					<img src="img/one_coin.jpg" style="width: 50%; height: 50%;">
@@ -169,8 +165,7 @@ if(isset($_POST['time'])){
 		}else{
 ?>
 		<div class="modal-header" style="text-align: center">
-				<h4>Attendance successful! You get 1 coin plus</h4>
-				<!--	<div class="tbclose-btn" onclick="thongbaopopup()">&times;</div> -->
+				<h4>Attendance successful! Please click OK to get 1 coin plus</h4>
 			</div>
 			<div class="modal-body" style="text-align: center">
 				<img src="img/one_coin.jpg" style="width: 50%; height: 50%;">
