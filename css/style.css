@@ -1,5 +1,4 @@
 
-
 body{position:relative;background:white;font-family:Verdana,"Times New Roman",sans-serif; font-size: 13px;}
 .brand.iread-logo{overflow:hidden;text-indent:-99999px;background:url('../img/Logo_index.png') 0 0 no-repeat;padding:0;width:160px;height:40px;margin:0 10px 0 0;background-size:160px 40px;}
 .bar_fixed{position:fixed;bottom:0;left:0;width:100%;margin-bottom:0;}

@@ -109,7 +109,7 @@
 
 <body>
 <?php 
-	require_once("./header.php");
+	require_once("../headers/admin_header.php");
 ?>
 
 <div class="container">

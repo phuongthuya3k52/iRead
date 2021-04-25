@@ -123,7 +123,7 @@
 
 <div class="container-fluid">
 	<?php 
-	require_once("./header.php");
+	require_once("../headers/admin_header.php");
 ?>
 	<div class="row col-md-12 wrapper">
 		

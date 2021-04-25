@@ -580,12 +580,16 @@
 
 					function changeFont(font_name){
 						$('#noidungtruyen').css('font-family', font_name+', sans-serif');
+
+						$('#id_noidung_chuong').css('font-family', font_name+', sans-serif');
 						localStorage.setItem('font-truyen', font_name);
 						return false;
 					}
 
 					function changeFontSize(font_size){
 						$('#noidungtruyen').css('font-size', font_size+'px');
+
+						$('#id_noidung_chuong').css('font-size', font_size+'px');
 						localStorage.setItem('font-size', font_size);
 						return false;
 					}

@@ -53,7 +53,13 @@
 			$image = $row[0][6];
 
 			$sql1 = "SELECT * FROM story WHERE memberID = '" .$memberID . "'";
-			$row1 = query($sql1);
+			
+			if (execsql($sql1) == null){
+				$total = 0;
+			}else{
+				//$row1 = query($sql1);
+				$total = count(query($sql1));
+			}
 			//echo($sql1);
 
 			
@@ -100,20 +106,20 @@
 				<!-- Result of Story  -->
 					<div class="thumbnails">
 					<?php
-					if(count($row1) == 0){
+					if($total== 0){
 					?>
 						<div style="text-align: center"><img src="./img/nothing.jpg?>"  style="border-radius: 10%; width: 50%"></div>
 					<?php
 					}else{
 					?>
-						<h3 style="color: #D36337">Uploaded Stories (<?=count($row1)?>)</h3>
+						<h3 style="color: #D36337">Uploaded Stories (<?=$total?>)</h3>
 						<hr>	  
 						<ul class="thumbnails">
 
 						<?php
 						// Pagination
 
-							$allrow = count($row1);
+							$allrow = $total;
 							$pagesize = 10;
 							$allpage = 1;
 
