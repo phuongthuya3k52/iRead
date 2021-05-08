@@ -3,10 +3,6 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta property="fb:app_id" content="376408899112473"/>
-<meta name="description" content="Truyện Hot 24h hay nhất và mới nhất. Đọc truyện online nhiều thể loại tại TruyệnYY - Kho truyện được tuyển chọn và biên tập tốt nhất.">
-<meta name="keywords" content="Doc truyen online, truyen kiem hiep, truyen tien hiep, truyen sac hiep, truyen ngon tinh, truyen trinh tham, vong du, truyen convert full text">
-<link rel="alternate" type="application/atom+xml" title="Đọc Truyện Online - Truyện Kiếm Hiệp" href="http://feeds.feedburner.com/truyenyy">
 <title>Story List | Admin | iRead</title>
 <link href="../css/bootstrap.min.css" rel="stylesheet">
 <link href="../css/bootstrap-responsive.css" rel="stylesheet">
@@ -51,7 +47,33 @@
 	$sql= "SELECT * FROM category";
 			//echo($sql);
 	$row = query($sql);	
-	$total= count($row);		
+	$total= count($row);	
+
+	//Search category name
+	if(isset($_POST['search'])){
+	/*	if($_GET['search'] == ""){
+		?>
+    		<script >
+				alert ("You must enter at least a keyword to search!");
+				window.location.replace("./memberlist.php");
+			</script>
+		<?php	
+		} */
+		if($_POST['search'] != ""){
+			$search = $_POST['search'];
+
+			$sql = "SELECT * FROM category WHERE categoryName LIKE '%" .$search . "%'";
+			//echo($sql);
+			if(execsql($sql) != null){
+				$row = query($sql);
+				$total_search = count($row);
+			}else{
+				$total_search = 0;
+			}	
+					
+		}
+	}
+	
 
 // Update category name
   	 if(isset($_POST['cat_name']) && isset($_POST['cat_ID'])){
@@ -78,6 +100,8 @@
 	<?php
 		}		
     }
+
+
 
 // Create new category
   	if(isset($_POST['newcat']) && isset($_POST['cf_new_category'])){
@@ -156,37 +180,50 @@
 	<div class="row wrapper ">
 				
 		<h1 style="text-align: center;margin-top: 10px;">Category List</h1>
-	<!--	<div style =" width: 100%; text-align: center;" >
+		<div style =" width: 100%; text-align: center;" >
 
-			<form action="categorylist.php" method="GET">
+			<form action="categorylist.php" method="POST">
 			<?php
-				if(!isset($_GET['search'])){
+				if(!isset($_POST['search']) || $_POST['search'] == ""){
 			?>
 				
-				<input type="text" name="search" class=" " placeholder="Enter story name..." style =" width: 60%; margin-top: 25px;margin-left: 25px;">
+				<input type="text" name="search" class=" " placeholder="Enter category name..." style =" width: 60%; margin-top: 25px;margin-left: 25px;">
 			<?php
 			}else{
 			?>
-				<input type="text" name="search" class=" " placeholder="Enter story name..." value="<?=$search?>" style =" width: 60%; margin-top: 25px;margin-left: 25px;">
+				<input type="text" name="search" class=" " placeholder="Enter category name..." value="<?=$search?>" style =" width: 60%; margin-top: 25px;margin-left: 25px;">
 			<?php
 			}
 			?>
-				<button class="btn" type="submit" name="search_story" style="float: right; margin-top: 25px; margin-right: 40px; width: 15%"><i class="icon-search"></i></button>
+				<button class="btn" type="submit" name="search_category" style="float: right; margin-top: 25px; margin-right: 40px; width: 15%"><i class="icon-search"></i></button>
 			</form>
-		</div>  -->
+		</div>  
+
+
 		<ul class="nav" style="margin-top: 40px; margin-bottom: 40px">
 			<li class="disable" style="float:left;width: 35%; color: #E86C19;">
-			
-				<h2><i class="icon-book icon-large"></i>Total: <?=$total?></h2>
+
+			<?php  
+				if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search']) && $_POST['search'] != "" ){
+			?>
+					<h2><i class="icon-book icon-large"></i>Search Results: <?=$total_search?></h2>
+			<?php	
+				}else{
+			?>
+					<h2><i class="icon-book icon-large"></i>Total: <?=$total?></h2>
+			<?php	
+				}
+			?>
+				
 			</li>
 
 			
 			<li style="float: right;width: 30%;margin-top: 10px;"><a href="#new_category" style="max-width:80px; width: 70%; height: auto; min-height: 25px; float: right; font-size: 15px; background-color: blue; "  class="btn btn-primary" data-toggle="modal"><i class="icon-plus icon-large"></i> New</a></li>
 		</ul>
-		<ul class="nav" style="font-size: 13px; width: 100%; float:left; color: #E86C19;"> <p style="font-size: 13px; width: 100%;"> The information sheet below shows the list of categories in order from the latest categories to older one.</p></ul>
+		<ul class="nav" style="font-size: 14px; width: 100%; float:left; color: #E86C19;"> <p style="font-size: 16px; width: 100%;"> The information sheet below shows the list of categories in order from the latest categories to older one.</p></ul>
 	
 		<div class="table-responsive" style="margin-top: 120px; width:100%; text-align: center"> 
-			<table class="table" style="width: 100%; text-align: center">
+			<table class="table" style="width: 100%; text-align: center;">
 				<thead>
 					<tr>
 						<th style="text-align: center; font-size: 14px; width: 10%; background-color: #F5D7B9">No.</th>
@@ -226,9 +263,16 @@
 					$currentpage = $_GET['currentpage'];
 					}
 
-					//Common select
-					$sql2= "SELECT * FROM category ORDER BY categoryID DESC LIMIT {$beginrow} , {$pagesize}";
-
+					//Search
+					if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])){
+						$search = $_POST['search'];
+						$sql2= "SELECT * FROM category WHERE categoryName LIKE '%" .$search . "%'";
+					}elseif(isset($_GET['categoryID'])){
+						$sql2= "SELECT * FROM category WHERE categoryID= '" .$_GET['categoryID'] . "'";
+					}else{
+						//Common select
+						$sql2= "SELECT * FROM category ORDER BY categoryID DESC LIMIT {$beginrow} , {$pagesize}";
+					}
 					
 					$row2=query($sql2);  
 
@@ -240,12 +284,12 @@
 
 				?>	
 					<tr>
-						<td style=" width: 10%; text-align: center;"><?=$i+1+($currentpage-1)*10?></td>
+						<td style=" width: 10%; text-align: center; font-size: 16px"><?=$i+1+($currentpage-1)*10?></td>
 						<td class="nav-list name_list" style="width: 50%">
 							<div class="media-body" style="text-align: center;">
 								<form method="POST" action="categorylist.php">
 									<a href="chapterlist.php?storyID=<?=$storyID?>">
-										<input type="text" name="cat_name" value="<?=$categoryName?>" style="font-size: 15px; height: 30px; margin: 0;padding: 0;font-weight: bold;color:#333333; text-align: left;">
+										<input type="text" name="cat_name" value="   <?=$categoryName?>" style="font-size: 15px; height: 30px; margin: 0;padding: 0;font-weight: bold;color:#333333; text-align: left;">
 									<!--	<h2 class="media-heading" style="font-size: 15px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#333333; text-align: left;"><?=$categoryName?></h2>  -->
 									</a>
 									<input type="hidden" name="cat_ID" value="<?=$categoryID?>">
@@ -267,7 +311,7 @@
 										$total_story = 0;
 									}
 								?>	
-										<span class="list-category" style="font-size: 12px; text-align: justify;">
+										<span class="list-category" style="font-size: 16px; text-align: justify;">
 											<span><a href="./storylist.php?categoryID=<?=$categoryID?>"><?=$total_story?></a></span>
 										</span>
 							</div>
@@ -275,14 +319,8 @@
 						</td>
 								
 								<td style="width: 15%; text-align: center; ">
-								<!--	<a href="cat.php?storyID=<?=$storyID?>" class="btn"><i class="icon-edit"></i></a> &emsp;  -->
-								<?php
-
-									if($categoryName != "No name"){
-								?>
 									<button type="button" name="btn_delete" id="btn_delete<?=$storyID?>" class="btn btn-warning" data-toggle="modal" data-target="#delete_confirm<?=$categoryID?>"><i class="icon-remove-sign"></i>
 									</button>
-								<?php }  ?>
 								</td>
 							</tr>
 

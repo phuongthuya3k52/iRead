@@ -3,10 +3,6 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta property="fb:app_id" content="376408899112473"/>
-<meta name="description" content="Truyện Hot 24h hay nhất và mới nhất. Đọc truyện online nhiều thể loại tại TruyệnYY - Kho truyện được tuyển chọn và biên tập tốt nhất.">
-<meta name="keywords" content="Doc truyen online, truyen kiem hiep, truyen tien hiep, truyen sac hiep, truyen ngon tinh, truyen trinh tham, vong du, truyen convert full text">
-<link rel="alternate" type="application/atom+xml" title="Đọc Truyện Online - Truyện Kiếm Hiệp" href="http://feeds.feedburner.com/truyenyy">
 <title>Story List | Admin | iRead</title>
 <link href="../css/bootstrap.min.css" rel="stylesheet">
 <link href="../css/bootstrap-responsive.css" rel="stylesheet">
@@ -87,21 +83,26 @@
 
 			//Search chapter name
 			if(isset($_POST['search_chapter']) &&  isset($_POST['search'])){
-				if($_POST['search'] == ""){
+			/*	if($_POST['search'] == ""){
 				?>
 		    		<script >
 						alert ("You must enter at least a keyword to search!");
 						window.location.replace("./chapterlist.php?storyID=<?=$storyID?>");
 					</script>
 				<?php	
-				}else{
+				} */
+				if($_POST['search'] != ""){
 					$search = encryptString($_POST['search']);
 
-					$sql = "SELECT * FROM chapter WHERE chapterName LIKE '%" .$search . "%'";
+					$sql = "SELECT * FROM chapter WHERE storyID ='".$storyID."' AND chapterName LIKE '%" .$search . "%'";
 					//echo($sql);
-					$row = query($sql);	
-					$total_search = count($row);		
-				}
+					if(execsql($sql) != null){
+						$row = query($sql);
+						$total_search = count($row);
+					}else{
+						$total_search = 0;
+					}
+				}			
 			}
 		}
 
@@ -150,7 +151,7 @@
 
 			<form action="./chapterlist.php?storyID=<?=$storyID?>" method="POST">
 			<?php
-				if(!isset($_POST['search'])){
+				if(!isset($_POST['search']) || $_POST['search'] == ""){
 			?>
 				
 				<input type="text" name="search" class=" " placeholder="Enter chapter name..." style =" width: 60%; margin-top: 25px;margin-left: 25px;">
@@ -166,21 +167,21 @@
 			</form>
 		</div>
 		<ul class="nav" style="margin-top: 40px; margin-bottom: 40px">
-			<li class="disable" style="float:left;width: 45%; color: #E86C19;">
+			<li class="disable" style="float:left;width: 35%; color: #E86C19;">
 			<?php  
-				if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])){
+				if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search']) && $_POST['search'] != ""){
 			?>	
 					<h2><i class="icon-book icon-large"></i>Search Results: <?=$total_search?></h2>
 			<?php
 				}else{
 			?>
-				<h2><i class="icon-book icon-large"></i>Total Chapters: <?=$total?></h2>
+				<h3 style="color: #E86C19; font-size: 20px; font-weight: bold;"><i class="icon-book icon-large"></i>Total Chapters: <?=$total?></h3>
 			<?php	
 				}
 			?>
 			</li>
 
-			<li class="disable" style="float:right;width: 45%; color: #E86C19; text-align: center; font-size: 20px; font-weight: bold">
+			<li class="disable" style="float:right;width: 55%; color: #E86C19; text-align: center; font-size: 20px; font-weight: bold">
 				<form method="POST" action="chapterlist.php?storyID=<?=$storyID?>">
 				<?php	
 					if($_SESSION['require_coin'] == "all"){
@@ -219,7 +220,7 @@
 				</form>
 			</li>
 		</ul>
-		<ul class="nav" style="font-size: 13px; width: 100%; float:left; color: #E86C19;"> <p style="font-size: 13px; width: 100%;"> The information sheet below shows the list of chapter in order from the latest chapter to older one.</p></ul>
+		<ul class="nav" style="font-size: 13px; width: 100%; float:left; color: #E86C19;"> <p style="font-size: 16px; width: 100%;"> The information sheet below shows the list of chapter in order from the latest chapter to older one.</p></ul>
 	
 		<div class="table-responsive" style="margin-top: 120px; width:100%; " > 
 			<table class="table" style="width: 100%; text-align: center;">
@@ -273,7 +274,7 @@
 					}
 
 					//Search
-					if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search'])){
+					if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search']) && $_POST['search'] != ""){
 						$sql2= "SELECT * FROM chapter WHERE storyID='".$storyID."' AND chapterName LIKE '%" .$search . "%' ORDER BY storyID DESC LIMIT {$beginrow} , {$pagesize}";
 					}
 
@@ -298,8 +299,10 @@
 					<tr>
 						<td style=" width: 8%; text-align: center;"><?=$i+1+($currentpage-1)*10?></td>
 						<td class="nav-list name_list" style="width: 35%">
-							<div class="media truyen-item"
+							<div class="media truyen-item">
+								<a href="../readstory.php?storyID=<?=$storyID?>&chapterID=<?=$chapterID?>">
 								<h2 class="media-heading" style="font-size: 15px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#333333; text-align: left;"><?=decryptString($chapterName)?></h2>
+								</a>
 							</div>
 										
 						</td>

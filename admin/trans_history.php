@@ -3,10 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta property="fb:app_id" content="376408899112473"/>
-<meta name="description" content="Truyện Hot 24h hay nhất và mới nhất. Đọc truyện online nhiều thể loại tại TruyệnYY - Kho truyện được tuyển chọn và biên tập tốt nhất.">
-<meta name="keywords" content="Doc truyen online, truyen kiem hiep, truyen tien hiep, truyen sac hiep, truyen ngon tinh, truyen trinh tham, vong du, truyen convert full text">
-<link rel="alternate" type="application/atom+xml" title="Đọc Truyện Online - Truyện Kiếm Hiệp" href="http://feeds.feedburner.com/truyenyy">
+
 <title>Transaction Histories | Admin | iRead</title>
 <link href="../css/bootstrap.min.css" rel="stylesheet">
 <link href="../css/bootstrap-responsive.css" rel="stylesheet">
@@ -79,10 +76,8 @@
 		<ul class="nav" style="margin-top: 40px; margin-bottom: 40px">
 			<li class="disable" style="float:left;width: 100%; color: #E86C19;">
 				<h2><i class="icon-book icon-large"></i>Total Transactions: <?=$total?></h2>
-				<p style="font-size: 13px; width: 100%;"> The information sheet below shows the list of transactions in order from the latest story to older one.</p>
+				<p style="font-size: 16px; width: 100%;"> The information sheet below shows the list of transactions in order from the latest story to older one.</p>
 			</li>
-
-			<!--<li style="float: right;width: 50%"><a href="./newstory.php?" style="width: 30%; height: auto; min-height: 25px; float: right; font-size: 15px; background-color: blue"  class="btn btn-primary"><i class="icon-plus icon-large"></i> New Story</a></li>-->
 		</ul>
 	
 		<div class="table-responsive" style="margin-top: 120px; width:100%"> 

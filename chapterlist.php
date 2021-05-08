@@ -3,10 +3,6 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta property="fb:app_id" content="376408899112473"/>
-<meta name="description" content="Truyện Hot 24h hay nhất và mới nhất. Đọc truyện online nhiều thể loại tại TruyệnYY - Kho truyện được tuyển chọn và biên tập tốt nhất.">
-<meta name="keywords" content="Doc truyen online, truyen kiem hiep, truyen tien hiep, truyen sac hiep, truyen ngon tinh, truyen trinh tham, vong du, truyen convert full text">
-<link rel="alternate" type="application/atom+xml" title="Đọc Truyện Online - Truyện Kiếm Hiệp" href="http://feeds.feedburner.com/truyenyy">
 <title>Chapter List | iRead</title>
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
@@ -25,20 +21,6 @@
 	}
 </style>
 
-<!-- <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-37191528-1']);
-        _gaq.push(['_trackPageview']);
-
-        (function () {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-    </script> -->
 </head>
 
 <?php
@@ -64,6 +46,29 @@
 		$row1 = query($sql1);
 		$total = count($row1);
 
+		//Search chapter name
+			if(isset($_POST['search_chapter']) &&  isset($_POST['search'])){
+			/*	if($_POST['search'] == ""){
+				?>
+		    		<script >
+						alert ("You must enter at least a keyword to search!");
+						window.location.replace("./chapterlist.php?storyID=<?=$storyID?>");
+					</script>
+				<?php	
+				} */
+				if($_POST['search'] != ""){
+					$search = encryptString($_POST['search']);
+
+					$sql = "SELECT * FROM chapter WHERE storyID ='".$storyID."' AND chapterName LIKE '%" .$search . "%'";
+					//echo($sql);
+					if(execsql($sql) != null){
+						$row = query($sql);
+						$total_search = count($row);
+					}else{
+						$total_search = 0;
+					}
+				}			
+			}
 	}
 ?>
 
@@ -73,8 +78,9 @@
 ?>
 
 <div class="container">
+<div class="container-fluid">	
 	<div class="row">
-		<div class="span12">
+		<div class="span12 row wrapper">
 			<ul class="breadcrumb">
 				<li>
 					<div itemscope>
@@ -103,13 +109,44 @@
 				<div class="span10">
 						
 						<h1 style="text-align: center;margin-top: 10px;"><?=$storyName?></h1>
+						<div style =" width: 100%; text-align: center;" >
+
+							<form action="./chapterlist.php?storyID=<?=$storyID?>" method="POST">
+							<?php
+								if(!isset($_POST['search']) || $_POST['search'] == ""){
+							?>
+								
+								<input type="text" name="search" class=" " placeholder="Enter chapter name..." style =" width: 60%; margin-top: 25px;margin-left: 25px;">
+							<?php
+							}else{
+							?>
+								<input type="text" name="search" class=" " placeholder="Enter chapter name..." value="<?=$search?>" style =" width: 60%; margin-top: 25px;margin-left: 25px;">
+							<?php
+							}
+							?>
+								
+								<button class="btn" type="submit" name="search_chapter" style="float: right; margin-top: 25px; margin-right: 40px; width: 15%"><i class="icon-search"></i></button>
+							</form>
+						</div>
 						<ul class="nav" style="margin-top: 40px; margin-bottom: 40px">
-							<li class="disable" style="float:left;width: 50%; color: Orange;"><h2><i class="icon-book icon-large"></i>Total Chapter: <?=$total?></h2></li>
+							<li class="disable" style="float:left;width: 50%; color:#E86C19;">
+							<?php  
+								if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search']) && $_POST['search'] != ""){
+							?>	
+									<h2><i class="icon-book icon-large"></i>Search Results: <?=$total_search?></h2>
+							<?php
+								}else{
+							?>
+								<h3 style="color: #E86C19; font-size: 20px; font-weight: bold;"><i class="icon-book icon-large"></i>Total Chapters: <?=$total?></h3>
+							<?php	
+								}
+							?>
+							</li>
 
 							<li style="float: right;width: 50%"><a href="./newchapter.php?storyID=<?=$storyID?>" style="width: 30%; height: auto; min-height: 25px; float: right; font-size: 15px; background-color: blue"  class="btn btn-primary"><i class="icon-plus icon-large"></i> New chapter</a></li>
 						</ul>
 
-						<p style="margin-top: 120px; width:90%">
+						<div class="table-responsive" style="margin-top: 120px; width:100%">
 						<table class="table" style="margin-top: 30px; width:100%">
 							<thead>
 								<tr >
@@ -153,6 +190,11 @@
 								}
 
 								$sql2= "SELECT * FROM chapter WHERE storyID='" .$storyID . "' LIMIT {$beginrow} , {$pagesize}";
+
+								//Search
+								if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search']) && $_POST['search'] != ""){
+									$sql2= "SELECT * FROM chapter WHERE storyID='".$storyID."' AND chapterName LIKE '%" .$search . "%' ORDER BY storyID DESC LIMIT {$beginrow} , {$pagesize}";
+								}
 
 								$row2=query($sql2);  
 
@@ -229,7 +271,7 @@
 							?>
 							</tbody>
 						</table>
-					</p>
+					</div>
 					
 					<div class="paging">
 						<div class="pagination pagination-centered">
@@ -266,6 +308,7 @@
 
 		</div>
 	</div>
+</div>
 </div>
 </body>
 </html>

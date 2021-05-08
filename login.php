@@ -3,10 +3,6 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta property="fb:app_id" content="376408899112473"/>
-<meta name="description" content="">
-<meta name="keywords" content="Doc truyen online, truyen kiem hiep, truyen tien hiep, truyen sac hiep, truyen ngon tinh, truyen trinh tham, vong du, truyen convert full text">
-<meta name="robots" content="noindex">
 <title>Login</title>
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
@@ -29,32 +25,13 @@
 
 <script>
 	$(document).ready(function(){
-		$('input.form-control').keyup(function() {
-			var e = $(this);
-			var label = e.closest('.form-group').find('label');
-			label.removeClass('animated fadeInLeft fadeOutLeft');
-			if (e.val()) {
-				label.css('visibility', 'visible').addClass('animated fadeInLeft');
-			} else{
-				label.addClass('animated fadeOutLeft');
-				setTimeout(function(){
-					label.css('visibility', 'hidden');
-				}, 500);
-			}
-		}); 
-
+		
 		// Clear text box
 		$('button[type=reset]').click(function(){
 			var label = $('label');
 			label.removeClass('animated fadeInLeft fadeOutLeft').addClass('animated fadeOutLeft');
 		});
 
-	/*	$('button[type=submit]').button('reset').removeAttr('disabled');
-
-		$('form').submit(function(){
-			var form = $(this);
-			form.find('button[type=reset]').attr('disabled', 'disabled');
-		});   */
 	});
 </script>
 
@@ -139,14 +116,14 @@
 								</div>
 								
 								<div class="col-75 controls">
-											<input style="width: 90%" name="username" require ="require"maxlength="254" type="text" autofocus="autofocus" required="required" placeholder="Username" class="textinput textInput" id="id_username"/>
+											<input style="width: 90%" name="username" require ="require"maxlength="20" type="text" autofocus="autofocus" required="required" placeholder="Username" class="textinput textInput" id="id_username"/>
 							</div>
 							<div class="row1"  >
 								<div class="col-25">
 										<label for="id_password" class="control-label requiredField">Password<span class="asteriskField">*</span></label>
 								</div>
 								<div class="col-75 controls">
-											<input style="width: 90%" name="password" require ="require"placeholder="Password" required="required" type="password" class="textinput textInput" id="id_password"/>
+											<input style="width: 90%" name="password" require ="require"placeholder="Password" required="required" maxlength="25"type="password" class="textinput textInput" id="id_password"/>
 								</div>
 							</div>
 							<div class="row1"  >

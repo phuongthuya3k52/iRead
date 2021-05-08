@@ -9,16 +9,20 @@ $fullname = $row1[0][1];
 $wallet1 = $row1[0][5];
 
 $sql2 = "SELECT * FROM attendance WHERE memberID = '" .$memberID1 . "'";
+$row2 = query($sql2);
 $result2 = execsql($sql2);
 
 if(isset($_POST['time'])){
-	if($result2 != null){
+
+	if(count($row2) != 0){
 		$sql3 = "UPDATE attendance SET createAt='" .$_POST['time'] ."' WHERE memberID = '" .$memberID1 . "'"; 
+		//echo("sql3=".$sql3);
 		$result3 = execsql($sql3);
 
 		if($result3 != null){
 			$sql5 = "UPDATE member SET wallet='" .$wallet1 + 1 ."' WHERE memberID = '" .$memberID1 . "'"; 
 			$result5 = execsql($sql5);
+			//echo("result51=".$result5);
 		}
 
 	}else{
@@ -39,7 +43,7 @@ if(isset($_POST['time'])){
 		<div class="container">
 			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
 				<?php
-					for($i=0; $i<7; $i++)
+					for($i=0; $i<5; $i++)
 					{
 				?>
 					<span class="icon-bar"></span>

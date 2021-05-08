@@ -3,8 +3,6 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta property="fb:app_id" content="376408899112473"/>
-<link rel="canonical" href=" "/>
 <title>iRead</title>
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
@@ -21,21 +19,6 @@
 <style>
 	body{padding-top:60px;padding-bottom:40px;height:auto;}
 </style>
-
-<script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-37191528-1']);
-        _gaq.push(['_trackPageview']);
-
-        (function () {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-    </script>
 
 </head>
 <?php
@@ -135,7 +118,7 @@
 							
 								<li class="span2" style="float: left; height: 250px; width: 160px">
 									<a href="storydetail.php?storyID=<?=$row1[$i][0]?>" class="thumbnail">
-										<img alt="<?=$row1[$i][1]?>" width="150px" height="200px" src="img/<?=$row1[$i][4]?>">
+										<img style="width: 150px; height: 200px;" alt="<?=$row1[$i][1]?>" width="150px" height="200px" src="img/<?=$row1[$i][4]?>">
 									</a>
 									<div class="caption">
 										<a href="storydetail.php?storyID=<?=$row1[$i][0]?>">
@@ -194,24 +177,11 @@
 			</div>
 			
 			<div id="fb-root"></div>
-	<!--		<script>
-			 (function(d, s, id) { 
-				   var js, fjs = d.getElementsByTagName(s)[0]; 
-				  	if (d.getElementById(id)) return; 
-				   js = d.createElement(s); js.id = id; 
-				   js.src = "all.js#xfbml=1&appId=112276442265938" 
-				   fjs.parentNode.insertBefore(js, fjs);
-				 }(document, 'script', 'facebook-jssdk')); 
-			</script>
-			<script>
-					 (function(){var j=document.createElement('script');j.async=1;j.src='z-1.js' 
-					 var __p = "56ed68bae1873f5e001c2f66"; 
-				</script>   -->
+
 		<?php 
 			require_once("./footers/footer.php");
 		?>
 	</div>
 </div>
-<!--<script>(function(d,s,a,i,j,r,l,m,t){try{l=d.getElementsByTagName('a');t=d.createElement('textarea');for(i=0;l.length-i;i++){try{a=l[i].href;s=a.indexOf('/cdn-cgi/l/email-protection');m=a.length;if(a&&s>-1&&m>28){j=28+s;s='';if(j<m){r='0x'+a.substr(j,2)|0;for(j+=2;j<m&&a.charAt(j)!='X';j+=2)s+='%'+('0'+('0x'+a.substr(j,2)^r).toString(16)).slice(-2);j++;s=decodeURIComponent(s)+a.substr(j,m-j)}t.innerHTML=s.replace(/</g,'&lt;').replace(/\>/g,'&gt;');l[i].href='mailto:'+t.value}}catch(e){}}}catch(e){}})(document);</script>  -->
 </body>
 </html>

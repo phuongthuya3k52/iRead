@@ -96,7 +96,7 @@
 				<!-- Result of member -->
 					<div class="thumbnails">
 						<div class="bg-img">
-  							<img src="./img/<?=$image?>" class="avatar" style="border-radius: 50%;  ">
+  							<img src="./img/<?=$image?>" class="avatar" style="border-radius: 50%; width: 300px; height: 300px  ">
 						</div>
 						<h3 style="text-align: center;position: relative; margin-top:100px; top: 50%; left: 50%; transform: translate(-50%, -25%)"><?=$memberName?></h3>
 
@@ -155,9 +155,9 @@
 
 						?>
 							
-								<li class="span2" style="float: left; height: 270px; width: 180px">
+								<li class="span2" style="float: left; height: 250px; width: 160px">
 									<a href="storydetail.php?storyID=<?=$row3[$i][0]?>" class="thumbnail" >
-										<img style="width: 170px; height: 220px;" alt="<?=$row3[$i][1]?>" src="img/<?=$row3[$i][4]?>">
+										<img style="width: 150px; height: 200px;" alt="<?=$row3[$i][1]?>" src="img/<?=$row3[$i][4]?>">
 									</a>
 									<div class="caption">
 										<a href="storydetail.php?storyID=<?=$row3[$i][0]?>" >

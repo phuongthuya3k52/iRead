@@ -6,7 +6,7 @@ if($_SERVER['REQUEST_METHOD'] != 'POST'){
 ?>				
 	<script >
 		alert ("You don't have permission to access this page");
-		window.location.replace("./memberlist.php");
+		window.location.replace("./admin.php");
 	</script>
 <?php
 	}
@@ -86,9 +86,10 @@ if($_SERVER['REQUEST_METHOD'] != 'POST'){
 		$storyID = $_POST['story_id'];
 
 		$sql1 = "SELECT * FROM chapter WHERE storyID='" .$storyID . "'";
-		$result1 = querynull($sql1);
+		$result1 = execsql($sql1);
 
-		if(!$result1){
+
+		if($result1 != null){
 			$row1 = query($sql1);
 			for($i=0; $i < count($row1); $i++){
 				$is_chapter_del = false;
@@ -111,7 +112,8 @@ if($_SERVER['REQUEST_METHOD'] != 'POST'){
 					exit;
 				}
 			}
-		}else{
+		}
+		if(count(query($sql1)) == 0){
 			$is_chapter_del = true;
 		}
 
@@ -137,22 +139,22 @@ if($_SERVER['REQUEST_METHOD'] != 'POST'){
 			?>
 				<script>
 					alert ("The story has been deleted successfully!");
-					window.location.replace("./storylist.php?");
+					window.location.replace("./storylist.php");
 				</script> 
 			<?php
 				}else{	
 			?>	
-				<script>
-					alert ("Failed to delete the story. Please try again!");
-					window.location.replace("./storylist.php?");
-				</script> 	
+					<script>
+						alert ("Failed to delete the story. Please try again!");
+						window.location.replace("./storylist.php");
+					</script> 	
 	<?php
-				}
+				} 
 			}else{
 		?>
 				<script>
 					alert ("Failed to delete the story. Please try again!");
-					window.location.replace("./storylist.php?");
+					window.location.replace("./storylist.php");
 				</script> 
 		<?php	
 			}
@@ -161,7 +163,7 @@ if($_SERVER['REQUEST_METHOD'] != 'POST'){
 	?>
 			<script>
 					alert ("Failed to delete the story. Please try again!");
-					window.location.replace("./storylist.php?");
+					window.location.replace("./storylist.php");
 				</script>  
 		<?php	
 		}
@@ -169,7 +171,7 @@ if($_SERVER['REQUEST_METHOD'] != 'POST'){
 
 ////////////////////////////////////////////////////////////////////////////	
 
-// Delete account and member infnomation
+// Delete account and member infomation
 
 	if(isset($_POST['cf_del_member']) && isset($_POST['member_id']) && isset($_POST['usname']))
 	{
@@ -221,12 +223,17 @@ if($_SERVER['REQUEST_METHOD'] != 'POST'){
 
 		$categoryID = $_POST['cat_id'];
 
-		$sql1 = "UPDATE category SET categoryName='No name' WHERE categoryID='" .$categoryID ."'";
+		$sql = "DELETE FROM story_category WHERE categoryID='" .$categoryID ."'";
+		if(execsql($sql)){
+			$sql1 = "DELETE FROM category WHERE categoryID='" .$categoryID ."'";
+			$result1 = execsql($sql1);
+		}
+		//$sql1 = "UPDATE category SET categoryName='No name' WHERE categoryID='" .$categoryID ."'";
 		//echo("sql=".$sql1."<br>");
-		$result1 = execsql($sql1);
-		echo ("result1 = " .$result1."<br>");
+		
+		//echo ("result1 = " .$result1."<br>");
 
-		if($result != null){
+		if($result1 != null){
 ?>				
 			<script >
 				alert ("Category information has been delete successfully!");

@@ -3,10 +3,6 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta property="fb:app_id" content="376408899112473"/>
-<meta name="description" content="Truyện Hot 24h hay nhất và mới nhất. Đọc truyện online nhiều thể loại tại TruyệnYY - Kho truyện được tuyển chọn và biên tập tốt nhất.">
-<meta name="keywords" content="Doc truyen online, truyen kiem hiep, truyen tien hiep, truyen sac hiep, truyen ngon tinh, truyen trinh tham, vong du, truyen convert full text">
-<link rel="alternate" type="application/atom+xml" title="Đọc Truyện Online - Truyện Kiếm Hiệp" href="http://feeds.feedburner.com/truyenyy">
 <title>Dashboard | Admin | iRead</title>
 <link href="../css/bootstrap.min.css" rel="stylesheet">
 <link href="../css/bootstrap-responsive.css" rel="stylesheet">
@@ -84,9 +80,9 @@
 		</ul>
 	<!--	<ul class="nav" style="font-size: 13px; width: 100%; float:left; color: #E86C19;"> <p style="font-size: 13px; width: 100%;"> The information sheet below shows the list of stories in order from the latest story to older one.</p></ul>  -->
 
-		<ul class="nav" style="width: 100%; text-align: center;">
-			<li style="width: 50%; min-width: 320px;">
-				<canvas id="bar_chart"></canvas>
+		<ul class="nav" style="width: 100%;">
+			<li style="width: 100%; height: 250px">
+				<canvas id="bar_chart" style="margin: auto; min-width: 250px; width: 50%; height: 100%"></canvas>
 			</li>			
 		</ul><br>
 		<?php  

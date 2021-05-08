@@ -3,10 +3,6 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta property="fb:app_id" content="376408899112473"/>
-<meta name="description" content="Truyện Hot 24h hay nhất và mới nhất. Đọc truyện online nhiều thể loại tại TruyệnYY - Kho truyện được tuyển chọn và biên tập tốt nhất.">
-<meta name="keywords" content="Doc truyen online, truyen kiem hiep, truyen tien hiep, truyen sac hiep, truyen ngon tinh, truyen trinh tham, vong du, truyen convert full text">
-<link rel="alternate" type="application/atom+xml" title="Đọc Truyện Online - Truyện Kiếm Hiệp" href="http://feeds.feedburner.com/truyenyy">
 <title>My Stories | iRead</title>
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
@@ -25,20 +21,6 @@
 	}
 </style>
 
-<!-- <script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-37191528-1']);
-        _gaq.push(['_trackPageview']);
-
-        (function () {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-    </script> -->
 </head>
 
 <?php
@@ -61,6 +43,26 @@
 		$sql1 = "SELECT * FROM story WHERE memberID='" .$memberID . "'";
 		$row1 = query($sql1);
 		$total = count($row1);
+
+		//Search story name
+		if(isset($_POST['search_story']) &&  isset($_POST['search'])){
+		 /*	if($_GET['search'] == ""){
+			?>
+	    		<script >
+					alert ("You must enter at least a keyword to search!");
+					window.location.replace("./storylist.php");
+				</script>
+			<?php	
+			}  */
+			if($_POST['search'] != ""){
+				$search = encryptString($_POST['search']);
+
+				$sql = "SELECT * FROM story WHERE storyName LIKE '%" .$search . "%'";
+				//echo($sql);
+				$row = query($sql);	
+				$total_search = count($row);		
+			}
+		}
 	}
 ?>
 
@@ -70,8 +72,9 @@
 ?>
 
 <div class="container">
+<div class="container-fluid">	
 	<div class="row">
-		<div class="span12">
+		<div class="span12 row wrapper">
 			<ul class="breadcrumb">
 				<li>
 					<div itemscope>
@@ -88,13 +91,44 @@
 				<div class="span10">
 						
 						<h1 style="text-align: center;margin-top: 10px;">My Stories</h1>
+						<div style =" width: 100%; text-align: center;" >
+
+							<form action="mystories.php" method="POST">
+							<?php
+								if(!isset($_POST['search']) || $_POST['search'] == ""){
+							?>
+								
+								<input type="text" name="search" class=" " placeholder="Enter story name..." style =" width: 60%; margin-top: 25px;margin-left: 25px;">
+							<?php
+							}else{
+							?>
+								<input type="text" name="search" class=" " placeholder="Enter story name..." value="<?=$search?>" style =" width: 60%; margin-top: 25px;margin-left: 25px;">
+							<?php
+							}
+							?>
+								<button class="btn" type="submit" name="search_story" style="float: right; margin-top: 25px; margin-right: 40px; width: 15%"><i class="icon-search"></i></button>
+							</form>
+						</div>
 						<ul class="nav" style="margin-top: 40px; margin-bottom: 40px">
-							<li class="disable" style="float:left;width: 50%; color: Orange;"><h2><i class="icon-book icon-large"></i>Total Stories: <?=$total?></h2></li>
+							<li class="disable" style="float:left;width: 50%; color: Orange;">
+								<?php  
+									if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search']) && $_POST['search'] != ""){
+								?>	
+										<h2><i class="icon-book icon-large"></i>Search Results: <?=$total_search?></h2>
+								<?php
+									}else{
+								?>
+									<h2><i class="icon-book icon-large"></i>Total Stories: <?=$total?></h2>
+								<?php	
+									}
+								?>
+
+							</li>
 
 							<li style="float: right;width: 50%"><a href="./newstory.php?" style="width: 30%; height: auto; min-height: 25px; float: right; font-size: 15px; background-color: blue"  class="btn btn-primary"><i class="icon-plus icon-large"></i> New Story</a></li>
 						</ul>
 
-						<div style="margin-top: 120px; width:100%"> 
+						<div class="table-responsive" style="margin-top: 120px; width:100%"> 
 						<table class="table" style="width: 100%">
 							<thead>
 								<tr >
@@ -138,6 +172,11 @@
 								}
 
 								$sql2= "SELECT * FROM story WHERE memberID='" .$memberID . "' LIMIT {$beginrow} , {$pagesize}";
+
+								//Search
+								if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search']) && $_POST['search'] != ""){
+									$sql2= "SELECT * FROM story WHERE memberID='" .$memberID . "' AND storyName LIKE '%" .$search . "%' ORDER BY storyID DESC LIMIT {$beginrow} , {$pagesize}";
+								}
 
 								$row2=query($sql2);  
 
@@ -195,7 +234,7 @@
 										$sql4 = "SELECT * FROM chapter WHERE storyID='" .$storyID . "'";
 										$row4 = query($sql4);
 
-										echo('<a href="./chapterlist.php?storyID='.$storyID.'" style= "color: black;">'.count($row4).'</a>');
+										echo('<a href="./chapterlist.php?storyID='.$storyID.'" >'.count($row4).'</a>');
 									?>
 									</td>
 									<td style="width: 10%; text-align: center;"><?=$row2[$i][7]?></td>
@@ -264,12 +303,8 @@
 						</ul>
 						</div>
 					</div>
-
-				<!--	<div class="fb-comments" style="display: block;left: 0;margin-top: 5px;" data-href="index-3.htm" data-width="" data-num-posts="10"></div> -->
 				
 			</div>
-
-
 			<div class="clearfix"></div>			
 			<?php 
 			require_once("./footers/footer.php");
@@ -281,6 +316,6 @@
 		</div>
 	</div>
 </div>
-<!--<script>(function(d,s,a,i,j,r,l,m,t){try{l=d.getElementsByTagName('a');t=d.createElement('textarea');for(i=0;l.length-i;i++){try{a=l[i].href;s=a.indexOf('/cdn-cgi/l/email-protection');m=a.length;if(a&&s>-1&&m>28){j=28+s;s='';if(j<m){r='0x'+a.substr(j,2)|0;for(j+=2;j<m&&a.charAt(j)!='X';j+=2)s+='%'+('0'+('0x'+a.substr(j,2)^r).toString(16)).slice(-2);j++;s=decodeURIComponent(s)+a.substr(j,m-j)}t.innerHTML=s.replace(/</g,'&lt;').replace(/\>/g,'&gt;');l[i].href='mailto:'+t.value}}catch(e){}}}catch(e){}})(document);</script>  -->
+</div>
 </body>
 </html>

@@ -82,7 +82,7 @@
 
 			<div class="row wrapper">
 				<?php 
-					//require_once("./lefts/member_left.php");
+					//require_once("../lefts/member_left.php");
 				?>
 
 				<!-- Result of member -->
@@ -214,9 +214,9 @@
 
 						?>
 							
-								<li class="span2" style="float: left; height: 270px; width: 180px">
+								<li class="span2" style="float: left; height: 250px; width: 160px">
 									<a href="../storydetail.php?storyID=<?=$row3[$i][0]?>" class="thumbnail" >
-										<img style="width: 170px; height: 220px;" alt="<?=$row3[$i][1]?>" src="../img/<?=$row3[$i][4]?>">
+										<img style="width: 150px; height: 200px;" alt="<?=$row3[$i][1]?>" src="../img/<?=$row3[$i][4]?>">
 									</a>
 									<div class="caption">
 										<a href="../storydetail.php?storyID=<?=$row3[$i][0]?>" >

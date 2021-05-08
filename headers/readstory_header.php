@@ -10,11 +10,12 @@ $wallet1 = $row1[0][5];
 
 $sql2 = "SELECT * FROM attendance WHERE memberID = '" .$memberID1 . "'";
 //echo($sql);
+$row2 = query($sql2);
 $result2 = execsql($sql2);
 
 if(isset($_POST['time'])){
 	//echo("time=" .$_POST['time']);
-	if($result2 != null){
+	if(count($row2) != 0){
 		$sql3 = "UPDATE attendance SET createAt='" .$_POST['time'] ."' WHERE memberID = '" .$memberID1 . "'"; 
 		//echo("sql3=".$sql3);
 		$result3 = execsql($sql3);
@@ -42,7 +43,7 @@ if(isset($_POST['time'])){
 		<div class="container">
 			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
 				<?php
-					for($i=0; $i<7; $i++)
+					for($i=0; $i<5; $i++)
 					{
 				?>
 					<span class="icon-bar"></span>

@@ -3,13 +3,12 @@ session_start();
     require_once __DIR__."/send_mail/SendMail.php";
     require_once('db.php');
 
-    // Kiểm tra nếu thực hiện thao tác cập nhật quyền của người dùng
     if($_SERVER['REQUEST_METHOD'] == 'POST')
     {
         $errors = '';
         $email = '';
         //echo(filter_var($_POST['email'],FILTER_VALIDATE_EMAIL));
-        // kiem tra email co ton tai va dung dinh dang
+        // Check that the email is in the correct format 
         if(isset($_POST['forgotpw'])){
             echo($_POST['forgotpw']);
         }

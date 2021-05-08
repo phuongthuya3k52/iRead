@@ -3,10 +3,6 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta property="fb:app_id" content="376408899112473"/>
-<meta name="description" content="">
-<meta name="keywords" content="Doc truyen online, truyen kiem hiep, truyen tien hiep, truyen sac hiep, truyen ngon tinh, truyen trinh tham, vong du, truyen convert full text">
-<meta name="robots" content="noindex">
 <title>Registration | iRead</title>
 <link href="./css/bootstrap.min.css" rel="stylesheet">
 <link href="./css/bootstrap-responsive.css" rel="stylesheet">
@@ -43,7 +39,7 @@
 		$uname = stripslashes($uname);
 		$pass = md5(stripslashes($pass));
 
-		$errormsg= False;
+		$errormsg = 0;
 
 		$sql= "SELECT username FROM account WHERE username='".$uname ."'";
 		$row= query($sql);
@@ -101,13 +97,13 @@
 									else{
 										$emailErr = "";
 									}
-									if(isset($emailErr)){
+									if(isset($emailErr) && $emailErr != "" ){
 										echo("<label class='error' id = 'erEmail' style='display: block; width:90%'>".$emailErr ."</label>");
 											
-										$errormsg = True;
+										$errormsg = 1;
 									}
 								}	
-							?>
+							?>  
 								<input style="width: 90%"name="email" type="text" maxlength="100" autofocus="autofocus" required="required" placeholder="Email address" class="textinput textInput" id="id_email"/>
 							</div>
 						</div>
@@ -151,10 +147,10 @@
 								if(isset($_POST['username']) && count($row) > 0){ 
 
 									echo("<label class='error' id = 'erEmail' style='display: block; width:90%'> Username " .$_POST['username'] ." already exists. Please choose another username </label>");
-									$errormsg = True;
+									$errormsg = 1;
 								}
 							?>
-									<input style="width: 90%" name="username" maxlength="254" type="text"  required="required" placeholder="Username" class="textinput textInput" id="id_username"/>
+									<input style="width: 90%" name="username" maxlength="20" type="text"  required="required" placeholder="Username" class="textinput textInput" id="id_username"/>
 							</div>
 						</div>
 
@@ -163,7 +159,7 @@
 								<label for="password" class="control-label requiredField">Password<span class="asteriskField">*</span></label>
 							</div>
 							<div class="col-75 controls">
-								<input style="width: 90%" name="password" max="20" min="6" placeholder="Password" type="password" class="textinput textInput" id="password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6 characters" required = "required" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}">
+								<input style="width: 90%" name="password" max="25" min="6" placeholder="Password" type="password" class="textinput textInput" id="password" title="Password must contain at least one number and one uppercase and lowercase letter, and at least 6 characters" required = "required" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}">
 							</div>
 						</div>
 
@@ -224,16 +220,7 @@
 						</div>
 					</form>		
 						
-				</div>
-		<!--		</div>
-			</div>
-			
-			<div class="clearfix"></div>
-			<hr/>
-			
-			</div>  -->
-			
-			
+				</div>						
 		</div>
 	</div>
 </div>
@@ -253,16 +240,17 @@
 		$uname = stripslashes($uname);
 		$pass = md5(stripslashes($pass));
 
-		if($errormsg == False){ // User name and Email is not exit
+		if($errormsg == 0){ // User name and Email is not exit
 			//Create token string and creation time
 			$token = substr(md5(rand(0,10000)),0,16);
             $creattime = date('Y-m-d H:i:s');
 
             //Save to database
 			$sql2= "Insert into account values ('" .$uname ."','" .$pass."','member','".$email ."','" .$token ."','" .$creattime ."','0')";
+			$result2 = execsql($sql2);
 
 			$sql5 = "Insert into member values ('','" .$fullname ."','" .$dob ."','" .$phone ."','" .$uname ."','0','default avt.jpg')"; 
-
+			$result5 = execsql($sql5);
 
 		//Send verification email  
 			$title = 'Create Account';
@@ -302,7 +290,7 @@
 			$check_valid = true;
 			$row3= query($sql3);
 			$status = $row3[0][6];
-			$token = $row[0][4];			
+			$token = $row[0][4];		
 		}else{
 			$check_valid = false;
 ?>
@@ -313,7 +301,7 @@
 	<?php	
 		}
 
-		if($token != $cf_token){
+	/*	if($token != $cf_token){
 			$check_valid = false;
 ?>
 			<script>
@@ -323,7 +311,7 @@
 	<?php					
 		}else{
 			$check_valid = true;
-		}
+		}  */
 
 		// token and email is valid
 		if($check_valid == true){

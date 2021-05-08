@@ -3,8 +3,6 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta property="fb:app_id" content="376408899112473"/>
-<link rel="canonical" href=" "/>
 <title>iRead | Search</title>
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
@@ -52,6 +50,12 @@
 
 			$sql1 = "SELECT * FROM story WHERE storyName LIKE '%" .$search . "%'";
 			$row1 = query($sql1);
+			if(execsql($sql1) != null){
+				$row1 = query($sql1);
+				$total_story = count($row1);
+			}else{
+				$total_story = 0;
+			}
 			//echo($sql1);
 
 			
@@ -185,13 +189,13 @@
 					<div class="thumbnails">
 						<h3 style="color: #D36337">Stories	</h3>
 						<hr>	
-						<h2 style="color: #D36337">About: <?=count($row1)?> results</h2>  
+						<h2 style="color: #D36337">About: <?=$total_story?> results</h2>  
 						<ul class="thumbnails">
 
 						<?php
 						// Pagination
 
-							$allrow = count($row1);
+							$allrow = $total_story;
 							$pagesize = 10;
 							$allpage = 1;
 

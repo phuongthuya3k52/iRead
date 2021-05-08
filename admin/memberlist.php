@@ -3,10 +3,6 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta property="fb:app_id" content="376408899112473"/>
-<meta name="description" content="Truyện Hot 24h hay nhất và mới nhất. Đọc truyện online nhiều thể loại tại TruyệnYY - Kho truyện được tuyển chọn và biên tập tốt nhất.">
-<meta name="keywords" content="Doc truyen online, truyen kiem hiep, truyen tien hiep, truyen sac hiep, truyen ngon tinh, truyen trinh tham, vong du, truyen convert full text">
-<link rel="alternate" type="application/atom+xml" title="Đọc Truyện Online - Truyện Kiếm Hiệp" href="http://feeds.feedburner.com/truyenyy">
 <title>Member List | Admin | iRead</title>
 <link href="../css/bootstrap.min.css" rel="stylesheet">
 <link href="../css/bootstrap-responsive.css" rel="stylesheet">
@@ -76,16 +72,17 @@
 	}
 
 	//Search member name
-	if(isset($_GET['search_name']) &&  isset($_GET['search'])){
-		if($_GET['search'] == ""){
+	if(isset($_POST['search_name']) &&  isset($_POST['search'])){
+	/*	if($_GET['search'] == ""){
 		?>
     		<script >
 				alert ("You must enter at least a keyword to search!");
 				window.location.replace("./memberlist.php");
 			</script>
 		<?php	
-		}else{
-			$search = $_GET['search'];
+		} */
+		if($_POST['search'] != ""){
+			$search = $_POST['search'];
 
 			$sql = "SELECT * FROM member WHERE fullName LIKE '%" .$search . "%'";
 			//echo($sql);
@@ -167,9 +164,9 @@
 		<h1 style="text-align: center;margin-top: 10px;">Active Member List</h1>
 		<div style =" width: 100%; text-align: center;" >
 
-			<form action="memberlist.php" method="GET">
+			<form action="memberlist.php" method="POST">
 			<?php
-				if(!isset($_GET['search'])){
+				if(!isset($_POST['search']) || $_POST['search'] == ""){
 			?>
 				
 				<input type="text" name="search" class=" " placeholder="Enter member name..." style =" width: 60%; margin-top: 25px;margin-left: 25px;">
@@ -187,13 +184,13 @@
 		<ul class="nav" style="margin-top: 40px;">
 			<li class="disable" style="float:left;width: 40%; color: #E86C19;">
 				<?php  
-				if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['search'])){
+				if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search']) && $_POST['search'] != "" ){
 			?>
 					<h2><i class="icon-book icon-large"></i>Search Results: <?=$total_search?></h2>
 			<?php	
-				}elseif(isset($_GET['memberID']) && $_GET['memberID']){
+				}elseif(isset($_POST['memberID']) && $_POST['memberID']){
 			?>
-					<h2><i class="icon-book icon-large"></i>MemberID = <?=$_GET['memberID']?></h2>
+					<h2><i class="icon-book icon-large"></i>MemberID = <?=$_POST['memberID']?></h2>
 			<?php
 
 				}else{
@@ -245,7 +242,7 @@
 
 			<li style="float: right;width: 25%; margin-top: 10px"><a href="./newaccount.php" style="width: 30%; height: auto; min-height: 25px; float: right; font-size: 15px; background-color: blue"  class="btn btn-primary"><i class="icon-plus icon-large"></i> New</a></li>
 		</ul>
-		<ul class="nav" style="font-size: 13px; width: 100%; float:left; color: #E86C19;"> The information sheet below shows the list of transactions in order from the latest story to older one.</ul>
+		<ul class="nav" style="font-size: 16px; width: 100%; float:left; color: #E86C19;"> The information sheet below shows the list of transactions in order from the latest story to older one.</ul>
 	
 		<div class="table-responsive" style="margin-top: 120px; width:100%"> 
 			<table class="table" style="width: 100%">
@@ -302,7 +299,7 @@
 					}
 
 					//Search
-					if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['search'])){
+					if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search']) && $_POST['search'] != ""){
 						$sql2= "SELECT memberID, fullName, dob, phoneNumber, member.username, wallet, image, role, email FROM member INNER JOIN account ON  member.username = account.username WHERE fullName LIKE '%" .$search . "%' ORDER BY memberID DESC LIMIT {$beginrow} , {$pagesize}";
 					}
 

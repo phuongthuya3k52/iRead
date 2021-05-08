@@ -4,15 +4,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta property="fb:app_id" content="376408899112473"/>
-<meta name="description" content="
-    Đại Chúa Tể Chương 1432: Phù Đồ Huyền ra tay. Tác Giả: Thiên Tàm Thổ Đậu ở TruyệnYY.com, kho truyện được tuyển chọn và biên tập tốt nhất.
-">
-<meta name="keywords" content="Doc truyen online, truyen kiem hiep, truyen tien hiep, truyen sac hiep, truyen ngon tinh, truyen trinh tham, vong du, truyen convert full text">
-<meta name="dcterms.rightsHolder" content="truyenyy.com">
-<!--<link href="http://fonts.googleapis.com/css?family=Patrick+Hand|Noticia+Text:400,400italic&subset=latin,vietnamese" rel='stylesheet' type='text/css'> -->
 <link href="css/bootstrap-modal.css" rel="stylesheet">
-<title>Đại Chúa Tể - Chương 1432: Phù Đồ Huyền ra tay | TruyệnYY</title>
+<title>Reading | iRead</title>
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
 <link href="css/yamm.css" rel="stylesheet">
@@ -29,20 +22,6 @@
 		padding-top:60px;padding-bottom:40px;height:auto;background-image:none;
 	}
 </style>
-<!--<script type="text/javascript">
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-37191528-1']);
-        _gaq.push(['_trackPageview']);
-
-        (function () {
-            var ga = document.createElement('script');
-            ga.type = 'text/javascript';
-            ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0];
-            s.parentNode.insertBefore(ga, s);
-        })();
-    </script>  -->
 </head>
 
 <?php
@@ -66,11 +45,13 @@
 
 			$sql = "SELECT * FROM chapter WHERE chapterID='" .$chapterID . "'";
 			$row = query($sql);
+			$chapterName = $row[0][1];
 			$view = $row[0][5];
 
 		// Get authorID (memberID)
 			$sql1 = "SELECT * FROM story WHERE storyID='" .$storyID . "'";
 			$row1 = query($sql1);
+			$storyName = $row1[0][1];
 			$memberID = $row1[0][2];
 			$viewNumber = $row1[0][5];
 
@@ -145,7 +126,7 @@
 	<div class="tboverlay"></div>
 	<div class="tbcontent">
 		<?php
-		if($readerwallet>1)
+		if($readerwallet>=1)
 		{
 		?>
 		<form method="get" action="chapterpayment.php">
@@ -154,14 +135,14 @@
 			<!--	<div class="tbclose-btn" onclick="thongbaopopup()">&times;</div> -->
 			</div>
 			<div class="modal-body">
-				<img src="img/coin.jpg" style="width: 80%; height: auto;">
+				<img src="img/coin.jpg" style="width: 65%; height: auto;">
 				<input type="hidden" name="story_id" value="<?=$storyID?>">
 				<input type="hidden" name="chapter_id" value="<?=$chapterID?>"> 
 				<input type="hidden" name="member_id" value="<?=$memberID?>">
 			</div>
-				<button type="submit" name="submit" class="btn btn-primary">Yes</button>&emsp;
-				<a data-toggle="modal" href="#chap_jump" class="btn btn-warning"><i class="icon-move icon-white"></i></a>&emsp;
-				<a href="storydetail.php?storyID=<?=$storyID?>" class="btn">No</a>
+				<button type="submit" name="submit" class="btn btn-primary" style="width: 80px;">Yes</button>&emsp;
+				<a data-toggle="modal" href="#chap_jump" class="btn btn-warning" style="width: 30px;"><i class="icon-move icon-white" ></i></a>&emsp;
+				<a href="storydetail.php?storyID=<?=$storyID?>" class="btn" style="width: 60px;">No</a>
 			<!--	<a href="#" class="btn" onclick="activepopup()">Cancel</a>  
 			</div>-->
 		</form>
@@ -268,29 +249,13 @@
 				</li>
 				<li >
 					<div itemscope>
-						<a href="storydetail.php?storyID=<?=$storyID?>" itemprop="url"><span itemprop="title"><?=decryptString($row1[0][1])?></span></a>
+						<a href="storydetail.php?storyID=<?=$storyID?>" itemprop="url"><span itemprop="title"><?=decryptString($storyName)?></span></a>
 						<span class="divider">/</span>
 					</div>
 				</li>
-				<li class="active"><strong><?=decryptString($row[0][1])?></strong></li>
+				<li class="active"><strong><?=decryptString($chapterName)?></strong></li>
 			</ul>
 			
-	<!--		<a href="javascript:">
-				<div class="pre_btn"><i class="icon-sign icon-chevron-left"></i></div>
-			</a>
-			<script type="text/javascript">
-				$(function(){
-					$('.close-ads').click(function(){
-						$('.pre_btn_ads').hide();
-						$('.next_btn_ads').hide();
-						$(this).hide();
-						return false;
-					});
-				});
-				</script>   
-			<a href="javascript:">
-				<div class="next_btn"><i class="icon-sign icon-chevron-right"></i></div>
-			</a>  -->
 			
 			<div class="row wrapper">
 			<?php 
@@ -301,7 +266,7 @@
 						<h1 style="text-align: center;text-transform: uppercase; font-weight: bold;"><?=decryptString($row[0][1])?></h1>
 
 					<!-- Vote	-->
-						<div style="text-align: center; font-size: 16px;">
+						<div style="text-align: center; font-size: 16px; font-weight: bold;">
 						<?php
 							$is_vote = 0;
 							$sql7 = "SELECT * FROM vote WHERE chapterID='" .$chapterID . "'";
@@ -357,8 +322,9 @@
 			
 					
 					<div class="chapfoot" style=" width:100%; float:left; ">
+					<hr class="start-chap">
 					<h2 style="text-align: center;text-transform: uppercase; font-weight: bold;"><?=decryptString($row[0][1])?></h2>
-					<div style="text-align: center; font-size: 16px">
+					<div style="text-align: center; font-size: 16px; font-weight: bold;">
 						<?php
 							$is_vote = 0;
 							$sql7 = "SELECT * FROM vote WHERE chapterID='" .$chapterID . "'";
@@ -403,7 +369,7 @@
 							}
 						?>
 					</div>
-					<hr class="end-chap">
+				<!--	<hr class="end-chap">   -->
 					
 
 					<?php
@@ -504,23 +470,11 @@
 			</form>
 			<?php
 				if(isset($_GET['destinaton_chap'])){
-				echo('destinaton_chap');
+				//echo('destinaton_chap');
 			}
 			?>
 
-			
-
-		<!--	<script type="text/javascript" src="js/jquery.scrollTo.min.js"></script>  -->
-
 				<script type="text/javascript">
-				/*	$.post( '/ajax/hit/',
-					{ hitcount_pk : '138' },
-					function(data, status) {
-						if (data.status == 'error') {
-							// do something for error?
-						}
-					},
-					'json'); */
 								
 					$(function () {
 

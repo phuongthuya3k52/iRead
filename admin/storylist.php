@@ -3,10 +3,6 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta property="fb:app_id" content="376408899112473"/>
-<meta name="description" content="Truyện Hot 24h hay nhất và mới nhất. Đọc truyện online nhiều thể loại tại TruyệnYY - Kho truyện được tuyển chọn và biên tập tốt nhất.">
-<meta name="keywords" content="Doc truyen online, truyen kiem hiep, truyen tien hiep, truyen sac hiep, truyen ngon tinh, truyen trinh tham, vong du, truyen convert full text">
-<link rel="alternate" type="application/atom+xml" title="Đọc Truyện Online - Truyện Kiếm Hiệp" href="http://feeds.feedburner.com/truyenyy">
 <title>Story List | Admin | iRead</title>
 <link href="../css/bootstrap.min.css" rel="stylesheet">
 <link href="../css/bootstrap-responsive.css" rel="stylesheet">
@@ -77,16 +73,17 @@
 	}
 
 	//Search story name
-	if(isset($_GET['search_story']) &&  isset($_GET['search'])){
-		if($_GET['search'] == ""){
+	if(isset($_POST['search_story']) &&  isset($_POST['search'])){
+	 /*	if($_GET['search'] == ""){
 		?>
     		<script >
 				alert ("You must enter at least a keyword to search!");
 				window.location.replace("./storylist.php");
 			</script>
 		<?php	
-		}else{
-			$search = encryptString($_GET['search']);
+		}  */
+		if($_POST['search'] != ""){
+			$search = encryptString($_POST['search']);
 
 			$sql = "SELECT * FROM story WHERE storyName LIKE '%" .$search . "%'";
 			//echo($sql);
@@ -121,9 +118,9 @@
 		<h1 style="text-align: center;margin-top: 10px;">Stories List</h1>
 		<div style =" width: 100%; text-align: center;" >
 
-			<form action="storylist.php" method="GET">
+			<form action="storylist.php" method="POST">
 			<?php
-				if(!isset($_GET['search'])){
+				if(!isset($_POST['search']) || $_POST['search'] == ""){
 			?>
 				
 				<input type="text" name="search" class=" " placeholder="Enter story name..." style =" width: 60%; margin-top: 25px;margin-left: 25px;">
@@ -140,7 +137,7 @@
 		<ul class="nav" style="margin-top: 40px; margin-bottom: 40px">
 			<li class="disable" style="float:left;width: 45%; color: #E86C19;">
 			<?php  
-				if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['search'])){
+				if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search']) && $_POST['search'] != ""){
 			?>	
 					<h2><i class="icon-book icon-large"></i>Search Results: <?=$total_search?></h2>
 			<?php
@@ -199,7 +196,7 @@
 				</form>
 			</li>
 		</ul>
-		<ul class="nav" style="font-size: 13px; width: 100%; float:left; color: #E86C19;"> <p style="font-size: 13px; width: 100%;"> The information sheet below shows the list of stories in order from the latest story to older one.</p></ul>
+		<ul class="nav" style="font-size: 16px; width: 100%; float:left; color: #E86C19;"> <p style="font-size: 16px; width: 100%;"> The information sheet below shows the list of stories in order from the latest story to older one.</p></ul>
 	
 		<div class="table-responsive" style="margin-top: 120px; width:100%"> 
 			<table class="table" style="width: 100%">
@@ -255,7 +252,7 @@
 					}
 
 					//Search
-					if($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['search'])){
+					if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search']) && $_POST['search'] != ""){
 						$sql2= "SELECT * FROM story WHERE storyName LIKE '%" .$search . "%' ORDER BY storyID DESC LIMIT {$beginrow} , {$pagesize}";
 					}
 
@@ -377,7 +374,7 @@
 								<?php
 								}else{
 							?>
-									<li class="disable"><a href="mystories.php?currentpage=<?=$i?>"><?php echo $i ." "; ?></a></li>
+									<li class="disable"><a href="storylist.php?currentpage=<?=$i?>"><?php echo $i ." "; ?></a></li>
 							<?php
 								}
 							}

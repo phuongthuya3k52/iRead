@@ -3,10 +3,6 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta property="fb:app_id" content="376408899112473"/>
-<meta name="description" content="Truyện Hot 24h hay nhất và mới nhất. Đọc truyện online nhiều thể loại tại TruyệnYY - Kho truyện được tuyển chọn và biên tập tốt nhất.">
-<meta name="keywords" content="Doc truyen online, truyen kiem hiep, truyen tien hiep, truyen sac hiep, truyen ngon tinh, truyen trinh tham, vong du, truyen convert full text">
-<link rel="alternate" type="application/atom+xml" title="Đọc Truyện Online - Truyện Kiếm Hiệp" href="http://feeds.feedburner.com/truyenyy">
 <title>Transaction History | iRead</title>
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/bootstrap-responsive.css" rel="stylesheet">
@@ -73,7 +69,13 @@
 		$walet = $row[0][5];
 
 		$sql1 = "SELECT * FROM transaction WHERE memberID='" .$memberID . "'";
-		$row1 = query($sql1);
+		if(execsql($sql1) != null){
+			$row1 = query($sql1);
+			$total = count($row1);
+		}else{
+			$total = 0;
+		}
+		
 	}
 ?>
 
@@ -83,8 +85,9 @@
 ?>
 
 <div class="container">
+<div class="container-fluid">
 	<div class="row">
-		<div class="span12">
+		<div class="span12 row wrapper">
 			<ul class="breadcrumb">
 				<li>
 					<div itemscope>
@@ -102,12 +105,12 @@
 						
 						<h1 style="text-align: center;margin-top: 10px;"><?=$walet?><img src="./img/coin.jpg" style="border-radius: 50%; width: 45px;height: 45px;"></h1>
 						<ul class="nav" style="margin-top: 40px; margin-bottom: 40px">
-							<li class="disable" style="float:left;width: 50%; color: Orange;"><h2><i class="icon-book icon-large"></i>Total Recharges: <?=count($row1)?></h2></li>
+							<li class="disable" style="float:left;width: 60%; color: #E86C19;;"><h2><i class="icon-book icon-large"></i>Total Recharges: <?=$total?></h2></li>
 
-							<li style="float: right;width: 50%"><a href="#recharge_form" data-toggle="modal" style="width: 20%; height: auto; min-height: 25px; float: right; font-size: 15px; background-color: blue"  class="btn btn-primary"><i class="icon-plus icon-large"></i> New</a></li>  
+							<li style="float: right;width: 40%"><a href="#recharge_form" data-toggle="modal" style="width: 20%; height: auto; min-height: 25px; float: right; font-size: 15px; background-color: blue"  class="btn btn-primary"><i class="icon-plus icon-large"></i> New</a></li>  
 						</ul>
 
-						<p style="margin-top: 120px; width:90%">
+						<div class="table-responsive" style="margin-top: 120px; width:100%">
 						<table class="table" style="margin-top: 30px; width:100%">
 							<thead>
 								<tr >
@@ -190,7 +193,7 @@
 							?>
 							</tbody>
 						</table>
-					</p>
+					</div>
 					
 					<div class="paging">
 						<div class="pagination pagination-centered">
@@ -225,7 +228,7 @@
 		</div>
 	</div>
 </div>
-
+</div>
 </body>
 
 </html>

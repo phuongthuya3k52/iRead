@@ -2,9 +2,14 @@
 	require_once("./db.php");
     session_start();
 
-/*    echo("cf_del_chapter = ".isset($_POST['cf_del_chapter']));
-    echo("chapter_id = ".isset($_POST['chapter_id']));
-    echo("story_id = ".isset($_POST['story_id']));  */
+    if ($_SERVER['REQUEST_METHOD'] != 'POST'){
+    ?>
+		<script>
+			alert ("You cannot access this page");
+			window.location.replace("./home.php");
+		</script> 
+	<?php	
+	}	
 
 
 // Delete chapter
@@ -73,11 +78,10 @@
 	if(isset($_POST['cf_del_story']) && isset($_POST['story_id']))
 	{
 		$storyID = $_POST['story_id'];
-
 		$sql1 = "SELECT * FROM chapter WHERE storyID='" .$storyID . "'";
-		$result1 = querynull($sql1);
+		$result1 = execsql($sql1);
 
-		if(!$result1){
+		if($result1 != null){
 			$row1 = query($sql1);
 			for($i=0; $i < count($row1); $i++){
 				$is_chapter_del = false;
@@ -91,18 +95,15 @@
 				$result3 = execsql($sql3);
 
 				// Delete chapter
-				if($result2 != null && $result3 != null){
-					$sql4 = "DELETE FROM chapter WHERE chapterID='" .$chapterID ."'";
+				$sql4 = "DELETE FROM chapter WHERE chapterID='" .$chapterID ."'";
 					$result4 = execsql($sql4);
+					echo("result4 = ". $result4);
 					$is_chapter_del = true;
-				}else{
-					exit;
-				}
 			}
 		}else{
 			$is_chapter_del = true;
 		}
-
+		echo("is_chapter_del = ". $is_chapter_del);
 		// Delete chapter successfull
 		if($is_chapter_del == true)
 		{
@@ -116,7 +117,6 @@
 				// Delete story
 				$sql6 = "DELETE FROM story WHERE storyID='" .$storyID ."'";
 				$result6 = execsql($sql6);
-				echo ("result6 = " .$result6);
 
 				if($result6 != null) 
 				{
