@@ -183,7 +183,7 @@
 
 		<ul class="nav" style="margin-top: 40px;">
 			<li class="disable" style="float:left;width: 40%; color: #E86C19;">
-				<?php  
+			<?php  
 				if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search']) && $_POST['search'] != "" ){
 			?>
 					<h2><i class="icon-book icon-large"></i>Search Results: <?=$total_search?></h2>

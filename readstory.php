@@ -314,7 +314,7 @@
 						</div>
 						
 						<hr class="start-chap">
-						<div class="text-truyen" id="id_noidung_chuong" style="margin:50px;">
+						<div class="context_chapter" id="id_noidung_chuong" style="margin:50px;">
 							<?=decryptString($row[0][3])?>
 						
 						</div>

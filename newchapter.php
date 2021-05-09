@@ -141,7 +141,7 @@
 					</td></tr>
 					<tr>
 						<td colspan="3">
-							<input style= "width: 99%; height: 40px; font-size: 20px; font-weight: bold; text-align: center;" align="center" name="title" maxlength="200" type="text" required="required" placeholder="Story Title" class="breadcrumb" id="id_title" title="Title has maximum of 200 characters"/>
+							<input style= "width: 99%; height: 40px; font-size: 20px; font-weight: bold; text-align: center;" align="center" name="title" maxlength="200" type="text" required="required" placeholder="Chapter Title" class="breadcrumb" id="id_title" title="Title has maximum of 200 characters"/>
 						</td>
 
 					
@@ -158,7 +158,7 @@
 				  	<tr>
 					
       					<td colspan="3">
-      						<textarea style= "width: 90%;" name="content" id="content" required="required"></textarea>
+      						<textarea style= "width: 90%;" name="content" id="content" rows="500" required="required"></textarea>
 				      	<script>CKEDITOR.replace('content');</script> 
 
       					</td>
