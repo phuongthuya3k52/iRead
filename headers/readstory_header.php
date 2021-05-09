@@ -79,10 +79,16 @@ if(isset($_POST['time'])){
 							</li>
 						</ul>					
 					</li>
-				
-					<li><a href="#check_attendance" data-toggle="modal"><i class=" fa fa-calendar-check-o" aria-hidden="true"></i> Attendence</a></li>
-				
+				<?php
+				if($_SESSION['role'] == "member"){
+			?>
+					<li>
 					
+						<a href="#check_attendance" data-toggle="modal"><i class=" fa fa-calendar-check-o" aria-hidden="true"></i> Attendence</a>
+					</li>
+			<?php
+				}
+			?>					
 					<li class="dropdown">
 						<a href="javascript:" class="dropdown-toggle" data-toggle="dropdown">
 							<i class="icon-wrench"></i><b class="caret"></b>

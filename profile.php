@@ -516,11 +516,11 @@
 		if(isset($_POST['cur_password']) && isset($_POST['new_password']) && isset($_POST['cf_new_password'])) 
 		{
 			$error_change_pass = array();
-			$cur_password = $_POST['cur_password'];
+			$cur_password = md5(stripslashes(md5($_POST['cur_password'])));
 			$new_password = $_POST['new_password'];
 			$cf_new_password = $_POST['cf_new_password'];
 
-			if(md5($cur_password) != $pass){
+			if($cur_password != $pass){
 				$error_change_pass[] = "The Current Password is not correct.";
 			}
 			if($new_password != $cf_new_password){
@@ -529,7 +529,7 @@
 
 			if(!empty($error_change_pass))
 			{ 
-				//print_r($error_change_pass);
+				//print_r($error_change_pass);  
 	?>
 			<script>
 				alert ("<?php for($i=0; $i<sizeof($error_change_pass); $i++){echo $error_change_pass[$i] . " ";echo(" Please try again!");} ?>");	
@@ -538,7 +538,7 @@
 	<?php		
 			}else{
 
-				$sql8 = "UPDATE account SET password='" .md5($new_password) ."' WHERE username='" .$user ."'"; 
+				$sql8 = "UPDATE account SET password='" .md5(stripslashes(md5($new_password))) ."' WHERE username='" .$user ."'"; 
 			//	echo("sql8=".$sql8);
 
 				$result8 = execsql($sql8);

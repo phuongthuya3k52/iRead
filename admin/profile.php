@@ -520,7 +520,7 @@
 		if(isset($_POST['cur_password']) && isset($_POST['new_password']) && isset($_POST['cf_new_password'])) 
 		{
 			$error_change_pass = array();
-			$cur_password = $_POST['cur_password'];
+			$cur_password = md5(stripslashes(md5($_POST['cur_password'])));
 			$new_password = $_POST['new_password'];
 			$cf_new_password = $_POST['cf_new_password'];
 
@@ -542,7 +542,7 @@
 	<?php		
 			}else{
 
-				$sql8 = "UPDATE account SET password='" .md5($new_password) ."' WHERE username='" .$user ."'"; 
+				$sql8 = "UPDATE account SET password='" .md5(stripslashes(md5($new_password))) ."' WHERE username='" .$user ."'"; 
 			//	echo("sql8=".$sql8);
 
 				$result8 = execsql($sql8);

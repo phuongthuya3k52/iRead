@@ -233,7 +233,7 @@ hr.end-chap{background:url("../img/end-chap.png") 0 0 no-repeat;width:59px;heigh
     .navbar-fixed-top .navbar-inner {
         padding: 0 20px;
     }
-    .nav-collapse .in .collapse{
+    .nav-collapse.in.collapse{
         height: 350px;
     }
 

@@ -48,6 +48,26 @@
     $row = query($sql);
     $total = count($row);
 
+    //Search member name
+	if(isset($_POST['search_name']) &&  isset($_POST['search'])){
+	/*	if($_GET['search'] == ""){
+		?>
+    		<script >
+				alert ("You must enter at least a keyword to search!");
+				window.location.replace("./memberlist.php");
+			</script>
+		<?php	
+		} */
+		if($_POST['search'] != ""){
+			$search = $_POST['search'];
+
+			$sql = "SELECT * FROM transaction WHERE fullName LIKE '%" .$search . "%'";
+			//echo($sql);
+			$row = query($sql);	
+			$total_search = count($row);		
+		}
+	}
+
   }
 ?>
 
@@ -73,9 +93,38 @@
 	<div class="row wrapper ">
 				
 		<h1 style="text-align: center;margin-top: 10px;">Transactions List</h1>
+	<!--	<div style =" width: 100%; text-align: center;" >
+
+			<form action="trans_history.php" method="POST">
+			<?php
+				if(!isset($_POST['search']) || $_POST['search'] == ""){
+			?>
+				
+				<input type="text" name="search" class=" " placeholder="Enter member name..." style =" width: 60%; margin-top: 25px;margin-left: 25px;">
+			<?php
+			}else{
+			?>
+				<input type="text" name="search" class=" " placeholder="Enter member name..." value="<?=$search?>" style =" width: 60%; margin-top: 25px;margin-left: 25px;">
+			<?php
+			}
+			?>
+				<button class="btn" type="submit" name="search_name" style="float: right; margin-top: 25px; margin-right: 40px; width: 15%"><i class="icon-search"></i></button>
+			</form>
+		</div>   -->
 		<ul class="nav" style="margin-top: 40px; margin-bottom: 40px">
 			<li class="disable" style="float:left;width: 100%; color: #E86C19;">
-				<h2><i class="icon-book icon-large"></i>Total Transactions: <?=$total?></h2>
+			<?php  
+				if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search']) && $_POST['search'] != "" ){
+			?>
+					<h2><i class="icon-book icon-large"></i>Total Transactions Of <?=$_POST['search']?>: <?=$total_search?></h2>
+			<?php	
+				}else{
+			?>
+					<h2><i class="icon-book icon-large"></i>Total Transactions: <?=$total?></h2>
+			<?php	
+				}
+			?>
+				
 				<p style="font-size: 16px; width: 100%;"> The information sheet below shows the list of transactions in order from the latest story to older one.</p>
 			</li>
 		</ul>
@@ -123,7 +172,12 @@
 					$currentpage = $_GET['currentpage'];
 					}
 
-					$sql2= "SELECT * FROM transaction ORDER BY transactionID DESC LIMIT {$beginrow} , {$pagesize}";
+					$sql2= "SELECT transactionID, transaction.memberID, transaction.money, vnp_response_code, code_vnpay, code_bank, transaction.createAt, member.fullName  FROM transaction INNER JOIN member ON  transaction.memberID = member.memberID ORDER BY transactionID DESC LIMIT {$beginrow} , {$pagesize}";
+
+				/*	//Search
+					if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['search']) && $_POST['search'] != ""){
+						$sql2= "SELECT transactionID, transaction.memberID, transaction.money, vnp_response_code, code_vnpay, code_bank, transaction.createAt, member.fullName  FROM transaction INNER JOIN member ON  transaction.memberID = member.memberID WHERE member.fullName LIKE '%" .$search . "%' ORDER BY transactionID DESC LIMIT {$beginrow} , {$pagesize}";  
+					}*/
 
 					$row2=query($sql2);  
 
@@ -132,21 +186,22 @@
 					{
 						$memberID = $row2[$i][1];
 						$amount = $row2[$i][2];
-						$response_code = $row2[$i][4];
-						$vnpay_code = $row2[$i][5];
-						$method = $row2[$i][6];
-						$time = $row2[$i][7];
+						$response_code = $row2[$i][3];
+						$vnpay_code = $row2[$i][4];
+						$method = $row2[$i][5];
+						$time = $row2[$i][6];
+						$memname = $row2[$i][7];
 				?>	
 					<tr>
 						<td style="width: 5%; text-align: center;"><?=$i+1+($currentpage-1)*10?></td>
 						<td class="nav-list name_list" style="width: 20%">
 							<div class="media truyen-item">
-								<a class="pull-left" href="chapterlist.php?storyID=<?=$row2[$i][0]?>">
+								<a class="pull-left" href="memberlist.php?memberID=<?=$memberID?>">
 									<h2 class="media-heading" style="font-size: 15px;line-height:20px;margin: 0;padding: 0;font-weight: bold;color:#333333; text-align: center;">
 										<?php
-                              				$sql4 = "SELECT * FROM member WHERE memberID='" .$memberID . "'";
+                              				/*$sql4 = "SELECT * FROM member WHERE memberID='" .$memberID . "'";
                               				$row4 = query($sql4);
-                              				$memname = $row4[0][1];
+                              				$memname = $row4[0][1];  */
                               				echo($memname);
                             			?>	
                             		</h2>
@@ -182,40 +237,10 @@
 								}
 							?>		
 						</td>
-					<!--			<td style="width: 11%; text-align: center; ">
-								<!--	<a href="editstory.php?storyID=<?=$storyID?>" class="btn"><i class="icon-edit"></i></a> 
-									<button type="button" name="btn_delete" id="btn_delete<?=$storyID?>" class="btn btn-warning" data-toggle="modal" data-target="#delete_confirm<?=$storyID?>"><i class="icon-remove-sign"></i>
-									</button>
-									
-								</td>  -->
+
 						</tr>
 
-						<!-- Delete confirm modal 
-								<script type="text/javascript" src="js/bootstrap-modalmanager.js"></script>
-								<script type="text/javascript" src="js/bootstrap-modal.js"></script>
-
-								<div class="modal hide fade" id="delete_confirm<?=$storyID?>" style="display: none;">
-									<form  method="POST" action="delete.php" >
-									<div class="modal-header">
-										<span class="disable" data-dismiss="modal" aria-hidden="true" style="color: #ff4444; font-size: 44px; font-weight: bold; float: right;cursor:pointer;">&times;</span>
-										<h3>Delete Story</h3>
-										
-									</div>
-									<div class="modal-body" style="text-align: center; margin-top:0px">
-										<h2>Are you sure to Delete this story?</h2>
-										<img style="width: 150px; height: 200px;" src="../img/<?=$storyImage?>">
-										<h5><?=decryptString($storyName)?></h5>
-										<input type="hidden" name="story_id" value="<?=$storyID?>">
-									
-
-										<button type="submit" name="cf_del_story" class="btn btn-primary" style="background-color: blue; width:14% ">Yes</button>&emsp;&emsp;
-									
-										<button type="button" class="btn" data-dismiss="modal" aria-hidden="true">Cancle</button>
-									</div>
-
-									</form>
-								</div>-->
-			
+						
 				<?php
 					}
 				?>

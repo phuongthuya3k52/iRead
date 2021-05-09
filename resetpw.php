@@ -90,7 +90,7 @@
 	<?php		
 			}else{  
 
-				$sql2 = "UPDATE account SET password='" .md5($pass) ."' WHERE email='" .$email ."'"; 
+				$sql2 = "UPDATE account SET password='" .md5(stripslashes(md5($pass)))) ."' WHERE email='" .$email ."'"; 
 
 				$result2 = execsql($sql2);
 			//	echo("result2 = ".$result2);

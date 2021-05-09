@@ -43,7 +43,7 @@
            
 	if (isset($_POST['username'])&& isset($_POST['password'])){
 		$us=$_POST['username'];
-		$pw=$_POST['password'];
+		$pw=md5($_POST['password']);
 
 		$us = stripslashes($us);
 		$pw = md5(stripslashes($pw));
