@@ -524,7 +524,7 @@
 			$new_password = $_POST['new_password'];
 			$cf_new_password = $_POST['cf_new_password'];
 
-			if(md5($cur_password) != $pass){
+			if($cur_password != $pass){
 				$error_change_pass[] = "The Current Password is not correct.";
 			}
 			if($new_password != $cf_new_password){
